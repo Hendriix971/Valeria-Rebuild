@@ -60,6 +60,7 @@
       <div class="header-right">
         <span class="header-gold" id="header-gold">💰 0</span>
         <span class="header-floor" id="header-floor">🌲 Niv.1</span>
+        <span id="btn-mute" style="cursor:pointer;font-size:0.9rem" onclick="toggleMute()">🔊</span>
       </div>
     </div>
 
@@ -159,6 +160,12 @@
       <div id="view-char" class="view hidden">
         <div id="char-detail"></div>
       </div>
+
+      <!-- VIEW: Team -->
+      <div id="view-team" class="view hidden"></div>
+
+      <!-- VIEW: Inventory -->
+      <div id="view-inventory" class="view hidden"></div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -221,14 +228,12 @@
     </div>
   </div>
 
-  <!-- POPUP: Level Up -->
+  <!-- POPUP: Level Up (Stat Allocation) -->
   <div id="popup-levelup" class="popup-overlay hidden">
     <div class="popup popup-small">
-      <div class="popup-header"><h3>⬆️ Montée de Niveau !</h3></div>
+      <div class="popup-header"><h3 id="levelup-title">⬆️ Montée de Niveau</h3></div>
       <div class="popup-body" id="levelup-body"></div>
-      <div class="popup-footer">
-        <button id="btn-levelup-ok" class="btn-primary">Continuer</button>
-      </div>
+      <div class="popup-footer" id="levelup-footer"></div>
     </div>
   </div>
 

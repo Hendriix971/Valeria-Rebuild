@@ -8,6 +8,22 @@ const ARMORS={armure_legere:{id:'armure_legere',name:'Armure légère',emoji:'�
 const MONSTERS={slime:{id:'slime',name:'Slime',emoji:'🟢',baseStats:{for:1,rap:1,con:4,mana:1},drops:[{id:'gelée_slime',min:1,max:2,chance:.8},{id:'noyau_slime',min:1,max:1,chance:.3}],xpReward:15},loup:{id:'loup',name:'Loup',emoji:'🐺',baseStats:{for:3,rap:4,con:2,mana:1},drops:[{id:'croc_loup',min:1,max:2,chance:.7},{id:'fourrure_loup',min:1,max:1,chance:.5},{id:'griffe_loup',min:1,max:1,chance:.4}],xpReward:18},sanglier:{id:'sanglier',name:'Sanglier',emoji:'🐗',baseStats:{for:4,rap:2,con:5,mana:1},drops:[{id:'peau_sanglier',min:1,max:2,chance:.7},{id:'défense_sanglier',min:1,max:1,chance:.4}],xpReward:22},araignee:{id:'araignee',name:'Araignée',emoji:'🕷️',baseStats:{for:2,rap:3,con:3,mana:2},drops:[{id:'soie_araignée',min:1,max:2,chance:.7},{id:'venin_araignée',min:1,max:1,chance:.4}],xpReward:20},serpent:{id:'serpent',name:'Serpent',emoji:'🐍',baseStats:{for:3,rap:4,con:2,mana:2},drops:[{id:'écaille_serpent',min:1,max:2,chance:.7},{id:'croc_serpent',min:1,max:1,chance:.4}],xpReward:24},treant:{id:'treant',name:'Tréant',emoji:'🌳',baseStats:{for:5,rap:1,con:6,mana:2},drops:[{id:'bois_solide',min:2,max:3,chance:.8},{id:'écorce_ancienne',min:1,max:1,chance:.3}],xpReward:30},gobelin_faible:{id:'gobelin_faible',name:'Gobelin',emoji:'👺',baseStats:{for:2,rap:3,con:2,mana:1},drops:[{id:'morceau_ferraille',min:1,max:2,chance:.6},{id:'os_monstre',min:1,max:1,chance:.5}],xpReward:16},loup_alpha:{id:'loup_alpha',name:'Loup alpha',emoji:'🐺',baseStats:{for:5,rap:5,con:3,mana:1},drops:[{id:'croc_loup',min:2,max:3,chance:.8},{id:'fourrure_loup',min:1,max:2,chance:.6}],xpReward:28},gobelin_eclaireur:{id:'gobelin_eclaireur',name:'Gobelin éclaireur',emoji:'👹',baseStats:{for:3,rap:4,con:3,mana:2},drops:[{id:'morceau_ferraille',min:1,max:3,chance:.7},{id:'os_monstre',min:1,max:2,chance:.6}],xpReward:26}}
 const FOREST_LEVELS=[{id:1,name:'Clairière',minLevel:1,pool:['slime','loup','gobelin_faible']},{id:2,name:'Sous-bois',minLevel:1,pool:['slime','loup','gobelin_faible']},{id:3,name:'Fourrés',minLevel:2,pool:['sanglier','araignee','serpent']},{id:4,name:'Taillis',minLevel:2,pool:['sanglier','araignee','serpent']},{id:5,name:'Bois sombre',minLevel:3,pool:['sanglier','araignee','serpent','loup']},{id:6,name:'Forêt profonde',minLevel:3,pool:['treant','loup_alpha','gobelin_eclaireur']},{id:7,name:'Cœur de la forêt',minLevel:4,pool:['treant','loup_alpha','gobelin_eclaireur']},{id:8,name:'Clairière ancienne',minLevel:4,pool:['treant','loup_alpha','gobelin_eclaireur','serpent']},{id:9,name:'Sanctuaire oublié',minLevel:5,pool:['treant','loup_alpha','gobelin_eclaireur']}]
 
+/* ============== AUDIO ============== */
+let _actx=null
+let _muted=localStorage.getItem('vr_muted')==='1'
+function _ctx(){try{if(!_actx)_actx=new(window.AudioContext||window.webkitAudioContext)();if(_actx.state==='suspended')_actx.resume()}catch(e){}}
+function _osc(freq,endFreq,type,dur,vol){try{_ctx();const o=_actx.createOscillator(),g=_actx.createGain();o.type=type||'sawtooth';o.frequency.setValueAtTime(freq,_actx.currentTime);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,_actx.currentTime+dur);g.gain.setValueAtTime(vol||.3,_actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,_actx.currentTime+dur);o.connect(g);g.connect(_actx.destination);o.start();o.stop(_actx.currentTime+dur)}catch(e){}}
+function _noise(dur,vol){try{_ctx();const b=_actx.createBuffer(1,_actx.sampleRate*dur,_actx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=_actx.createBufferSource(),g=_actx.createGain();s.buffer=b;g.gain.setValueAtTime(vol||.15,_actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,_actx.currentTime+dur);s.connect(g);g.connect(_actx.destination);s.start()}catch(e){}}
+function play(s){if(_muted)return;if(s==='hit')_osc(150,50,'sawtooth',.15,.3)
+else if(s==='crit'){_osc(800,200,'sawtooth',.2,.25);setTimeout(()=>_osc(1200,300,'sine',.15,.2),50)}
+else if(s==='dodge')_noise(.08,.08)
+else if(s==='heal'){_osc(400,800,'sine',.25,.2);setTimeout(()=>_osc(600,1000,'sine',.2,.15),80)}
+else if(s==='coin')_osc(2000,1500,'sine',.06,.15)
+else if(s==='victory'){_osc(523,660,'sine',.2,.2);setTimeout(()=>_osc(659,784,'sine',.2,.2),150);setTimeout(()=>_osc(784,1047,'sine',.3,.25),300)}
+else if(s==='levelup'){_osc(523,587,'sine',.15,.15);setTimeout(()=>_osc(659,740,'sine',.15,.15),120);setTimeout(()=>_osc(784,880,'sine',.2,.2),240)}
+}
+function toggleMute(){_muted=!_muted;localStorage.setItem('vr_muted',_muted?'1':'0');const e=document.getElementById('btn-mute');if(e)e.textContent=_muted?'🔇':'🔊'}
+
 /* ============== STATE ============== */
 let G=null
 let _cd={name:'',classId:'epeiste',stats:{for:0,rap:0,con:0,mana:0},points:10}
@@ -20,7 +36,7 @@ function st(stat,dir){
   document.getElementById('create-points').textContent=_cd.points
   document.getElementById('stat-'+stat).textContent=1+_cd.stats[stat]
 }
-function initGameState(){return{slotName:'',gold:50,team:[],activeChar:0,forestLevel:1,forestExploreCount:0,inventory:{resources:{},consumables:{},weapons:[],armors:[]},logs:[],combat:{monster:null,guarding:false,enemyEffects:{},combatLog:[]},tavernResting:false,created:Date.now()}}
+function initGameState(){return{slotName:'',gold:50,team:[],activeChar:0,forestLevel:1,forestExploreCount:0,inventory:{resources:{},consumables:{},weapons:[],armors:[]},logs:[],combat:{monster:null,guarding:false,enemyEffects:{},combatLog:[],charActed:[],pendingActions:[]},tavernResting:false,created:Date.now()}}
 function saveSlots(){try{return JSON.parse(localStorage.getItem('vr_saves')||'[]')}catch{return[]}}
 function saveSlotsWrite(arr){localStorage.setItem('vr_saves',JSON.stringify(arr))}
 function getSave(slot){const s=saveSlots();return s[slot]||null}
@@ -72,7 +88,8 @@ function addCharacter(name,classId,distStats){
   baseStats.mana=Math.max(1,baseStats.mana+(cls.bonuses.mana||0))
   const char={
     name:name||'Héros',classId,level:1,xp:0,baseStats,
-    currentHp:0,currentPe:0,weapon:null,armor:null,spells:cls.spells||[]
+    currentHp:0,currentPe:0,weapon:null,armor:null,spells:cls.spells||[],
+    statPoints:0
   }
   const s=getFinalStats(char)
   char.currentHp=s.pvMax;char.currentPe=s.peMax
@@ -106,8 +123,12 @@ function startCombat(){
   const m=spawnMonster(fl)
   const ms=computeMonsterStats(m)
   m.currentHp=ms.pvMax;m.currentPe=ms.peMax
-  G.combat={monster:m,guarding:false,enemyEffects:{},combatLog:[],monsterStats:ms,defeat:false}
+  G.combat={monster:m,guarding:false,enemyEffects:{},combatLog:[],monsterStats:ms,defeat:false,charActed:G.team.map(()=>false),pendingActions:[]}
+  const firstAlive=G.team.findIndex(c=>c.currentHp>0)
+  if(firstAlive>=0)G.activeChar=firstAlive
+  else G.activeChar=0
   G.combat.combatLog.push(`⚔️ Combat contre ${m.name} (Niv.${fl}) !`)
+  G.combat.combatLog.push(`👉 ${G.team[G.activeChar].name}, à toi !`)
   switchView('combat')
   renderCombat()
 }
@@ -134,72 +155,112 @@ function enemyTurn(){
   const isGuarding=G.combat.guarding
   if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
   const critRoll=Math.random()*100
-  if(critRoll<ms.crit){dmg=Math.floor(dmg*1.5);addCombatLog(`💥 Coup critique du monstre !`)}
+  if(critRoll<ms.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
   target.currentHp=Math.max(0,target.currentHp-dmg)
   G.combat.guarding=false
+  play('hit')
   addCombatLog(`💢 ${getMonster().name} inflige ${dmg} dégâts à ${target.name}`)
   renderCombat()
   const result=isCombatOver()
-  if(result==='defeat'){addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden')}
+  if(result==='defeat'){addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden');return}
+  G.combat.charActed=G.team.map(()=>false)
+  const aliveIdx=G.team.findIndex(c=>c.currentHp>0)
+  if(aliveIdx>=0)G.activeChar=aliveIdx
+  addCombatLog(`--- Tour suivant ---`)
+  if(G.activeChar!==undefined){addCombatLog(`👉 ${G.team[G.activeChar].name}, à toi !`)}
+  renderCombat()
+}
+function queuePlayerAction(type,spellId){
+  if(!G||!getMonster()||G.combat.defeat)return
+  const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
+  document.getElementById('combat-spells').classList.add('hidden');document.getElementById('combat-buttons').classList.remove('hidden')
+  if(!G.combat.charActed)G.combat.charActed=G.team.map(()=>false)
+  if(G.combat.charActed[G.activeChar]){addCombatLog(`⏳ ${char.name} a déjà agi ce tour`);renderCombat();return}
+  G.combat.pendingActions.push({charIndex:G.activeChar,type,spellId,charName:char.name})
+  G.combat.charActed[G.activeChar]=true
+  const actionLabel={attack:'une attaque',guard:'une garde',spell:SPELLS[spellId]?.name||'un sort'}[type]||type
+  addCombatLog(`📋 ${char.name} prépare ${actionLabel}`)
+  const aliveIndices=G.team.map((c,i)=>c.currentHp>0?i:-1).filter(i=>i>=0)
+  const notActed=aliveIndices.filter(i=>!G.combat.charActed[i])
+  if(notActed.length===0){
+    addCombatLog(`=== Résolution du tour ===`)
+    setTimeout(resolveTurn,400)
+  }else{
+    G.activeChar=notActed[0]
+    addCombatLog(`👉 ${G.team[G.activeChar].name}, à toi !`)
+    renderCombat()
+  }
 }
 function combatAttack(){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
-  const s=getFinalStats(char);const ms=getMonsterStats();if(!ms)return
-  let dmg=Math.max(1,s.pp-Math.floor(ms.def/2))
-  const critRoll=Math.random()*100
-  let crit=false
-  if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
-  const esqRoll=Math.random()*100
-  if(esqRoll<ms.esq){addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();setTimeout(enemyTurn,500);return}
-  getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
-  addCombatLog(`${crit?'💥 Critique ! ':''}⚔️ ${char.name} attaque : ${dmg} dégâts`)
-  renderCombat()
-  const result=isCombatOver()
-  if(result==='victory'){setTimeout(victory,400);return}
-  setTimeout(enemyTurn,600)
+  queuePlayerAction('attack')
 }
 function combatSpell(spellId){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
   const spell=SPELLS[spellId];if(!spell)return
-  const s=getFinalStats(char);const ms=getMonsterStats();if(!ms)return
   if(char.currentPe<spell.cost){addCombatLog(`❌ Pas assez de PE ! (${char.currentPe}/${spell.cost})`);renderCombat();return}
-  char.currentPe-=spell.cost
-  let dmg=1
-  if(spell.powerStat==='physicalPower'){dmg=Math.floor(s.pp*(spell.multiplier||1))}
-  else if(spell.powerStat==='magicPower'){dmg=Math.floor(s.pm*(spell.multiplier||1))}
-  else if(spell.powerStats){
-    let total=0;spell.powerStats.forEach(ps=>{if(ps==='physicalPower')total+=s.pp;if(ps==='magicPower')total+=s.pm})
-    dmg=Math.floor(total*(spell.multiplier||1))
-  }
-  const esqRoll=Math.random()*100
-  if(esqRoll<ms.esq){addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();setTimeout(enemyTurn,500);return}
-  if(spell.id==='assassin_assassinat'){
-    const critRoll=Math.random()*100
-    if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);addCombatLog(`💥 Vrai critique ! x1.5`) }
-    else {dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
-  }
-  dmg=Math.max(1,dmg-Math.floor(ms.def/2))
-  getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
-  addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
-  if(spell.effects){
-    if(spell.effects.defenseReductionPercent){
-      G.combat.enemyEffects.defRed={value:spell.effects.defenseReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
-      addCombatLog(`⬇️ DEF de l'ennemi réduite de ${spell.effects.defenseReductionPercent}%`)}
-    if(spell.effects.energyDrainPercent){
-      G.combat.enemyEffects.energyDrain={value:spell.effects.energyDrainPercent,duration:spell.effects.duration}
-      addCombatLog(`💧 Drain d'énergie : -${spell.effects.energyDrainPercent}% PE/tour`)}
-  }
-  renderCombat()
-  const result=isCombatOver()
-  if(result==='victory'){setTimeout(victory,400);return}
-  setTimeout(enemyTurn,600)
+  queuePlayerAction('spell',spellId)
 }
 function combatGuard(){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
-  G.combat.guarding=true
-  addCombatLog(`🛡️ ${char.name} se met en garde !`)
-  renderCombat()
-  setTimeout(enemyTurn,600)
+  queuePlayerAction('guard')
+}
+function resolveTurn(){
+  if(!G||!getMonster()||getMonster().currentHp<=0)return
+  const actions=[...G.combat.pendingActions];G.combat.pendingActions=[]
+  for(const a of actions){
+    if(getMonster().currentHp<=0)break
+    const char=G.team[a.charIndex];if(!char||char.currentHp<=0)continue
+    const s=getFinalStats(char);const ms=getMonsterStats();if(!ms)continue
+    if(a.type==='attack'){
+      let dmg=Math.max(1,s.pp-Math.floor(ms.def/2))
+      const critRoll=Math.random()*100;let crit=false
+      if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
+      const esqRoll=Math.random()*100
+      if(esqRoll<ms.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}
+      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+      crit?play('crit'):play('hit')
+      addCombatLog(`${crit?'💥 Critique ! ':''}⚔️ ${char.name} attaque : ${dmg} dégâts`)
+      renderCombat()
+      if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+    }else if(a.type==='spell'){
+      const spell=SPELLS[a.spellId];if(!spell)continue
+      char.currentPe-=spell.cost
+      let dmg=1
+      if(spell.powerStat==='physicalPower'){dmg=Math.floor(s.pp*(spell.multiplier||1))}
+      else if(spell.powerStat==='magicPower'){dmg=Math.floor(s.pm*(spell.multiplier||1))}
+      else if(spell.powerStats){
+        let total=0;spell.powerStats.forEach(ps=>{if(ps==='physicalPower')total+=s.pp;if(ps==='magicPower')total+=s.pm})
+        dmg=Math.floor(total*(spell.multiplier||1))
+      }
+      const esqRoll=Math.random()*100
+      if(esqRoll<ms.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
+      if(spell.id==='assassin_assassinat'){
+        const critRoll=Math.random()*100
+        if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);play('crit');addCombatLog(`💥 Vrai critique ! x1.5`)}
+        else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
+      }
+      dmg=Math.max(1,dmg-Math.floor(ms.def/2))
+      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+      play('hit')
+      addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
+      if(spell.effects){
+        if(spell.effects.defenseReductionPercent){
+          G.combat.enemyEffects.defRed={value:spell.effects.defenseReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
+          addCombatLog(`⬇️ DEF de l'ennemi réduite de ${spell.effects.defenseReductionPercent}%`)}
+        if(spell.effects.energyDrainPercent){
+          G.combat.enemyEffects.energyDrain={value:spell.effects.energyDrainPercent,duration:spell.effects.duration}
+          addCombatLog(`💧 Drain d'énergie : -${spell.effects.energyDrainPercent}% PE/tour`)}
+      }
+      renderCombat()
+      if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+    }else if(a.type==='guard'){
+      G.combat.guarding=true
+      addCombatLog(`🛡️ ${char.name} se met en garde !`)
+      renderCombat()
+    }
+  }
+  if(getMonster()&&getMonster().currentHp>0){enemyTurn()}
 }
 function combatFlee(){
   if(!G||!getMonster())return
@@ -211,8 +272,13 @@ function combatFlee(){
     G.combat=G.combat||{};G.combat.monster=null
     setTimeout(()=>{switchView('forest');renderForest()},400)
   }else{
-    addCombatLog(`❌ Fuite échouée !`)
-    setTimeout(enemyTurn,600)
+    addCombatLog(`❌ Fuite échouée ! ${G.team[G.activeChar].name} a perdu son tour`)
+    if(!G.combat.charActed)G.combat.charActed=G.team.map(()=>false)
+    G.combat.charActed[G.activeChar]=true
+    const aliveIndices=G.team.map((c,i)=>c.currentHp>0?i:-1).filter(i=>i>=0)
+    const notActed=aliveIndices.filter(i=>!G.combat.charActed[i])
+    if(notActed.length===0){addCombatLog(`=== Résolution du tour ===`);setTimeout(resolveTurn,400)}
+    else{G.activeChar=notActed[0];addCombatLog(`👉 ${G.team[G.activeChar].name}, à toi !`);renderCombat()}
   }
   renderCombat()
 }
@@ -220,8 +286,7 @@ function victory(){
   if(!G||!getMonster())return
   const m=getMonster();const xp=m.xpReward
   const alive=G.team.filter(c=>c.currentHp>0)
-  G._justLeveledUp=[]
-  alive.forEach(c=>{const oldLv=c.level;c.xp+=xp;while(c.xp>=xpForLevel(c.level)){c.xp-=xpForLevel(c.level);c.level++;clampChar(c)};if(c.level>oldLv)G._justLeveledUp.push({name:c.name,emoji:CLASSES[c.classId]?.emoji||'',oldLv,newLv:c.level})})
+  alive.forEach(c=>{c.xp+=xp;while(c.xp>=xpForLevel(c.level)){c.xp-=xpForLevel(c.level);c.level++;c.statPoints=(c.statPoints||0)+1;const ns=getFinalStats(c);c.currentHp=ns.pvMax;c.currentPe=ns.peMax}})
   const drops=[]
   m.drops.forEach(d=>{if(Math.random()<d.chance){const q=d.min+Math.floor(Math.random()*(d.max-d.min+1));drops.push({id:d.id,qty:q})}})
   drops.forEach(d=>{G.inventory.resources[d.id]=(G.inventory.resources[d.id]||0)+d.qty})
@@ -232,6 +297,7 @@ function victory(){
      <p>✨ ${xp} XP (pour tous les survivants)</p>
      ${drops.length?`<p>🎁 ${dropText}</p>`:'<p>Aucune ressource obtenue.</p>'}`
   document.getElementById('popup-victory').classList.remove('hidden')
+  play('victory')
   renderAll()
 }
 function processEnemyEffects(){
@@ -243,6 +309,7 @@ function processEnemyEffects(){
 /* ============== FOREST ============== */
 function exploreForest(){
   if(!G)return
+  if(G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return}
   const fl=FOREST_LEVELS.find(f=>f.id===G.forestLevel)||FOREST_LEVELS[0]
   G.forestExploreCount=(G.forestExploreCount||0)+1
   const logEl=document.getElementById('forest-log')
@@ -262,17 +329,17 @@ function tavernRest(){
   if(!G)return;if(G.tavernResting)return
   G.tavernResting=true
   const logEl=document.getElementById('tavern-log')
-  logEl.innerHTML='<div class="log-entry">😴 Repos...</div><div id="rest-timer" style="text-align:center;font-size:1.5rem;font-weight:bold;color:var(--gold);padding:16px">60s</div><div id="rest-bar-bg" style="height:8px;background:#1a1a2a;border-radius:4px;overflow:hidden;margin:4px 0 8px"><div id="rest-bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:4px;transition:width .3s"></div></div>'
+  logEl.innerHTML='<div class="log-entry">😴 Repos...</div><div id="rest-timer" style="text-align:center;font-size:1.5rem;font-weight:bold;color:var(--gold);padding:16px">5s</div><div id="rest-bar-bg" style="height:8px;background:#1a1a2a;border-radius:4px;overflow:hidden;margin:4px 0 8px"><div id="rest-bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:4px;transition:width .3s"></div></div>'
   document.getElementById('btn-tavern-rest').disabled=true
-  let sec=60
+  let sec=5
   const timerEl=document.getElementById('rest-timer')
   const barEl=document.getElementById('rest-bar')
-  const interval=setInterval(()=>{sec--;if(timerEl)timerEl.textContent=sec+'s';if(barEl)barEl.style.width=(sec/60*100)+'%';if(sec<=0)clearInterval(interval)},1000)
+  const interval=setInterval(()=>{sec--;if(timerEl)timerEl.textContent=sec+'s';if(barEl)barEl.style.width=(sec/5*100)+'%';if(sec<=0)clearInterval(interval)},1000)
   setTimeout(()=>{clearInterval(interval);G.tavernResting=false
     G.team.forEach(c=>{const s=getFinalStats(c);c.currentHp=s.pvMax;c.currentPe=s.peMax})
     logEl.innerHTML='<div class="log-entry">✅ Repos terminé ! Toute l\'équipe est restaurée !</div>'
     document.getElementById('btn-tavern-rest').disabled=false
-    saveGame();renderAll()},60000)
+    saveGame();renderAll()},5000)
 }
 function tavernDrink(){
   if(!G)return
@@ -310,7 +377,7 @@ function merchantBuy(){
   Object.keys(ARMORS).forEach(k=>{
     const a=ARMORS[k];const canAfford=G.gold>=a.reducedPrice;const hasMats=a.materials?Object.keys(a.materials).every(mat=>(G.inventory.resources[mat]||0)>=a.materials[mat]):true
     const matsStr=a.materials?Object.keys(a.materials).map(m=>`${RESOURCES[m]?.emoji||''} ${RESOURCES[m]?.name||m} x${a.materials[m]}`).join(', '):''
-    html+=`<div class="merchant-item"><div class="mi-info"><div class="mi-name">${a.emoji} ${a.name}</div><div class="mi-mats">${a.desc} | Mats: ${matsStr}</div></div><div class="mi-price">${a.reducedPrice}💰</button><button class="mi-btn${canAfford&&hasMats?'':' cant-buy'}" data-buy-armor="${k}">${canAfford&&hasMats?'Acheter':'❌'}</button></div>`
+    html+=`<div class="merchant-item"><div class="mi-info"><div class="mi-name">${a.emoji} ${a.name}</div><div class="mi-mats">${a.desc} | Mats: ${matsStr}</div></div><div class="mi-price">${a.reducedPrice}💰</div><button class="mi-btn${canAfford&&hasMats?'':' cant-buy'}" data-buy-armor="${k}">${canAfford&&hasMats?'Acheter':'❌'}</button></div>`
   })
   html+='</div>'
   cont.innerHTML=html
@@ -375,8 +442,8 @@ function useConsumable(id,charIdx){
   const qty=G.inventory.consumables[id]||0
   if(qty<=0)return
   const s=getFinalStats(char)
-  if(c.type==='hp'){const heal=Math.floor(s.pvMax*c.healPercent);char.currentHp=Math.min(s.pvMax,char.currentHp+heal);addLog(`❤️ ${char.name} +${heal} PV`)}
-  else if(c.type==='pe'){const heal=Math.floor(s.peMax*c.healPercent);char.currentPe=Math.min(s.peMax,char.currentPe+heal);addLog(`💧 ${char.name} +${heal} PE`)}
+  if(c.type==='hp'){const heal=Math.floor(s.pvMax*c.healPercent);char.currentHp=Math.min(s.pvMax,char.currentHp+heal);play('heal');addLog(`❤️ ${char.name} +${heal} PV`)}
+  else if(c.type==='pe'){const heal=Math.floor(s.peMax*c.healPercent);char.currentPe=Math.min(s.peMax,char.currentPe+heal);play('heal');addLog(`💧 ${char.name} +${heal} PE`)}
   G.inventory.consumables[id]--
   if(G.inventory.consumables[id]<=0)delete G.inventory.consumables[id]
   saveGame();renderAll()
@@ -449,11 +516,9 @@ function updateGold(){const el=document.getElementById('header-gold');if(el&&G)e
 function renderTeamBar(){
   const bar=document.getElementById('team-bar');if(!bar||!G)return
   bar.innerHTML=G.team.map((c,i)=>{
-    const s=getFinalStats(c);const hpPct=c.currentHp>0?Math.round((c.currentHp/s.pvMax)*100):0
-    const clsObj=CLASSES[c.classId];const active=i===G.activeChar?'active':''
-    const dead=c.currentHp<=0?'dead':''
-    const hpDot=hpPct<30?'hp-dot low':'hp-dot'
-    return `<div class="team-char ${active} ${dead}" data-char="${i}"><span class="${hpDot}"></span>${clsObj?.emoji||''} ${c.name} <span style="font-size:0.65rem;color:var(--text2)">Lv.${c.level}</span></div>`
+    const s=getFinalStats(c);const dead=c.currentHp<=0?'dead':'';const active=i===G.activeChar?'active':''
+    const clsObj=CLASSES[c.classId]
+    return `<div class="team-char ${active} ${dead}" data-char="${i}" style="font-size:0.7rem"><span class="hp-dot" style="background:${c.currentHp<=0?'var(--red)':c.currentHp<s.pvMax*0.3?'var(--orange)':'var(--green)'}"></span>${clsObj?.emoji||''} ${c.name} <span style="color:var(--text2)">Lv.${c.level}</span> <span style="color:${c.currentHp<=0?'var(--red)':'var(--green)'};font-weight:bold">${c.currentHp}/${s.pvMax}</span></div>`
   }).join('')
 }
 function renderMap(){/* map is static HTML */document.getElementById('header-location').textContent='— Carte'}
@@ -466,6 +531,7 @@ function renderForest(){
 }
 function renderCombat(){
   if(!G||!getMonster())return
+  renderTeamBar()
   document.getElementById('combat-defeat').classList.add('hidden')
   document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=G.combat.defeat||false)
   const m=getMonster();const ms=getMonsterStats()
@@ -486,6 +552,14 @@ function renderCombat(){
   }
   const guardEl=document.getElementById('combat-guard-indicator')
   if(G.combat.guarding)guardEl.classList.remove('hidden');else guardEl.classList.add('hidden')
+  const spellsList=document.getElementById('spells-list')
+  if(char&&!document.getElementById('combat-spells').classList.contains('hidden')){
+    spellsList.innerHTML=char.spells.map(sid=>{
+      const sp=SPELLS[sid];if(!sp)return''
+      const canCast=char.currentPe>=sp.cost
+      return `<button class="spell-btn${canCast?'':' disabled'}" data-spell="${sid}"${canCast?'':' disabled'}>${sp.name} <span class="spell-cost">(${sp.cost} PE)</span><br><span style="font-size:0.7rem;color:var(--text2)">${sp.desc}</span></button>`
+    }).join('')
+  }
   renderCombatLog()
 }
 function renderCombatLog(){
@@ -512,6 +586,8 @@ function renderSaves(){
 
 /* ============== INIT ============== */
 function init(){
+  /* Init mute button */
+  const me=document.getElementById('btn-mute');if(me)me.textContent=_muted?'🔇':'🔊'
   /* Saves screen */
   renderSaves()
   document.getElementById('btn-new-game').addEventListener('click',()=>{
@@ -572,10 +648,13 @@ function init(){
   document.querySelectorAll('.nav-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       if(G&&getMonster()&&getMonster().currentHp>0){showMessage('Combat','⚔️ Vous êtes en combat !');return}
+      document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'))
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
+      btn.classList.add('active')
       const view=btn.dataset.view
-      if(view==='map'){switchView('map');renderMap()}
-      else if(view==='team'){showTeamView()}
-      else if(view==='inventory'){showInventoryView()}
+      if(view==='map'){document.getElementById('view-map').classList.remove('hidden');renderMap()}
+      else if(view==='team'){document.getElementById('view-team').classList.remove('hidden');showTeamView()}
+      else if(view==='inventory'){document.getElementById('view-inventory').classList.remove('hidden');showInventoryView()}
     })
   })
   /* Map clicks */
@@ -584,7 +663,7 @@ function init(){
       const loc=card.dataset.location
       if(loc==='tavern'){openTavern()}
       else if(loc==='merchant'){openMerchant()}
-      else if(loc==='forest'){switchView('forest');renderForest()}
+      else if(loc==='forest'){if(G&&G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return};switchView('forest');renderForest()}
     })
   })
   /* Explore */
@@ -595,7 +674,7 @@ function init(){
   document.getElementById('btn-cbt-guard').addEventListener('click',combatGuard)
   document.getElementById('btn-cbt-flee').addEventListener('click',combatFlee)
   document.getElementById('btn-combat-defeat-leave').addEventListener('click',()=>{
-    if(!G)return;G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={};G.combat.defeat=false;document.getElementById('combat-defeat').classList.add('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=false);saveGame();switchView('map');renderMap()
+    if(!G)return;G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={};G.combat.defeat=false;document.getElementById('combat-defeat').classList.add('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=false);saveGame();switchView('map');renderAll()
   })
   document.getElementById('btn-cbt-spells').addEventListener('click',()=>{
     const spellView=document.getElementById('combat-spells');const mainBtns=document.getElementById('combat-buttons')
@@ -620,7 +699,7 @@ function init(){
   /* Team bar clicks */
   document.getElementById('team-bar').addEventListener('click',(e)=>{
     const el=e.target.closest('.team-char');if(!el)return
-    const idx=parseInt(el.dataset.char);if(G.team[idx]&&G.team[idx].currentHp>0){G.activeChar=idx;renderTeamBar();const combatView=document.getElementById('view-combat');if(!combatView.classList.contains('hidden'))renderCombat()}
+    const idx=parseInt(el.dataset.char);if(G.team[idx]&&G.team[idx].currentHp>0){G.activeChar=idx;renderTeamBar();document.getElementById('combat-spells').classList.add('hidden');document.getElementById('combat-buttons').classList.remove('hidden');const combatView=document.getElementById('view-combat');if(!combatView.classList.contains('hidden'))renderCombat()}
   })
   /* Victory popup */
   document.getElementById('btn-victory-continue').addEventListener('click',()=>{
@@ -628,17 +707,9 @@ function init(){
     if(G){G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={}
       G.forestLevel=Math.min(9,G.forestLevel+1)
       renderAll()
-      if(G._justLeveledUp&&G._justLeveledUp.length>0){
-        const names=G._justLeveledUp.map(c=>`${c.emoji} ${c.name} → Niveau ${c.newLv}`).join('<br>')
-        document.getElementById('levelup-body').innerHTML=`<p>⬆️ Niveau supérieur !</p><p>${names}</p>`
-        document.getElementById('popup-levelup').classList.remove('hidden')
-        G._justLeveledUp=[]
-      }else{switchView('map');renderMap()}
+      if(G.team.some(c=>c.statPoints>0)){showNextLevelUp();play('levelup')}
+      else{switchView('map');renderAll()}
     }
-  })
-  document.getElementById('btn-levelup-ok').addEventListener('click',()=>{
-    document.getElementById('popup-levelup').classList.add('hidden')
-    switchView('map');renderMap()
   })
   /* Tavern */
   document.getElementById('btn-tavern-rest').addEventListener('click',tavernRest)
@@ -661,13 +732,13 @@ function init(){
     else if(btn.dataset.buyArmor)processBuy('armor',btn.dataset.buyArmor)
     else if(btn.dataset.sellRes){
       const id=btn.dataset.sellRes;const r=RESOURCES[id];const qty=G.inventory.resources[id]||0
-      if(qty>0){G.gold+=(r?r.sellPrice:2);G.inventory.resources[id]--;if(G.inventory.resources[id]<=0)delete G.inventory.resources[id];saveGame();merchantSell();updateGold()}
+      if(qty>0){G.gold+=(r?r.sellPrice:2);play('coin');G.inventory.resources[id]--;if(G.inventory.resources[id]<=0)delete G.inventory.resources[id];saveGame();merchantSell();updateGold()}
     }else if(btn.dataset.sellWeapon){
       const idx=parseInt(btn.dataset.sellWeapon);const w=G.inventory.weapons[idx];const item=WEAPONS[w]
-      if(item){G.gold+=item.sellPrice;G.inventory.weapons.splice(idx,1);saveGame();merchantSell();updateGold()}
+      if(item){G.gold+=item.sellPrice;play('coin');G.inventory.weapons.splice(idx,1);saveGame();merchantSell();updateGold()}
     }else if(btn.dataset.sellArmor){
       const idx=parseInt(btn.dataset.sellArmor);const a=G.inventory.armors[idx];const item=ARMORS[a]
-      if(item){G.gold+=item.sellPrice;G.inventory.armors.splice(idx,1);saveGame();merchantSell();updateGold()}
+      if(item){G.gold+=item.sellPrice;play('coin');G.inventory.armors.splice(idx,1);saveGame();merchantSell();updateGold()}
     }
   })
   /* Popup close buttons */
@@ -697,24 +768,18 @@ function openMerchant(){
 
 /* ============== TEAM & INVENTORY VIEWS ============== */
 function showTeamView(){
-  const area=document.getElementById('content-area')
-  document.querySelectorAll('.view').forEach(v=>{if(v.id!=='view-forest'&&v.id!=='view-map'&&v.id!=='view-combat')v.classList.add('hidden')})
-  const existing=document.getElementById('view-team')
-  if(existing)existing.remove()
-  const div=document.createElement('div');div.id='view-team';div.className='view'
-  if(!G){div.innerHTML='';area.appendChild(div);return}
+  const div=document.getElementById('view-team')
+  if(!div)return
+  if(!G){div.innerHTML='';return}
   div.innerHTML=G.team.map((c,i)=>{
     const cls=CLASSES[c.classId];const s=getFinalStats(c);const hpPct=Math.round((c.currentHp/s.pvMax)*100)
     const dead=c.currentHp<=0?'dead':''
     return `<div class="team-member-card ${dead}" data-charidx="${i}"><div class="tm-class">${cls?.emoji||'?'}</div><div class="tm-info"><div class="tm-name">${c.name} <span style="color:var(--text2);font-size:0.75rem;">Lv.${c.level} ${cls?.name||''}</span></div><div class="tm-detail">FOR:${s.for} RAP:${s.rap} CON:${s.con} MANA:${s.mana}</div><div class="tm-detail">PP:${s.pp} PM:${s.pm} DEF:${s.def} CRIT:${s.crit}% ESQ:${s.esq}%</div></div><div class="tm-hp">${c.currentHp}/${s.pvMax} ❤️</div></div>`
   }).join('')
-  area.appendChild(div)
   div.addEventListener('click',(e)=>{
     const card=e.target.closest('.team-member-card');if(!card)return
     const idx=parseInt(card.dataset.charidx);showCharacterDetail(idx)
   })
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
-  const btns=document.querySelectorAll('.nav-btn');if(btns[1])btns[1].classList.add('active')
   document.getElementById('header-location').textContent='— Équipe'
 }
 function showCharacterDetail(idx){
@@ -742,12 +807,9 @@ function showCharacterDetail(idx){
   })
 }
 function showInventoryView(){
-  const area=document.getElementById('content-area')
-  document.querySelectorAll('.view').forEach(v=>{if(v.id!=='view-forest'&&v.id!=='view-map'&&v.id!=='view-combat')v.classList.add('hidden')})
-  const existing=document.getElementById('view-inventory')
-  if(existing)existing.remove()
-  const div=document.createElement('div');div.id='view-inventory';div.className='view'
-  if(!G){div.innerHTML='';area.appendChild(div);return}
+  const div=document.getElementById('view-inventory')
+  if(!div)return
+  if(!G){div.innerHTML='';return}
   let html=''
   const cons=G.inventory.consumables||{}
   if(Object.keys(cons).length>0){
@@ -787,7 +849,6 @@ function showInventoryView(){
   }
   if(!html)html='<div class="inv-empty">🎒 Inventaire vide.</div>'
   div.innerHTML=html
-  area.appendChild(div)
   div.addEventListener('click',(e)=>{
     const btn=e.target.closest('.inv-btn');if(!btn)return
     if(btn.dataset.use){
@@ -811,6 +872,42 @@ function showInventoryView(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
   const btns=document.querySelectorAll('.nav-btn');if(btns[2])btns[2].classList.add('active')
   document.getElementById('header-location').textContent='— Inventaire'
+}
+
+/* ============== LEVEL UP STAT ALLOCATION ============== */
+function showNextLevelUp(){
+  const char=G.team.find(c=>c.statPoints>0)
+  if(!char){saveGame();document.getElementById('popup-levelup').classList.add('hidden');switchView('map');renderAll();return}
+  const s=getFinalStats(char);const cls=CLASSES[char.classId]
+  document.getElementById('levelup-title').textContent=`${(CLASSES[char.classId]?.emoji)||'⬆️'} ${char.name} — Niveau ${char.level}`
+  const pts=char.statPoints
+  document.getElementById('levelup-body').innerHTML=
+    `<p style="text-align:center;margin-bottom:12px;color:var(--gold);font-weight:bold">${pts} point${pts>1?'s':''} à attribuer</p>
+     <div style="display:flex;flex-direction:column;gap:8px">
+       <div style="display:flex;justify-content:space-between;color:var(--text2);font-size:0.8rem;padding:0 4px">
+         <span>FOR: ${char.baseStats.for}</span>
+         <span>RAP: ${char.baseStats.rap}</span>
+         <span>CON: ${char.baseStats.con}</span>
+         <span>MANA: ${char.baseStats.mana}</span>
+       </div>
+     </div>`
+  const footer=document.getElementById('levelup-footer')
+  footer.innerHTML=
+    `<button class="btn-primary" onclick="allocateStatPoint('for')" style="flex:1">💪 FOR</button>
+     <button class="btn-primary" onclick="allocateStatPoint('rap')" style="flex:1">⚡ RAP</button>
+     <button class="btn-primary" onclick="allocateStatPoint('con')" style="flex:1">🛡️ CON</button>
+     <button class="btn-primary" onclick="allocateStatPoint('mana')" style="flex:1">🔮 MANA</button>`
+  document.getElementById('popup-levelup').classList.remove('hidden')
+}
+function allocateStatPoint(stat){
+  const char=G.team.find(c=>c.statPoints>0)
+  if(!char)return
+  char.baseStats[stat]++
+  char.statPoints--
+  clampChar(char)
+  saveGame()
+  showNextLevelUp()
+  renderAll()
 }
 
 /* ============== BOOT ============== */

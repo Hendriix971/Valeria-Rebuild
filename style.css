@@ -120,13 +120,15 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .status-indicator{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:bold;margin-top:4px;background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid var(--gold)}
 .status-indicator.hidden{display:none}
 #combat-buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+#combat-buttons.hidden{display:none}
 .btn-cbt{padding:10px;border:none;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:bold;cursor:pointer;transition:.1s;background:var(--card);border:1px solid var(--border2);color:var(--text)}
 .btn-cbt:active{transform:scale(0.95)}
 .btn-cbt:disabled{opacity:0.4;cursor:not-allowed}
 #combat-defeat{background:rgba(0,0,0,0.85);border:2px solid var(--red);border-radius:var(--radius);padding:16px;margin-bottom:8px}
 #combat-defeat.hidden{display:none}
 #combat-log{flex:1;min-height:60px;max-height:120px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;overflow-y:auto;font-size:0.8rem}
-#combat-spells{padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px}
+#combat-spells{display:block;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px}
+#combat-spells.hidden{display:none}
 #spells-list{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
 .spell-btn{padding:8px 10px;background:var(--card);border:1px solid var(--border2);color:var(--text);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-size:0.8rem;transition:.1s}
 .spell-btn:hover{filter:brightness(1.15);border-color:var(--purple)}
@@ -148,6 +150,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .equip-btn:hover{filter:brightness(1.2)}
 
 /* Team View (for when bottom nav "Équipe" is pressed) */
+#view-team.hidden,.view-team.hidden{display:none}
 #view-team,.view-team{padding:8px;display:flex;flex-direction:column;gap:8px}
 .team-member-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:10px}
 .team-member-card:hover{filter:brightness(1.1);border-color:var(--gold)}
@@ -177,7 +180,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .popup-overlay{position:absolute;inset:0;z-index:50;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;padding:16px}
 .popup-overlay.hidden{display:none}
 .popup{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:420px;max-height:90%;display:flex;flex-direction:column}
-.popup-small{max-width:360px}
+.popup-small{max-width:400px}
 .popup-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}
 .popup-header h3{color:var(--gold);font-size:1rem}
 .popup-close{background:none;border:none;color:var(--text2);font-size:1.2rem;cursor:pointer;padding:0 4px}

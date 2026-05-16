@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VALERIA REBUILD</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- SCREEN: Saves -->
+  <div id="screen-saves" class="screen">
+    <div id="saves-container">
+      <h1 class="game-title">⚔️ VALERIA REBUILD</h1>
+      <p class="subtitle">Un RPG navigateur dark fantasy</p>
+      <div id="saves-list"></div>
+      <button id="btn-new-game" class="btn-primary">✦ Nouvelle Partie</button>
+    </div>
+  </div>
+
+  <!-- SCREEN: Team Creation -->
+  <div id="screen-create" class="screen hidden">
+    <div id="create-container">
+      <h2>📜 Création de l'Équipe</h2>
+      <div id="create-team-preview"></div>
+      <div id="create-form">
+        <div class="form-group">
+          <label>Nom du personnage</label>
+          <input type="text" id="create-name" maxlength="16" placeholder="Entrez un nom...">
+        </div>
+        <div class="form-group">
+          <label>Classe</label>
+          <div id="create-classes"></div>
+        </div>
+        <div class="form-group">
+          <label>Points à répartir : <span id="create-points">10</span></label>
+          <div id="create-stats">
+            <div class="stat-row"><span>FOR Force</span><button class="stat-btn" onclick="st('for',-1)">-</button><span id="stat-for" class="stat-val">1</span><button class="stat-btn" onclick="st('for',1)">+</button></div>
+            <div class="stat-row"><span>RAP Rapidité</span><button class="stat-btn" onclick="st('rap',-1)">-</button><span id="stat-rap" class="stat-val">1</span><button class="stat-btn" onclick="st('rap',1)">+</button></div>
+            <div class="stat-row"><span>CON Constitution</span><button class="stat-btn" onclick="st('con',-1)">-</button><span id="stat-con" class="stat-val">1</span><button class="stat-btn" onclick="st('con',1)">+</button></div>
+            <div class="stat-row"><span>MANA Mana</span><button class="stat-btn" onclick="st('mana',-1)">-</button><span id="stat-mana" class="stat-val">1</span><button class="stat-btn" onclick="st('mana',1)">+</button></div>
+          </div>
+        </div>
+        <div id="create-buttons">
+          <button id="btn-add-character" class="btn-primary">➕ Ajouter à l'équipe</button>
+          <button id="btn-start-game" class="btn-primary" disabled>⚔️ Commencer l'aventure !</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN: Main Game -->
+  <div id="screen-main" class="screen hidden">
+    <div id="main-header">
+      <div class="header-left">
+        <span class="header-title">⚔️ VALERIA</span>
+        <span class="header-location" id="header-location">— Carte</span>
+      </div>
+      <div class="header-right">
+        <span class="header-gold" id="header-gold">💰 0</span>
+        <span class="header-floor" id="header-floor">🌲 Niv.1</span>
+      </div>
+    </div>
+
+    <div id="team-bar" class="team-bar"></div>
+
+    <div id="content-area">
+
+      <!-- VIEW: Map -->
+      <div id="view-map" class="view">
+        <div id="map-grid">
+          <div class="map-card" data-location="tavern">
+            <span class="map-icon">🍺</span>
+            <span class="map-name">Taverne</span>
+            <span class="map-desc">Repos & restauration</span>
+          </div>
+          <div class="map-card" data-location="merchant">
+            <span class="map-icon">💰</span>
+            <span class="map-name">Marchand</span>
+            <span class="map-desc">Achat & vente</span>
+          </div>
+          <div class="map-card" data-location="forest">
+            <span class="map-icon">🌲</span>
+            <span class="map-name">Forêt</span>
+            <span class="map-desc">Combat & ressources</span>
+          </div>
+          <div class="map-card map-locked">
+            <span class="map-icon">🔒</span>
+            <span class="map-name">Donjon</span>
+            <span class="map-desc">Bientôt disponible...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: Forest -->
+      <div id="view-forest" class="view hidden">
+        <div id="forest-header">
+          <div id="forest-level-info">
+            <span id="forest-name">Clairière</span>
+            <span id="forest-level">Niveau 1</span>
+          </div>
+          <button id="btn-explore" class="btn-action">🌲 Explorer</button>
+          <button id="btn-leave-forest" class="btn-action btn-secondary">🚪 Quitter la forêt</button>
+        </div>
+        <div id="forest-log" class="log-area"></div>
+      </div>
+
+      <!-- VIEW: Combat -->
+      <div id="view-combat" class="view hidden">
+        <div id="combat-enemy">
+          <div class="combat-enemy-info">
+            <span id="combat-enemy-emoji" class="enemy-emoji">👹</span>
+            <div>
+              <div id="combat-enemy-name" class="enemy-name">Monstre</div>
+              <div id="combat-enemy-stats" class="enemy-stats">PV: 100/100</div>
+            </div>
+          </div>
+          <div class="hp-bar-bg"><div id="combat-enemy-hp" class="hp-bar hp-enemy"></div></div>
+        </div>
+
+        <div id="combat-ally">
+          <div id="combat-ally-info">
+            <span id="combat-ally-emoji" class="ally-emoji">⚔️</span>
+            <div>
+              <div id="combat-ally-name" class="ally-name">Héros</div>
+              <div id="combat-ally-stats" class="ally-stats">PV: 100/100 • PE: 100/100</div>
+            </div>
+          </div>
+          <div class="hp-bar-bg"><div id="combat-ally-hp" class="hp-bar hp-ally"></div></div>
+          <div class="hp-bar-bg"><div id="combat-ally-pe" class="hp-bar pe-bar"></div></div>
+          <div id="combat-guard-indicator" class="status-indicator hidden">🛡️ En garde</div>
+        </div>
+
+        <div id="combat-buttons">
+          <button id="btn-cbt-attack" class="btn-cbt">⚔️ Attaquer</button>
+          <button id="btn-cbt-spells" class="btn-cbt">🔮 Sorts</button>
+          <button id="btn-cbt-guard" class="btn-cbt">🛡️ Encaisser</button>
+          <button id="btn-cbt-flee" class="btn-cbt">🏃 Fuir</button>
+        </div>
+
+        <div id="combat-defeat" class="hidden">
+          <div id="combat-defeat-content">
+            <div style="font-size:2rem;text-align:center">💀</div>
+            <div style="text-align:center;font-weight:bold;color:var(--red);margin:8px 0">Défaite — Toute l'équipe est vaincue</div>
+            <button id="btn-combat-defeat-leave" class="btn-secondary" style="width:100%">Retourner à la carte</button>
+          </div>
+        </div>
+        <div id="combat-log" class="log-area"></div>
+
+        <!-- Spell submenu -->
+        <div id="combat-spells" class="hidden">
+          <div id="spells-list"></div>
+          <button id="btn-cbt-back" class="btn-small">← Retour</button>
+        </div>
+      </div>
+
+      <!-- VIEW: Character Detail -->
+      <div id="view-char" class="view hidden">
+        <div id="char-detail"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div id="bottom-nav">
+      <button class="nav-btn active" data-view="map">🗺️ Carte</button>
+      <button class="nav-btn" data-view="team">👤 Équipe</button>
+      <button class="nav-btn" data-view="inventory">🎒 Inventaire</button>
+    </div>
+  </div>
+
+  <!-- POPUP: Merchant -->
+  <div id="popup-merchant" class="popup-overlay hidden">
+    <div class="popup">
+      <div class="popup-header">
+        <h3>💰 Marchand</h3>
+        <span id="merchant-gold">💰 0</span>
+        <button class="popup-close" data-popup="merchant">✕</button>
+      </div>
+      <div class="popup-tabs">
+        <button class="tab-btn active" data-tab="buy">🛒 Acheter</button>
+        <button class="tab-btn" data-tab="sell">📤 Vendre</button>
+      </div>
+      <div id="merchant-content" class="popup-body"></div>
+      <div class="popup-footer">
+        <button class="btn-secondary" data-popup="merchant">Quitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: Tavern -->
+  <div id="popup-tavern" class="popup-overlay hidden">
+    <div class="popup">
+      <div class="popup-header">
+        <h3>🍺 Taverne — Moe</h3>
+        <button class="popup-close" data-popup="tavern">✕</button>
+      </div>
+      <div class="popup-body" id="tavern-body">
+        <p class="tavern-welcome">"Bienvenue à ma taverne !" — Moe</p>
+        <div id="tavern-buttons">
+          <button id="btn-tavern-rest" class="btn-action">😴 Se reposer (1 min)</button>
+          <button id="btn-tavern-drink" class="btn-action">🍺 Boire un verre — 20💰</button>
+          <button id="btn-tavern-eat" class="btn-action">🍖 Manger un repas — 30💰</button>
+        </div>
+        <div id="tavern-log" class="log-area"></div>
+      </div>
+      <div class="popup-footer">
+        <button class="btn-secondary" data-popup="tavern">Quitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: Victory -->
+  <div id="popup-victory" class="popup-overlay hidden">
+    <div class="popup popup-small">
+      <div class="popup-header"><h3>🏆 Victoire !</h3></div>
+      <div class="popup-body" id="victory-body"></div>
+      <div class="popup-footer">
+        <button id="btn-victory-continue" class="btn-primary">Continuer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: Level Up -->
+  <div id="popup-levelup" class="popup-overlay hidden">
+    <div class="popup popup-small">
+      <div class="popup-header"><h3>⬆️ Montée de Niveau !</h3></div>
+      <div class="popup-body" id="levelup-body"></div>
+      <div class="popup-footer">
+        <button id="btn-levelup-ok" class="btn-primary">Continuer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: Message -->
+  <div id="popup-message" class="popup-overlay hidden">
+    <div class="popup popup-small">
+      <div class="popup-header"><h3 id="msg-title">Message</h3></div>
+      <div class="popup-body" id="msg-body"></div>
+      <div class="popup-footer">
+        <button id="btn-msg-ok" class="btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

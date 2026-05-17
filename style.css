@@ -199,6 +199,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .merchant-item .mi-info{flex:1}
 .merchant-item .mi-name{font-weight:bold}
 .merchant-item .mi-mats{font-size:0.65rem;color:var(--text2);margin-top:2px}
+.merchant-item .mi-count{color:var(--text2);font-size:0.75rem;margin-right:6px}
 .merchant-item .mi-price{color:var(--gold);font-weight:bold;white-space:nowrap}
 .merchant-item .mi-btn{padding:4px 10px;font-size:0.7rem;border-radius:4px;cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);margin-left:6px;flex-shrink:0}
 .merchant-item .mi-btn:hover{background:rgba(255,215,0,0.15)}

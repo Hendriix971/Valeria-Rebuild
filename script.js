@@ -675,6 +675,7 @@ function init(){
   document.getElementById('btn-cbt-flee').addEventListener('click',combatFlee)
   document.getElementById('btn-combat-defeat-leave').addEventListener('click',()=>{
     if(!G)return;G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={};G.combat.defeat=false;document.getElementById('combat-defeat').classList.add('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=false);saveGame();switchView('map');renderAll()
+    if(G.team.every(c=>c.currentHp<=0))showResurrection()
   })
   document.getElementById('btn-cbt-spells').addEventListener('click',()=>{
     const spellView=document.getElementById('combat-spells');const mainBtns=document.getElementById('combat-buttons')
@@ -908,6 +909,27 @@ function allocateStatPoint(stat){
   saveGame()
   showNextLevelUp()
   renderAll()
+}
+
+/* ============== RESURRECTION ============== */
+function showResurrection(){
+  if(!G)return
+  document.getElementById('popup-resurrection').classList.remove('hidden')
+  document.getElementById('resurrection-timer').textContent='5'
+  document.getElementById('resurrection-bar').style.width='0%'
+  let remaining=5
+  const interval=setInterval(()=>{
+    remaining--
+    document.getElementById('resurrection-timer').textContent=remaining
+    document.getElementById('resurrection-bar').style.width=`${((5-remaining)/5)*100}%`
+    if(remaining<=0){
+      clearInterval(interval)
+      G.team.forEach(c=>{if(c.currentHp<=0){const s=getFinalStats(c);c.currentHp=Math.max(1,Math.floor(s.pvMax*0.3))}})
+      saveGame()
+      document.getElementById('popup-resurrection').classList.add('hidden')
+      renderAll()
+    }
+  },1000)
 }
 
 /* ============== BOOT ============== */

@@ -102,9 +102,11 @@ function spawnMonster(forestLvl){
   const pool=fl.pool
   const id=pool[Math.floor(Math.random()*pool.length)]
   const t=MONSTERS[id]
-  const scale=1+(forestLvl-1)*.3
+  const minLvl=G?Math.min(...G.team.filter(c=>c.currentHp>0).map(c=>c.level)):1
+  const lvl=Math.max(1,minLvl+Math.floor(Math.random()*(forestLvl-minLvl+1)))
+  const scale=1+(lvl-1)*.3
   return{
-    id:t.id,name:t.name,emoji:t.emoji,level:forestLvl,
+    id:t.id,name:t.name,emoji:t.emoji,level:lvl,
     baseStats:{for:Math.round((t.baseStats.for||1)*scale),rap:Math.round((t.baseStats.rap||1)*scale),con:Math.round((t.baseStats.con||1)*scale),mana:Math.round((t.baseStats.mana||1)*scale)},
     drops:t.drops,xpReward:Math.round(t.xpReward*scale),currentHp:0,currentPe:0,weapon:null,armor:null,spells:[]
   }
@@ -709,7 +711,7 @@ function init(){
       G.forestLevel=Math.min(9,G.forestLevel+1)
       renderAll()
       if(G.team.some(c=>c.statPoints>0)){showNextLevelUp();play('levelup')}
-      else{switchView('map');renderAll()}
+      else{switchView('forest');renderAll()}
     }
   })
   /* Tavern */
@@ -878,7 +880,7 @@ function showInventoryView(){
 /* ============== LEVEL UP STAT ALLOCATION ============== */
 function showNextLevelUp(){
   const char=G.team.find(c=>c.statPoints>0)
-  if(!char){saveGame();document.getElementById('popup-levelup').classList.add('hidden');switchView('map');renderAll();return}
+  if(!char){saveGame();document.getElementById('popup-levelup').classList.add('hidden');switchView('forest');renderAll();return}
   const s=getFinalStats(char);const cls=CLASSES[char.classId]
   document.getElementById('levelup-title').textContent=`${(CLASSES[char.classId]?.emoji)||'⬆️'} ${char.name} — Niveau ${char.level}`
   const pts=char.statPoints
@@ -924,7 +926,7 @@ function showResurrection(){
     document.getElementById('resurrection-bar').style.width=`${((5-remaining)/5)*100}%`
     if(remaining<=0){
       clearInterval(interval)
-      G.team.forEach(c=>{if(c.currentHp<=0){const s=getFinalStats(c);c.currentHp=Math.max(1,Math.floor(s.pvMax*0.3))}})
+      G.team.forEach(c=>{if(c.currentHp<=0){const s=getFinalStats(c);c.currentHp=Math.max(1,Math.floor(s.pvMax*0.1))}})
       saveGame()
       document.getElementById('popup-resurrection').classList.add('hidden')
       renderAll()

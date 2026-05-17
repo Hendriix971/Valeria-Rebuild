@@ -1,6 +1,6 @@
 /* ============== DATA ============== */
-const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat']},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante']},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu']},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre']},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_morsure_hydre']},guerisseur:{id:'guerisseur',name:'Guérisseur',emoji:'✨',desc:'Soigneur alliant agilité et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux']}}
-const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.6,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.4,effects:{poisonPercent:3,duration:3,stackable:true,maxStacks:3},desc:'Boule de feu explosive. Inflige une brûlure -3% PV/tour (cumulable 3x, 3 tours).'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:8,powerStat:'magicPower',multiplier:1.2,effects:{defenseReductionPercent:10,duration:3,stackable:false},desc:'Inflige -10% DEF à l\'ennemi pendant 3 tours.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.2,effects:{stunChance:50,duration:1},desc:'Rayon de lumière sacrée. 50% de chance d\'étourdir l\'ennemi pour le tour.'}}
+const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat','assassin_concentration']},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante','epeiste_posture_taureau']},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu','mage_blizzard']},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre','sorcier_entraves_demoniaques']},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_morsure_hydre','tank_provocation']},guerisseur:{id:'guerisseur',name:'Guérisseur',emoji:'✨',desc:'Soigneur alliant agilité et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux','guerisseur_soin_mineur']}}
+const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},assassin_concentration:{id:'assassin_concentration',name:'Concentration',type:'self_buff',target:'self',cost:15,duration:3,effects:{critBuffPercent:20,activationDodge:true},stackable:false,desc:'Se concentre dans l\'ombre. Confère +20% CRIT pendant 3 tours et esquive automatiquement la prochaine attaque reçue pendant l\'activation.'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.6,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},epeiste_posture_taureau:{id:'epeiste_posture_taureau',name:'Posture du Taureau',type:'damage_self_buff',target:'enemy',cost:15,powerStat:'physicalPower',multiplier:1.4,duration:3,effects:{ppBuffPercent:20},stackable:false,desc:'Frappe l\'ennemi avec la force du taureau et augmente la PP du lanceur de 20% pendant 3 tours.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.4,effects:{poisonPercent:3,duration:3,stackable:true,maxStacks:3},desc:'Boule de feu explosive. Inflige une brûlure -3% PV/tour (cumulable 3x, 3 tours).'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:8,powerStat:'magicPower',multiplier:1.2,effects:{defenseReductionPercent:40,duration:4,stackable:false},desc:'Inflige -40% DEF à l\'ennemi pendant 4 tours.'},mage_blizzard:{id:'mage_blizzard',name:'Blizzard',type:'damage',target:'enemy',cost:15,powerStat:'magicPower',multiplier:1.4,effects:{rapidityReductionPercent:10,duration:3,stackable:false},desc:'Déchaîne une tempête glaciale. Inflige des dégâts magiques et réduit la RAP de l\'ennemi de 10% pendant 3 tours.'},sorcier_entraves_demoniaques:{id:'sorcier_entraves_demoniaques',name:'Entraves démoniaques',type:'damage',target:'enemy',cost:18,powerStat:'magicPower',multiplier:1.4,effects:{rapidityReductionPercent:40,duration:4,stackable:false},desc:'Des liens démoniaques entravent l\'ennemi. Inflige des dégâts magiques et réduit sa RAP de 40% pendant 4 tours.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.2,effects:{stunChance:50,duration:1},desc:'Rayon de lumière sacrée. 50% de chance d\'étourdir l\'ennemi pour le tour.'},tank_provocation:{id:'tank_provocation',name:'Provocation',type:'taunt',target:'self',cost:15,duration:3,tauntChance:90,desc:'Provoque l\'ennemi. Pendant 3 tours, le Tank a 90% de chances d\'être ciblé.'},guerisseur_soin_mineur:{id:'guerisseur_soin_mineur',name:'Soin mineur',type:'heal',target:'ally_choice',cost:20,healPercent:20,desc:'Restaure 20% des PV max d\'un allié choisi.'}}
 const RESOURCES={gelée_slime:{name:'Gelée de slime',emoji:'🟢',sellPrice:5},noyau_slime:{name:'Noyau de slime',emoji:'🟡',sellPrice:8},griffe_loup:{name:'Griffe de loup',emoji:'🐺',sellPrice:6},croc_loup:{name:'Croc de loup',emoji:'🦷',sellPrice:7},fourrure_loup:{name:'Fourrure de loup',emoji:'🧶',sellPrice:5},peau_sanglier:{name:'Peau de sanglier',emoji:'🟤',sellPrice:8},défense_sanglier:{name:'Défense de sanglier',emoji:'⚪',sellPrice:10},morceau_ferraille:{name:'Morceau de ferraille',emoji:'⚙️',sellPrice:6},os_monstre:{name:'Os de monstre',emoji:'💀',sellPrice:5},soie_araignée:{name:'Soie d\'araignée',emoji:'🕸️',sellPrice:7},venin_araignée:{name:'Venin d\'araignée',emoji:'🧪',sellPrice:9},écaille_serpent:{name:'Écaille de serpent',emoji:'🟩',sellPrice:8},croc_serpent:{name:'Croc de serpent',emoji:'🗡️',sellPrice:10},bois_solide:{name:'Bois solide',emoji:'🪵',sellPrice:6},écorce_ancienne:{name:'Écorce ancienne',emoji:'🌳',sellPrice:9},lame_rouillee:{name:'Lame rouillée',emoji:'🗡️',sellPrice:14},cuir_gobelin:{name:'Cuir gobelin',emoji:'🟤',sellPrice:12},os_renforce:{name:'Os renforcé',emoji:'💀',sellPrice:13},croc_sanguinaire:{name:'Croc sanguinaire',emoji:'🦷',sellPrice:15},fourrure_epaisse:{name:'Fourrure épaisse',emoji:'🧶',sellPrice:13},griffe_aceree:{name:'Griffe acérée',emoji:'🐾',sellPrice:14},gelée_corrompue:{name:'Gelée corrompue',emoji:'🟣',sellPrice:13},noyau_corrompu:{name:'Noyau corrompu',emoji:'🟡',sellPrice:18},résidu_instable:{name:'Résidu instable',emoji:'✨',sellPrice:16},soie_noire:{name:'Soie noire',emoji:'🕸️',sellPrice:15},venin_virulent:{name:'Venin virulent',emoji:'🧪',sellPrice:18},patte_chitineuse:{name:'Patte chitineuse',emoji:'🕷️',sellPrice:13},cuir_epais:{name:'Cuir épais',emoji:'🟫',sellPrice:15},défense_massive:{name:'Défense massive',emoji:'⚪',sellPrice:20},plaque_osseuse:{name:'Plaque osseuse',emoji:'🦴',sellPrice:18},écaille_nocturne:{name:'Écaille nocturne',emoji:'🌑',sellPrice:16},croc_venimeux:{name:'Croc venimeux',emoji:'🦷',sellPrice:18},sang_froid:{name:'Sang froid',emoji:'💧',sellPrice:16},bois_ancien:{name:'Bois ancien',emoji:'🪵',sellPrice:17},écorce_runique:{name:'Écorce runique',emoji:'🌳',sellPrice:22},sève_vivante:{name:'Sève vivante',emoji:'💚',sellPrice:20},hache_ebrechee:{name:'Hache ébréchée',emoji:'🪓',sellPrice:18},cuir_renforce:{name:'Cuir renforcé',emoji:'🟤',sellPrice:17},croc_ancien:{name:'Croc ancien',emoji:'🦷',sellPrice:20},fourrure_argentee:{name:'Fourrure argentée',emoji:'🧶',sellPrice:22},coeur_ecorce:{name:'Cœur d\'écorce',emoji:'💚',sellPrice:28},bois_sacre:{name:'Bois sacré',emoji:'🪵',sellPrice:24},écaille_abyssale:{name:'Écaille abyssale',emoji:'🌌',sellPrice:24},croc_abyssal:{name:'Croc abyssal',emoji:'🦷',sellPrice:26},venin_noir:{name:'Venin noir',emoji:'⚫',sellPrice:25},insigne_gobelin:{name:'Insigne gobelin',emoji:'🏵️',sellPrice:26},lame_chef:{name:'Lame de chef',emoji:'⚔️',sellPrice:28}}
 const CONSUMABLES={potion_vie:{id:'potion_vie',name:'Potion de vie',emoji:'❤️',healPercent:.3,type:'hp',buyPrice:30,sellPrice:15,desc:'Restaure 30% des PV max'},potion_energie:{id:'potion_energie',name:"Potion d'énergie",emoji:'💧',healPercent:.3,type:'pe',buyPrice:30,sellPrice:15,desc:"Restaure 30% des PE max"}}
 const WEAPONS={dague_os:{id:'dague_os',name:'Dague en os',emoji:'🗡️',level:1,stats:{pp:8,crit:3},materials:{os_monstre:2,croc_loup:1},normalPrice:80,reducedPrice:40,sellPrice:20,desc:'+8 PP, +3% CRIT'},epee_ferraille:{id:'epee_ferraille',name:'Épée de ferraille',emoji:'⚔️',level:1,stats:{pp:10,def:5},materials:{morceau_ferraille:3,bois_solide:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+10 PP, +5 DEF'},bouclier_bois:{id:'bouclier_bois',name:'Bouclier en bois',emoji:'🛡️',level:1,stats:{def:8,pvMax:25},materials:{bois_solide:3,peau_sanglier:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+8 DEF, +25 PV max'},baton_bois:{id:'baton_bois',name:'Bâton de bois',emoji:'🪄',level:1,stats:{pm:10,peMax:25},materials:{bois_solide:2,noyau_slime:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+10 PM, +25 PE max'},grimoire_use:{id:'grimoire_use',name:'Grimoire usé',emoji:'📖',level:1,stats:{pm:10,crit:3},materials:{peau_sanglier:1,venin_araignée:1,soie_araignée:1},normalPrice:100,reducedPrice:50,sellPrice:25,desc:'+10 PM, +3% CRIT'},dague_sanguinaire:{id:'dague_sanguinaire',name:'Dague sanguinaire',emoji:'🗡️',level:10,stats:{pp:16,crit:4},materials:{croc_sanguinaire:2,griffe_aceree:2,cuir_gobelin:1},normalPrice:300,reducedPrice:150,sellPrice:75,desc:'+16 PP, +4% CRIT'},epee_renforcee:{id:'epee_renforcee',name:'Épée renforcée',emoji:'⚔️',level:10,stats:{pp:20,def:10},materials:{lame_rouillee:2,os_renforce:2,cuir_gobelin:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+20 PP, +10 DEF'},bouclier_ecorce:{id:'bouclier_ecorce',name:"Bouclier d'écorce",emoji:'🛡️',level:10,stats:{def:16,pvMax:50},materials:{bois_ancien:2,écorce_runique:1,cuir_epais:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+16 DEF, +50 PV max'},baton_corrompu:{id:'baton_corrompu',name:'Bâton corrompu',emoji:'🪄',level:10,stats:{pm:20,peMax:50},materials:{noyau_corrompu:2,résidu_instable:2,bois_ancien:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+20 PM, +50 PE max'},grimoire_noirci:{id:'grimoire_noirci',name:'Grimoire noirci',emoji:'📖',level:10,stats:{pm:20,crit:4},materials:{soie_noire:2,venin_virulent:1,résidu_instable:1},normalPrice:350,reducedPrice:175,sellPrice:88,desc:'+20 PM, +4% CRIT'}}
@@ -58,7 +58,7 @@ function saveSlotsWrite(arr){localStorage.setItem('vr_saves',JSON.stringify(arr)
 function getSave(slot){const s=saveSlots();return s[slot]||null}
 function deleteSave(slot){const s=saveSlots();if(s[slot]){s.splice(slot,1);saveSlotsWrite(s)}}
 function saveGame(){if(!G)return;const saves=saveSlots();G.slotName=G.slotName||'Partie';const idx=saves.findIndex(s=>s.slotName===G.slotName&&s.created===G.created);const data=JSON.parse(JSON.stringify(G));delete data._justLeveledUp;if(idx>=0)saves[idx]=data;else saves.push(data);saveSlotsWrite(saves)}
-function loadGame(slotData){G=JSON.parse(JSON.stringify(slotData));G.combat=G.combat||{monster:null,guarding:false,enemyEffects:{},combatLog:[]};G.tavernResting=false;if(G.selectedForestZoneId===undefined)G.selectedForestZoneId=null;switchView('map');renderAll()}
+function loadGame(slotData){G=JSON.parse(JSON.stringify(slotData));G.combat=G.combat||{monster:null,guarding:false,enemyEffects:{},combatLog:[]};G.tavernResting=false;if(G.selectedForestZoneId===undefined)G.selectedForestZoneId=null;G.team.forEach(c=>{const cls=CLASSES[c.classId];if(cls)c.spells=cls.spells||[]});switchView('map');renderAll()}
 
 /* ============== STATS ============== */
 function computeDerivedStats(char){
@@ -76,12 +76,13 @@ function computeEquipStats(char){
 }
 function getFinalStats(char){
   const base=computeDerivedStats(char),equip=computeEquipStats(char)
-  return{
-    pp:base.pp+equip.pp,def:base.def+equip.def,pm:base.pm+equip.pm,
-    pvMax:base.pvMax+equip.pvMax,peMax:base.peMax+equip.peMax,
-    crit:base.crit+equip.crit,esq:Math.min(40,base.esq+equip.esq),
-    for:base.for,rap:base.rap,con:base.con,mana:base.mana
-  }
+  let pp=base.pp+equip.pp,def=base.def+equip.def,pm=base.pm+equip.pm,
+    pvMax=base.pvMax+equip.pvMax,peMax=base.peMax+equip.peMax,
+    crit=base.crit+equip.crit,esq=Math.min(40,base.esq+equip.esq),
+    forStat=base.for,rap=base.rap,con=base.con,mana=base.mana
+  if(char.effects?.critBuff)crit+=char.effects.critBuff.value
+  if(char.effects?.ppBuff)pp=Math.floor(pp*(1+char.effects.ppBuff.value/100))
+  return{pp,def,pm,pvMax,peMax,crit,esq,for:forStat,rap,con,mana}
 }
 function clampChar(char){
   const s=getFinalStats(char)
@@ -147,9 +148,21 @@ function isCombatOver(){
   return null
 }
 function addCombatLog(msg){if(G){G.combat.combatLog.push(msg);renderCombatLog()}}
+function getClassTargetPriority(char){switch(char.classId){case'guerisseur':return 1;case'mage':case'sorcier':return 2;case'assassin':return 3;case'epeiste':return 4;case'tank':return 5;default:return 9}}
+function getHpRatio(char){const s=getFinalStats(char);return s.pvMax>0?char.currentHp/s.pvMax:1}
+function chooseMonsterTarget(){
+  if(!G||!G.team)return null
+  const alive=G.team.map((char,index)=>({char,index})).filter(e=>e.char.currentHp>0)
+  if(alive.length===0)return null
+  if(G.combat&&G.combat.taunt){const ti=G.combat.taunt.charIndex;const tt=alive.find(e=>e.index===ti);if(tt&&Math.random()<0.90){addCombatLog(`🛡️ ${tt.char.name} attire le monstre (Provocation) !`);return tt.char}}
+  if(Math.random()<0.10)return alive[Math.floor(Math.random()*alive.length)].char
+  alive.sort((a,b)=>{const pa=getClassTargetPriority(a.char),pb=getClassTargetPriority(b.char);if(pa!==pb)return pa-pb;return getHpRatio(a.char)-getHpRatio(b.char)})
+  return alive[0].char
+}
 function enemyTurn(){
   if(!G||!getMonster()||getMonster().currentHp<=0)return
   const ms=getMonsterStats();if(!ms)return
+  const effMs=getEffectiveMonsterStats()||ms
   processEnemyEffects()
   if(getMonster().currentHp<=0){setTimeout(victory,400);return}
   if(G.combat.enemyEffects.stun){
@@ -175,20 +188,31 @@ function enemyTurn(){
     renderCombat()
   }else{
     m.currentPe-=peCost
-    const target=alive[Math.floor(Math.random()*alive.length)]
+    const target=chooseMonsterTarget()
+    if(!target){renderCombat();return}
+    if(target.classId==='guerisseur')addCombatLog(`👁️ ${m.name} vise le soigneur !`)
     const baseDmg=Math.max(1,ms.pp+Math.floor(Math.random()*5)-2)
     const tDef=getFinalStats(target).def
     let dmg=Math.max(1,baseDmg-Math.floor(tDef/2))
     const isGuarding=G.combat.guarding
     if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
     const critRoll=Math.random()*100
-    if(critRoll<ms.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
-    target.currentHp=Math.max(0,target.currentHp-dmg)
-    G.combat.guarding=false
-    play('hit')
-    addCombatLog(`💢 ${m.name} inflige ${dmg} dégâts à ${target.name}`)
-    renderCombat()
+    if(critRoll<effMs.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
+    if(target.effects?.activationDodge?.active){
+      delete target.effects.activationDodge
+      addCombatLog(`💨 ${target.name} disparaît dans l'ombre et esquive l'attaque !`)
+      renderCombat()
+    }else{
+      target.currentHp=Math.max(0,target.currentHp-dmg)
+      G.combat.guarding=false
+      play('hit')
+      addCombatLog(`💢 ${m.name} inflige ${dmg} dégâts à ${target.name}`)
+      renderCombat()
+    }
   }
+  // réduire duration de taunt
+  if(G.combat&&G.combat.taunt){G.combat.taunt.duration--;if(G.combat.taunt.duration<=0)delete G.combat.taunt}
+  tickCharacterEffects()
   const result=isCombatOver()
   if(result==='victory'){setTimeout(victory,400);return}
   if(result==='defeat'){play('defeat');addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden');return}
@@ -199,13 +223,13 @@ function enemyTurn(){
   if(G.activeChar!==undefined){addCombatLog(`👉 ${G.team[G.activeChar].name}, à toi !`)}
   renderCombat()
 }
-function queuePlayerAction(type,spellId){
+function queuePlayerAction(type,spellId,targetIndex){
   if(!G||!getMonster()||getMonster().currentHp<=0||G.combat.defeat)return
   const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
   document.getElementById('combat-spells').classList.add('hidden');document.getElementById('combat-buttons').classList.remove('hidden')
   if(!G.combat.charActed)G.combat.charActed=G.team.map(()=>false)
   if(G.combat.charActed[G.activeChar]){addCombatLog(`⏳ ${char.name} a déjà agi ce tour`);renderCombat();return}
-  G.combat.pendingActions.push({charIndex:G.activeChar,type,spellId,charName:char.name})
+  G.combat.pendingActions.push({charIndex:G.activeChar,type,spellId,targetIndex,charName:char.name})
   G.combat.charActed[G.activeChar]=true
   const actionLabel={attack:'une attaque',guard:'une garde',spell:SPELLS[spellId]?.name||'un sort'}[type]||type
   addCombatLog(`📋 ${char.name} prépare ${actionLabel}`)
@@ -224,11 +248,31 @@ function combatAttack(){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
   queuePlayerAction('attack')
 }
-function combatSpell(spellId){
+function combatSpell(spellId,targetIndex){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
   const spell=SPELLS[spellId];if(!spell)return
   if(char.currentPe<spell.cost){addCombatLog(`❌ Pas assez de PE ! (${char.currentPe}/${spell.cost})`);renderCombat();return}
-  queuePlayerAction('spell',spellId)
+  if(spell.type==='heal'&&spell.target==='ally_choice'&&targetIndex===undefined){
+    showCombatAllyTargetSelector('Choisir une cible :',idx=>combatSpell(spellId,idx));return
+  }
+  queuePlayerAction('spell',spellId,targetIndex)
+}
+function showCombatAllyTargetSelector(title,callback){
+  const existing=document.getElementById('popup-combat-target');if(existing)existing.remove()
+  const overlay=document.createElement('div');overlay.id='popup-combat-target';overlay.className='popup-overlay'
+  overlay.innerHTML=`<div class="popup popup-small"><div class="popup-header"><h3>${title}</h3><button class="popup-close" id="btn-combat-target-close">✕</button></div><div class="popup-body" style="display:flex;flex-direction:column;gap:6px" id="combat-target-body"></div></div>`
+  document.body.appendChild(overlay)
+  const body=document.getElementById('combat-target-body')
+  G.team.forEach((c,i)=>{
+    if(c.currentHp<=0)return
+    const cls=CLASSES[c.classId];const s=getFinalStats(c)
+    const btn=document.createElement('button');btn.className='btn-action';btn.style.textAlign='left'
+    btn.innerHTML=`${cls?.emoji||'👤'} ${c.name} <span style="color:var(--text2);font-size:0.75rem">${c.currentHp}/${s.pvMax} PV</span>`
+    btn.addEventListener('click',()=>{overlay.remove();callback(i)})
+    body.appendChild(btn)
+  })
+  document.getElementById('btn-combat-target-close').addEventListener('click',()=>overlay.remove())
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()})
 }
 function combatGuard(){
   if(!G||!getMonster())return;const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
@@ -238,6 +282,7 @@ function resolveTurn(){
   if(!G||!getMonster()||getMonster().currentHp<=0)return
   const actions=[...G.combat.pendingActions];G.combat.pendingActions=[]
   const ms=getMonsterStats();if(!ms)return
+  const effMs=getEffectiveMonsterStats()||ms
   let effectiveDef=ms.def
   if(G.combat.enemyEffects.defRed)effectiveDef=Math.floor(effectiveDef*(1-G.combat.enemyEffects.defRed.value/100))
   for(const a of actions){
@@ -249,7 +294,7 @@ function resolveTurn(){
       const critRoll=Math.random()*100;let crit=false
       if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
       const esqRoll=Math.random()*100
-      if(esqRoll<ms.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}
+      if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}
       getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
       crit?play('crit'):play('hit')
       addCombatLog(`${crit?'💥 Critique ! ':''}⚔️ ${char.name} attaque : ${dmg} dégâts`)
@@ -257,45 +302,86 @@ function resolveTurn(){
       if(getMonster().currentHp<=0){setTimeout(victory,400);return}
     }else if(a.type==='spell'){
       const spell=SPELLS[a.spellId];if(!spell)continue
-      char.currentPe-=spell.cost
-      let dmg=1
-      if(spell.powerStat==='physicalPower'){dmg=Math.floor(s.pp*(spell.multiplier||1))}
-      else if(spell.powerStat==='magicPower'){dmg=Math.floor(s.pm*(spell.multiplier||1))}
-      else if(spell.powerStats){
-        let total=0;spell.powerStats.forEach(ps=>{if(ps==='physicalPower')total+=s.pp;if(ps==='magicPower')total+=s.pm})
-        dmg=Math.floor(total*(spell.multiplier||1))
-      }
-      const esqRoll=Math.random()*100
-      if(esqRoll<ms.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
-      if(spell.id==='assassin_assassinat'){
-        const critRoll=Math.random()*100
-        if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);play('crit');addCombatLog(`💥 Vrai critique ! x1.5`)}
-        else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
-      }
-      dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
-      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
-      play('hit')
-      addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
-      if(spell.effects){
-        if(spell.effects.defenseReductionPercent){
-          G.combat.enemyEffects.defRed={value:spell.effects.defenseReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
-          addCombatLog(`⬇️ DEF de l'ennemi réduite de ${spell.effects.defenseReductionPercent}%`)}
-        if(spell.effects.energyDrainPercent){
-          G.combat.enemyEffects.energyDrain={value:spell.effects.energyDrainPercent,duration:spell.effects.duration}
-          addCombatLog(`💧 Drain d'énergie : -${spell.effects.energyDrainPercent}% PE/tour`)}
-        if(spell.effects.poisonPercent){
-          if(!G.combat.enemyEffects.poison)G.combat.enemyEffects.poison={stacks:0,value:spell.effects.poisonPercent,duration:spell.effects.duration}
-          if(G.combat.enemyEffects.poison.stacks<(spell.effects.maxStacks||1))G.combat.enemyEffects.poison.stacks++
-          G.combat.enemyEffects.poison.duration=spell.effects.duration
-          addCombatLog(`🔥 Brûlure accumulée : ${G.combat.enemyEffects.poison.stacks}x`)}
-        if(spell.effects.stunChance){
-          if(Math.random()*100<spell.effects.stunChance){
-            G.combat.enemyEffects.stun={duration:spell.effects.duration}
-            addCombatLog(`💫 ${getMonster().name} est étourdi !`)}
+      if(spell.type==='damage'){
+        char.currentPe-=spell.cost
+        let dmg=1
+        if(spell.powerStat==='physicalPower'){dmg=Math.floor(s.pp*(spell.multiplier||1))}
+        else if(spell.powerStat==='magicPower'){dmg=Math.floor(s.pm*(spell.multiplier||1))}
+        else if(spell.powerStats){
+          let total=0;spell.powerStats.forEach(ps=>{if(ps==='physicalPower')total+=s.pp;if(ps==='magicPower')total+=s.pm})
+          dmg=Math.floor(total*(spell.multiplier||1))
         }
+        const esqRoll=Math.random()*100
+        if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
+        if(spell.id==='assassin_assassinat'){
+          const critRoll=Math.random()*100
+          if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);play('crit');addCombatLog(`💥 Vrai critique ! x1.5`)}
+          else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
+        }
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
+        if(spell.effects){
+          if(spell.effects.defenseReductionPercent){
+            G.combat.enemyEffects.defRed={value:spell.effects.defenseReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
+            addCombatLog(`⬇️ DEF de l'ennemi réduite de ${spell.effects.defenseReductionPercent}%`)}
+          if(spell.effects.rapidityReductionPercent){
+            G.combat.enemyEffects.rapRed={value:spell.effects.rapidityReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
+            addCombatLog(`⬇️ RAP de l'ennemi réduite de ${spell.effects.rapidityReductionPercent}%`)}
+          if(spell.effects.energyDrainPercent){
+            G.combat.enemyEffects.energyDrain={value:spell.effects.energyDrainPercent,duration:spell.effects.duration}
+            addCombatLog(`💧 Drain d'énergie : -${spell.effects.energyDrainPercent}% PE/tour`)}
+          if(spell.effects.poisonPercent){
+            if(!G.combat.enemyEffects.poison)G.combat.enemyEffects.poison={stacks:0,value:spell.effects.poisonPercent,duration:spell.effects.duration}
+            if(G.combat.enemyEffects.poison.stacks<(spell.effects.maxStacks||1))G.combat.enemyEffects.poison.stacks++
+            G.combat.enemyEffects.poison.duration=spell.effects.duration
+            addCombatLog(`🔥 Brûlure accumulée : ${G.combat.enemyEffects.poison.stacks}x`)}
+          if(spell.effects.stunChance){
+            if(Math.random()*100<spell.effects.stunChance){
+              G.combat.enemyEffects.stun={duration:spell.effects.duration}
+              addCombatLog(`💫 ${getMonster().name} est étourdi !`)}
+          }
+        }
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+      }else if(spell.type==='heal'){
+        const target=G.team[a.targetIndex]
+        if(!target||target.currentHp<=0){addCombatLog(`❌ La cible n'est plus valide.`);renderCombat();continue}
+        char.currentPe-=spell.cost
+        const ts=getFinalStats(target)
+        const heal=Math.floor(ts.pvMax*(spell.healPercent/100))
+        target.currentHp=Math.min(ts.pvMax,target.currentHp+heal)
+        play('heal')
+        addCombatLog(`✨ ${char.name} utilise ${spell.name} sur ${target.name} : +${heal} PV`)
+        renderCombat()
+      }else if(spell.type==='taunt'){
+        char.currentPe-=spell.cost
+        G.combat.taunt={charIndex:a.charIndex,duration:spell.duration||3}
+        addCombatLog(`🛡️ ${char.name} provoque l'ennemi !`)
+        renderCombat()
+      }else if(spell.type==='self_buff'){
+        char.currentPe-=spell.cost
+        char.effects=char.effects||{}
+        char.effects.critBuff={value:spell.effects.critBuffPercent,duration:spell.duration,source:spell.id}
+        if(spell.effects.activationDodge)char.effects.activationDodge={active:true,source:spell.id}
+        addCombatLog(`🗡️ ${char.name} se concentre dans l'ombre !`)
+        renderCombat()
+      }else if(spell.type==='damage_self_buff'){
+        char.currentPe-=spell.cost
+        let dmg=Math.floor(s.pp*(spell.multiplier||1))
+        const esqRoll=Math.random()*100
+        if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`⚔️ ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
+        char.effects=char.effects||{}
+        char.effects.ppBuff={value:spell.effects.ppBuffPercent,duration:spell.duration,source:spell.id}
+        addCombatLog(`🐂 ${char.name} adopte la Posture du Taureau !`)
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
       }
-      renderCombat()
-      if(getMonster().currentHp<=0){setTimeout(victory,400);return}
     }else if(a.type==='guard'){
       G.combat.guarding=true
       addCombatLog(`🛡️ ${char.name} se met en garde !`)
@@ -307,7 +393,7 @@ function resolveTurn(){
 function combatFlee(){
   if(!G||!getMonster())return
   const avgRap=G.team.reduce((s,c)=>s+(c.currentHp>0?c.baseStats.rap:0),0)/G.team.filter(c=>c.currentHp>0).length
-  const mRap=getMonsterStats().rap
+  const mRap=(getEffectiveMonsterStats()||getMonsterStats()).rap
   let chance=Math.round((avgRap/mRap)*60);chance=Math.max(15,Math.min(90,chance))
   if(Math.random()*100<chance){
     addCombatLog(`🏃 Fuite réussie !`)
@@ -347,10 +433,30 @@ function processEnemyEffects(){
   const eff=G.combat.enemyEffects
   if(eff.energyDrain){const drain=Math.floor((eff.energyDrain.value/100)*getMonsterStats().peMax);getMonster().currentPe=Math.max(0,(getMonster().currentPe||100)-drain);addCombatLog(`💧 ${getMonster().name} perd ${drain} PE (drain)`);eff.energyDrain.duration--;if(eff.energyDrain.duration<=0)delete eff.energyDrain}
   if(eff.defRed){eff.defRed.duration--;if(eff.defRed.duration<=0)delete eff.defRed}
+  if(eff.rapRed){eff.rapRed.duration--;if(eff.rapRed.duration<=0)delete eff.rapRed}
   if(eff.poison){const poisonDmg=Math.floor((eff.poison.value/100)*getMonsterStats().pvMax)*eff.poison.stacks;getMonster().currentHp=Math.max(0,getMonster().currentHp-poisonDmg);addCombatLog(`🔥 Brûlure : ${poisonDmg} dégâts (${eff.poison.stacks}x)`);eff.poison.duration--;if(eff.poison.duration<=0)delete eff.poison}
   if(eff.stun){eff.stun.duration--;if(eff.stun.duration<=0)delete eff.stun}
 }
-
+function getEffectiveMonsterStats(){
+  const base=getMonsterStats();if(!base)return null
+  const result={...base}
+  if(G.combat.enemyEffects?.defRed)result.def=Math.floor(result.def*(1-G.combat.enemyEffects.defRed.value/100))
+  if(G.combat.enemyEffects?.rapRed){
+    result.rap=Math.floor(result.rap*(1-G.combat.enemyEffects.rapRed.value/100))
+    result.crit=Math.floor(result.crit*(1-G.combat.enemyEffects.rapRed.value/100))
+    result.esq=Math.floor(result.esq*(1-G.combat.enemyEffects.rapRed.value/100))
+  }
+  return result
+}
+function tickCharacterEffects(){
+  G.team.forEach(char=>{
+    if(!char.effects)return
+    if(char.effects.critBuff){char.effects.critBuff.duration--;if(char.effects.critBuff.duration<=0)delete char.effects.critBuff}
+    if(char.effects.ppBuff){char.effects.ppBuff.duration--;if(char.effects.ppBuff.duration<=0)delete char.effects.ppBuff}
+    if(char.effects.activationDodge)delete char.effects.activationDodge
+    if(Object.keys(char.effects).length===0)delete char.effects
+  })
+}
 /* ============== FOREST ============== */
 function getForestZoneById(zoneId){return FOREST_ZONES.find(z=>z.id===zoneId)||FOREST_ZONES[0]}
 function randomBetween(min,max){return min+Math.floor(Math.random()*(max-min+1))}

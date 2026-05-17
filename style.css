@@ -63,7 +63,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .header-location{color:var(--text2);font-size:0.8rem;margin-left:4px}
 .header-right{display:flex;gap:12px;font-size:0.8rem}
 .header-gold{color:var(--gold)}
-.header-floor{color:var(--green)}
+.header-floor{display:none}
 
 /* Team Bar */
 .team-bar{display:flex;gap:6px;padding:8px 12px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;min-height:48px}
@@ -95,6 +95,15 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 #forest-level-info{flex:1}
 #forest-name{font-size:1.1rem;font-weight:bold;color:var(--green)}
 #forest-level{font-size:0.75rem;color:var(--text2);margin-left:8px}
+#view-forest-zones{padding:8px;display:flex;flex-direction:column;gap:8px}
+.forest-zone-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;cursor:pointer;transition:border-color 0.2s;display:flex;flex-direction:row;align-items:center;gap:12px}
+.forest-zone-text{flex:1}
+.forest-zone-card:hover{border-color:var(--gold)}
+.forest-zone-title{font-size:1rem;font-weight:bold;color:var(--green)}
+.forest-zone-label{font-size:0.75rem;color:var(--text2);margin:2px 0}
+.forest-zone-monsters{font-size:0.7rem;color:var(--text2);margin:4px 0 8px;opacity:0.7}
+.forest-zone-btn{background:var(--gold);color:var(--bg);border:none;border-radius:var(--radius-sm);padding:6px 16px;font-weight:bold;cursor:pointer;font-size:0.85rem;transition:opacity 0.2s}
+.forest-zone-btn:hover{opacity:0.8}
 .log-area{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;overflow-y:auto;font-size:0.8rem;line-height:1.5;min-height:80px}
 .log-entry{padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
 .log-entry:last-child{color:var(--gold)}
@@ -150,8 +159,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .equip-btn:hover{filter:brightness(1.2)}
 
 /* Team View (for when bottom nav "Équipe" is pressed) */
-#view-team.hidden,.view-team.hidden{display:none}
+#view-team.hidden,.view-team.hidden,.view-forest-zones.hidden{display:none}
 #view-team,.view-team{padding:8px;display:flex;flex-direction:column;gap:8px}
+#view-forest-zones.hidden{display:none}
 .team-member-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:10px}
 .team-member-card:hover{filter:brightness(1.1);border-color:var(--gold)}
 .team-member-card .tm-class{font-size:1.5rem}

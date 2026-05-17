@@ -7,6 +7,11 @@ const WEAPONS={dague_os:{id:'dague_os',name:'Dague en os',emoji:'🗡️',level:
 const ARMORS={armure_legere:{id:'armure_legere',name:'Armure légère',emoji:'🦺',level:1,stats:{def:6,esq:3},materials:{peau_sanglier:2,fourrure_loup:1},normalPrice:80,reducedPrice:40,sellPrice:20,desc:'+6 DEF, +3% ESQ'},armure_lourde:{id:'armure_lourde',name:'Armure lourde',emoji:'🛡️',level:1,stats:{def:10,pvMax:30},materials:{morceau_ferraille:3,défense_sanglier:1},normalPrice:100,reducedPrice:50,sellPrice:25,desc:'+10 DEF, +30 PV max'},robe_magique:{id:'robe_magique',name:'Robe magique',emoji:'👘',level:1,stats:{def:6,peMax:30},materials:{soie_araignée:2,noyau_slime:1},normalPrice:100,reducedPrice:50,sellPrice:25,desc:'+6 DEF, +30 PE max'},tunique:{id:'tunique',name:'Tunique',emoji:'👕',level:1,stats:{pvMax:25,peMax:25},materials:{fourrure_loup:2,peau_sanglier:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+25 PV max, +25 PE max'}}
 const MONSTERS={slime:{id:'slime',name:'Slime',emoji:'🟢',baseStats:{for:1,rap:1,con:4,mana:1},drops:[{id:'gelée_slime',min:1,max:2,chance:.8},{id:'noyau_slime',min:1,max:1,chance:.3}],xpReward:15},loup:{id:'loup',name:'Loup',emoji:'🐺',baseStats:{for:3,rap:4,con:2,mana:1},drops:[{id:'croc_loup',min:1,max:2,chance:.7},{id:'fourrure_loup',min:1,max:1,chance:.5},{id:'griffe_loup',min:1,max:1,chance:.4}],xpReward:18},sanglier:{id:'sanglier',name:'Sanglier',emoji:'🐗',baseStats:{for:4,rap:2,con:5,mana:1},drops:[{id:'peau_sanglier',min:1,max:2,chance:.7},{id:'défense_sanglier',min:1,max:1,chance:.4}],xpReward:22},araignee:{id:'araignee',name:'Araignée',emoji:'🕷️',baseStats:{for:2,rap:3,con:3,mana:2},drops:[{id:'soie_araignée',min:1,max:2,chance:.7},{id:'venin_araignée',min:1,max:1,chance:.4}],xpReward:20},serpent:{id:'serpent',name:'Serpent',emoji:'🐍',baseStats:{for:3,rap:4,con:2,mana:2},drops:[{id:'écaille_serpent',min:1,max:2,chance:.7},{id:'croc_serpent',min:1,max:1,chance:.4}],xpReward:24},treant:{id:'treant',name:'Tréant',emoji:'🌳',baseStats:{for:5,rap:1,con:6,mana:2},drops:[{id:'bois_solide',min:2,max:3,chance:.8},{id:'écorce_ancienne',min:1,max:1,chance:.3}],xpReward:30},gobelin_faible:{id:'gobelin_faible',name:'Gobelin',emoji:'👺',baseStats:{for:2,rap:3,con:2,mana:1},drops:[{id:'morceau_ferraille',min:1,max:2,chance:.6},{id:'os_monstre',min:1,max:1,chance:.5}],xpReward:16},loup_alpha:{id:'loup_alpha',name:'Loup alpha',emoji:'🐺',baseStats:{for:5,rap:5,con:3,mana:1},drops:[{id:'croc_loup',min:2,max:3,chance:.8},{id:'fourrure_loup',min:1,max:2,chance:.6}],xpReward:28},gobelin_eclaireur:{id:'gobelin_eclaireur',name:'Gobelin éclaireur',emoji:'👹',baseStats:{for:3,rap:4,con:3,mana:2},drops:[{id:'morceau_ferraille',min:1,max:3,chance:.7},{id:'os_monstre',min:1,max:2,chance:.6}],xpReward:26}}
 const FOREST_LEVELS=[{id:1,name:'Clairière',minLevel:1,pool:['slime','loup','gobelin_faible']},{id:2,name:'Sous-bois',minLevel:1,pool:['slime','loup','gobelin_faible']},{id:3,name:'Fourrés',minLevel:2,pool:['sanglier','araignee','serpent']},{id:4,name:'Taillis',minLevel:2,pool:['sanglier','araignee','serpent']},{id:5,name:'Bois sombre',minLevel:3,pool:['sanglier','araignee','serpent','loup']},{id:6,name:'Forêt profonde',minLevel:3,pool:['treant','loup_alpha','gobelin_eclaireur']},{id:7,name:'Cœur de la forêt',minLevel:4,pool:['treant','loup_alpha','gobelin_eclaireur']},{id:8,name:'Clairière ancienne',minLevel:4,pool:['treant','loup_alpha','gobelin_eclaireur','serpent']},{id:9,name:'Sanctuaire oublié',minLevel:5,pool:['treant','loup_alpha','gobelin_eclaireur']}]
+const FOREST_ZONES=[
+  {id:'forest_1_3',name:'Forêt des abords',label:'Niveaux 1 à 3',minLevel:1,maxLevel:3,monsterPool:['slime','loup','gobelin_faible']},
+  {id:'forest_4_6',name:'Forêt profonde',label:'Niveaux 4 à 6',minLevel:4,maxLevel:6,monsterPool:['sanglier','araignee','serpent']},
+  {id:'forest_7_9',name:'Cœur de la forêt',label:'Niveaux 7 à 9',minLevel:7,maxLevel:9,monsterPool:['treant','loup_alpha','gobelin_eclaireur']}
+]
 
 /* ============== AUDIO ============== */
 let _actx=null
@@ -21,6 +26,13 @@ else if(s==='heal'){_osc(400,800,'sine',.25,.2);setTimeout(()=>_osc(600,1000,'si
 else if(s==='coin')_osc(2000,1500,'sine',.06,.15)
 else if(s==='victory'){_osc(523,660,'sine',.2,.2);setTimeout(()=>_osc(659,784,'sine',.2,.2),150);setTimeout(()=>_osc(784,1047,'sine',.3,.25),300)}
 else if(s==='levelup'){_osc(523,587,'sine',.15,.15);setTimeout(()=>_osc(659,740,'sine',.15,.15),120);setTimeout(()=>_osc(784,880,'sine',.2,.2),240)}
+else if(s==='defeat'){_osc(300,60,'sawtooth',.5,.25);setTimeout(()=>_osc(200,40,'sawtooth',.4,.2),200)}
+else if(s==='sleep'){_osc(500,600,'sine',.6,.15);setTimeout(()=>_osc(400,500,'sine',.5,.12),300)}
+else if(s==='drink'){_osc(1200,800,'sine',.08,.1);setTimeout(()=>_osc(1000,700,'sine',.08,.08),60);setTimeout(()=>_osc(900,600,'sine',.08,.06),120)}
+else if(s==='eat'){_osc(600,800,'sine',.1,.12);setTimeout(()=>_osc(800,1000,'sine',.12,.1),80)}
+else if(s==='merchant'){_osc(180,150,'square',.12,.12);setTimeout(()=>_osc(220,180,'square',.15,.1),100)}
+else if(s==='buy')_osc(2500,1800,'sine',.08,.15)
+else if(s==='sell')_osc(1800,1200,'sine',.1,.12)
 }
 function toggleMute(){_muted=!_muted;localStorage.setItem('vr_muted',_muted?'1':'0');const e=document.getElementById('btn-mute');if(e)e.textContent=_muted?'🔇':'🔊'}
 
@@ -36,13 +48,13 @@ function st(stat,dir){
   document.getElementById('create-points').textContent=_cd.points
   document.getElementById('stat-'+stat).textContent=1+_cd.stats[stat]
 }
-function initGameState(){return{slotName:'',gold:50,team:[],activeChar:0,forestLevel:1,forestExploreCount:0,inventory:{resources:{},consumables:{},weapons:[],armors:[]},logs:[],combat:{monster:null,guarding:false,enemyEffects:{},combatLog:[],charActed:[],pendingActions:[]},tavernResting:false,created:Date.now()}}
+function initGameState(){return{slotName:'',gold:50,team:[],activeChar:0,forestLevel:1,forestExploreCount:0,selectedForestZoneId:null,inventory:{resources:{},consumables:{},weapons:[],armors:[]},logs:[],combat:{monster:null,guarding:false,enemyEffects:{},combatLog:[],charActed:[],pendingActions:[]},tavernResting:false,created:Date.now()}}
 function saveSlots(){try{return JSON.parse(localStorage.getItem('vr_saves')||'[]')}catch{return[]}}
 function saveSlotsWrite(arr){localStorage.setItem('vr_saves',JSON.stringify(arr))}
 function getSave(slot){const s=saveSlots();return s[slot]||null}
 function deleteSave(slot){const s=saveSlots();if(s[slot]){s.splice(slot,1);saveSlotsWrite(s)}}
 function saveGame(){if(!G)return;const saves=saveSlots();G.slotName=G.slotName||'Partie';const idx=saves.findIndex(s=>s.slotName===G.slotName&&s.created===G.created);const data=JSON.parse(JSON.stringify(G));delete data._justLeveledUp;if(idx>=0)saves[idx]=data;else saves.push(data);saveSlotsWrite(saves)}
-function loadGame(slotData){G=JSON.parse(JSON.stringify(slotData));G.combat=G.combat||{monster:null,guarding:false,enemyEffects:{},combatLog:[]};G.tavernResting=false;switchView('map');renderAll()}
+function loadGame(slotData){G=JSON.parse(JSON.stringify(slotData));G.combat=G.combat||{monster:null,guarding:false,enemyEffects:{},combatLog:[]};G.tavernResting=false;if(G.selectedForestZoneId===undefined)G.selectedForestZoneId=null;switchView('map');renderAll()}
 
 /* ============== STATS ============== */
 function computeDerivedStats(char){
@@ -97,20 +109,6 @@ function addCharacter(name,classId,distStats){
 }
 
 /* ============== MONSTERS ============== */
-function spawnMonster(forestLvl){
-  const fl=FOREST_LEVELS.find(f=>f.id===forestLvl)||FOREST_LEVELS[0]
-  const pool=fl.pool
-  const id=pool[Math.floor(Math.random()*pool.length)]
-  const t=MONSTERS[id]
-  const minLvl=G?Math.min(...G.team.filter(c=>c.currentHp>0).map(c=>c.level)):1
-  const lvl=Math.max(1,minLvl+Math.floor(Math.random()*(forestLvl-minLvl+1)))
-  const scale=1+(lvl-1)*.3
-  return{
-    id:t.id,name:t.name,emoji:t.emoji,level:lvl,
-    baseStats:{for:Math.round((t.baseStats.for||1)*scale),rap:Math.round((t.baseStats.rap||1)*scale),con:Math.round((t.baseStats.con||1)*scale),mana:Math.round((t.baseStats.mana||1)*scale)},
-    drops:t.drops,xpReward:Math.round(t.xpReward*scale),currentHp:0,currentPe:0,weapon:null,armor:null,spells:[]
-  }
-}
 function computeMonsterStats(m){
   const l=m.level,f=m.baseStats.for,r=m.baseStats.rap,c=m.baseStats.con,ma=m.baseStats.mana
   const pp=40+5*(l-1)+7*(f-1),def=40+5*(l-1)+7*(c-1),pm=40+5*(l-1)+7*(ma-1)
@@ -121,15 +119,14 @@ function computeMonsterStats(m){
 /* ============== COMBAT ============== */
 function startCombat(){
   if(!G)return
-  const fl=G.forestLevel
-  const m=spawnMonster(fl)
+  const m=spawnMonsterFromZone(G.selectedForestZoneId||'forest_1_3')
   const ms=computeMonsterStats(m)
   m.currentHp=ms.pvMax;m.currentPe=ms.peMax
   G.combat={monster:m,guarding:false,enemyEffects:{},combatLog:[],monsterStats:ms,defeat:false,charActed:G.team.map(()=>false),pendingActions:[]}
   const firstAlive=G.team.findIndex(c=>c.currentHp>0)
   if(firstAlive>=0)G.activeChar=firstAlive
   else G.activeChar=0
-  G.combat.combatLog.push(`⚔️ Combat contre ${m.name} (Niv.${fl}) !`)
+  G.combat.combatLog.push(`⚔️ Combat contre ${m.name} (Niv.${m.level}) !`)
   G.combat.combatLog.push(`👉 ${G.team[G.activeChar].name}, à toi !`)
   switchView('combat')
   renderCombat()
@@ -148,6 +145,7 @@ function enemyTurn(){
   if(!G||!getMonster()||getMonster().currentHp<=0)return
   const ms=getMonsterStats();if(!ms)return
   processEnemyEffects()
+  if(getMonster().currentHp<=0){setTimeout(victory,400);return}
   if(G.combat.enemyEffects.stun){
     addCombatLog(`💫 ${getMonster().name} est étourdi et ne peut pas attaquer !`)
     G.combat.guarding=false;renderCombat()
@@ -186,7 +184,8 @@ function enemyTurn(){
     renderCombat()
   }
   const result=isCombatOver()
-  if(result==='defeat'){addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden');return}
+  if(result==='victory'){setTimeout(victory,400);return}
+  if(result==='defeat'){play('defeat');addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden');return}
   G.combat.charActed=G.team.map(()=>false)
   const aliveIdx=G.team.findIndex(c=>c.currentHp>0)
   if(aliveIdx>=0)G.activeChar=aliveIdx
@@ -195,7 +194,7 @@ function enemyTurn(){
   renderCombat()
 }
 function queuePlayerAction(type,spellId){
-  if(!G||!getMonster()||G.combat.defeat)return
+  if(!G||!getMonster()||getMonster().currentHp<=0||G.combat.defeat)return
   const char=G.team[G.activeChar];if(!char||char.currentHp<=0)return
   document.getElementById('combat-spells').classList.add('hidden');document.getElementById('combat-buttons').classList.remove('hidden')
   if(!G.combat.charActed)G.combat.charActed=G.team.map(()=>false)
@@ -347,14 +346,47 @@ function processEnemyEffects(){
 }
 
 /* ============== FOREST ============== */
+function getForestZoneById(zoneId){return FOREST_ZONES.find(z=>z.id===zoneId)||FOREST_ZONES[0]}
+function randomBetween(min,max){return min+Math.floor(Math.random()*(max-min+1))}
+function renderForestZoneMenu(){
+  if(!G)return
+  const list=document.getElementById('forest-zones-list');if(!list)return
+  list.innerHTML=FOREST_ZONES.map(z=>{
+    const monsterNames=z.monsterPool.map(mid=>{
+      const m=MONSTERS[mid];return m?m.name:mid
+    }).join(', ')
+    return `<div class="forest-zone-card"><div class="forest-zone-text"><div class="forest-zone-title">🌲 ${z.name}</div><div class="forest-zone-label">${z.label}</div><div class="forest-zone-monsters">${monsterNames}</div></div><button class="forest-zone-btn" data-zone="${z.id}">Explorer</button></div>`
+  }).join('')
+}
+function selectForestZone(zoneId){
+  if(!G)return
+  if(G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return}
+  G.selectedForestZoneId=zoneId
+  switchView('forest')
+  renderForest()
+}
+function spawnMonsterFromZone(zoneId){
+  const zone=getForestZoneById(zoneId)
+  const pool=zone.monsterPool
+  const id=pool[Math.floor(Math.random()*pool.length)]
+  const t=MONSTERS[id]
+  const lvl=randomBetween(zone.minLevel,zone.maxLevel)
+  const scale=1+(lvl-1)*.3
+  return{
+    id:t.id,name:t.name,emoji:t.emoji,level:lvl,
+    baseStats:{for:Math.round((t.baseStats.for||1)*scale),rap:Math.round((t.baseStats.rap||1)*scale),con:Math.round((t.baseStats.con||1)*scale),mana:Math.round((t.baseStats.mana||1)*scale)},
+    drops:t.drops,xpReward:Math.round(t.xpReward*scale),currentHp:0,currentPe:0,weapon:null,armor:null,spells:[]
+  }
+}
 function exploreForest(){
   if(!G)return
   if(G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return}
-  const fl=FOREST_LEVELS.find(f=>f.id===G.forestLevel)||FOREST_LEVELS[0]
+  if(!G.selectedForestZoneId){switchView('forestZones');renderForestZoneMenu();return}
+  const zone=getForestZoneById(G.selectedForestZoneId)
   G.forestExploreCount=(G.forestExploreCount||0)+1
   const logEl=document.getElementById('forest-log')
   const entry=document.createElement('div');entry.className='log-entry'
-  entry.textContent=`🌲 Exploration #${G.forestExploreCount} dans ${fl.name}...`
+  entry.textContent=`🌲 Exploration #${G.forestExploreCount} dans ${zone.name} (${zone.label})...`
   logEl.appendChild(entry);logEl.scrollTop=logEl.scrollHeight
   startCombat()
 }
@@ -365,36 +397,49 @@ function renderForestLog(msg){
 }
 
 /* ============== TAVERN ============== */
+let tavernRestTimeout=null,tavernRestInterval=null
+function cancelTavernRest(){
+  if(tavernRestTimeout){clearTimeout(tavernRestTimeout);tavernRestTimeout=null}
+  if(tavernRestInterval){clearInterval(tavernRestInterval);tavernRestInterval=null}
+  if(G){G.tavernResting=false
+    const logEl=document.getElementById('tavern-log');logEl.style.display='';logEl.innerHTML='<div class="log-entry">❌ Repos annulé.</div>'
+    document.getElementById('tavern-buttons').style.display=''}
+}
 function tavernRest(){
   if(!G)return;if(G.tavernResting)return
-  G.tavernResting=true
+  G.tavernResting=true;play('sleep')
   const logEl=document.getElementById('tavern-log')
   logEl.innerHTML='<div class="log-entry">😴 Repos...</div><div id="rest-timer" style="text-align:center;font-size:1.5rem;font-weight:bold;color:var(--gold);padding:16px">5s</div><div id="rest-bar-bg" style="height:8px;background:#1a1a2a;border-radius:4px;overflow:hidden;margin:4px 0 8px"><div id="rest-bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:4px;transition:width .3s"></div></div>'
-  document.getElementById('btn-tavern-rest').disabled=true
+  document.getElementById('tavern-buttons').style.display='none'
   let sec=5
   const timerEl=document.getElementById('rest-timer')
   const barEl=document.getElementById('rest-bar')
-  const interval=setInterval(()=>{sec--;if(timerEl)timerEl.textContent=sec+'s';if(barEl)barEl.style.width=(sec/5*100)+'%';if(sec<=0)clearInterval(interval)},1000)
-  setTimeout(()=>{clearInterval(interval);G.tavernResting=false
+  tavernRestInterval=setInterval(()=>{sec--;if(timerEl)timerEl.textContent=sec+'s';if(barEl)barEl.style.width=(sec/5*100)+'%';if(sec<=0)clearInterval(tavernRestInterval)},1000)
+  tavernRestTimeout=setTimeout(()=>{clearInterval(tavernRestInterval);tavernRestInterval=null;G.tavernResting=false;tavernRestTimeout=null
     G.team.forEach(c=>{const s=getFinalStats(c);c.currentHp=s.pvMax;c.currentPe=s.peMax})
     logEl.innerHTML='<div class="log-entry">✅ Repos terminé ! Toute l\'équipe est restaurée !</div>'
-    document.getElementById('btn-tavern-rest').disabled=false
-    saveGame();renderAll()},5000)
+    saveGame();renderAll()
+    setTimeout(()=>{logEl.innerHTML='';logEl.style.display='none';document.getElementById('tavern-buttons').style.display=''},3000)
+  },5000)
 }
 function tavernDrink(){
   if(!G)return
-  if(G.gold<20){document.getElementById('tavern-log').innerHTML=`<div class="log-entry">🍺 Moe : "20 pièces ou la porte !"</div>`;return}
+  const logEl=document.getElementById('tavern-log');logEl.style.display=''
+  if(G.gold<20){logEl.innerHTML=`<div class="log-entry">🍺 Moe : "20 pièces ou la porte !"</div>`;return}
+  play('drink')
   G.gold-=20
   G.team.forEach(c=>{const s=getFinalStats(c);c.currentPe=s.peMax})
-  document.getElementById('tavern-log').innerHTML=`<div class="log-entry">🍺 Santé ! Tous les PE restaurés !</div>`
+  logEl.innerHTML=`<div class="log-entry">🍺 Santé ! Tous les PE restaurés !</div>`
   saveGame();renderAll()
 }
 function tavernEat(){
   if(!G)return
-  if(G.gold<30){document.getElementById('tavern-log').innerHTML=`<div class="log-entry">🍺 Moe : "Un bon repas coûte 30 pièces. T'as pas ça ?"</div>`;return}
+  const logEl=document.getElementById('tavern-log');logEl.style.display=''
+  if(G.gold<30){logEl.innerHTML=`<div class="log-entry">🍺 Moe : "Un bon repas coûte 30 pièces. T'as pas ça ?"</div>`;return}
+  play('eat')
   G.gold-=30
   G.team.forEach(c=>{const s=getFinalStats(c);c.currentHp=s.pvMax})
-  document.getElementById('tavern-log').innerHTML=`<div class="log-entry">🍖 Délicieux ! Tous les PV restaurés !</div>`
+  logEl.innerHTML=`<div class="log-entry">🍖 Délicieux ! Tous les PV restaurés !</div>`
   saveGame();renderAll()
 }
 
@@ -455,7 +500,7 @@ function processBuy(action,id){
   if(action==='cons'){
     const c=CONSUMABLES[id];if(!c)return
     if(G.gold<c.buyPrice){showMessage('Marchand','💰 Le marchand croise les bras. "J\'aimerais bien vous aider, mais l\'or ne pousse pas dans les arbres."');return}
-    G.gold-=c.buyPrice;G.inventory.consumables[id]=(G.inventory.consumables[id]||0)+1;saveGame();merchantBuy();updateGold()
+    G.gold-=c.buyPrice;G.inventory.consumables[id]=(G.inventory.consumables[id]||0)+1;saveGame();merchantBuy();updateGold();play('buy')
   }else if(action==='weapon'){
     const w=WEAPONS[id];if(!w)return
     if(G.gold<w.reducedPrice){showMessage('Marchand','💰 Le marchand croise les bras. "J\'aimerais bien vous aider, mais l\'or ne pousse pas dans les arbres."');return}
@@ -464,7 +509,7 @@ function processBuy(action,id){
       showMessage('Marchand',`🤷 Le marchand se gratte la barbe. "Je n'ai plus cet article en stock. Rapportez-moi : ${Object.keys(w.materials).map(m=>`${RESOURCES[m]?.name||m} x${w.materials[m]}`).join(', ')}"`);return}
     G.gold-=w.reducedPrice
     if(w.materials)Object.keys(w.materials).forEach(mat=>{G.inventory.resources[mat]-=w.materials[mat];if(G.inventory.resources[mat]<=0)delete G.inventory.resources[mat]})
-    G.inventory.weapons.push(id);saveGame();merchantBuy();updateGold()
+    G.inventory.weapons.push(id);saveGame();merchantBuy();updateGold();play('buy')
   }else if(action==='armor'){
     const a=ARMORS[id];if(!a)return
     if(G.gold<a.reducedPrice){showMessage('Marchand','💰 Le marchand croise les bras. "J\'aimerais bien vous aider, mais l\'or ne pousse pas dans les arbres."');return}
@@ -472,7 +517,7 @@ function processBuy(action,id){
       showMessage('Marchand',`🤷 Le marchand se gratte la barbe. "Je n'ai plus cet article en stock. Rapportez-moi : ${Object.keys(a.materials).map(m=>`${RESOURCES[m]?.name||m} x${a.materials[m]}`).join(', ')}"`);return}
     G.gold-=a.reducedPrice
     if(a.materials)Object.keys(a.materials).forEach(mat=>{G.inventory.resources[mat]-=a.materials[mat];if(G.inventory.resources[mat]<=0)delete G.inventory.resources[mat]})
-    G.inventory.armors.push(id);saveGame();merchantBuy();updateGold()
+    G.inventory.armors.push(id);saveGame();merchantBuy();updateGold();play('buy')
   }
 }
 
@@ -528,7 +573,7 @@ function addLog(msg){if(!G)return;G.logs.push(msg);const el=document.getElementB
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));const el=document.getElementById(id);if(el)el.classList.remove('hidden')}
 function switchView(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'))
-  const map={map:'view-map',forest:'view-forest',combat:'view-combat',char:'view-char',team:'view-team',inventory:'view-inventory'}
+  const map={map:'view-map',forest:'view-forest',forestZones:'view-forest-zones',combat:'view-combat',char:'view-char',team:'view-team',inventory:'view-inventory'}
   const id=map[view]
   if(id){const el=document.getElementById(id);if(el)el.classList.remove('hidden')}
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
@@ -544,13 +589,12 @@ function renderAll(){
     else if(id==='view-forest')renderForest()
     else if(id==='view-combat')renderCombat()
     else if(id==='view-char'){}
+    else if(id==='view-inventory')showInventoryView()
   }
 }
 function renderHeader(){
   if(!G)return
-  const fl=FOREST_LEVELS.find(f=>f.id===G.forestLevel)||FOREST_LEVELS[0]
   document.getElementById('header-gold').textContent=`💰 ${G.gold}`
-  document.getElementById('header-floor').textContent=`🌲 Niv.${G.forestLevel}`
 }
 function updateGold(){const el=document.getElementById('header-gold');if(el&&G)el.textContent=`💰 ${G.gold}`;const mel=document.getElementById('merchant-gold');if(mel&&G)mel.textContent=`💰 ${G.gold}`}
 function renderTeamBar(){
@@ -564,10 +608,10 @@ function renderTeamBar(){
 function renderMap(){/* map is static HTML */document.getElementById('header-location').textContent='— Carte'}
 function renderForest(){
   if(!G)return
-  const fl=FOREST_LEVELS.find(f=>f.id===G.forestLevel)||FOREST_LEVELS[0]
-  document.getElementById('forest-name').textContent=fl.name
-  document.getElementById('forest-level').textContent=`Niveau ${G.forestLevel}`
-  document.getElementById('header-location').textContent=`— ${fl.name}`
+  const zone=G.selectedForestZoneId?getForestZoneById(G.selectedForestZoneId):null
+  document.getElementById('forest-name').textContent=zone?zone.name:'Forêt'
+  document.getElementById('forest-level').textContent=zone?zone.label:''
+  document.getElementById('header-location').textContent=zone?`— ${zone.name}`:'— Forêt'
 }
 function renderCombat(){
   if(!G||!getMonster())return
@@ -705,12 +749,14 @@ function init(){
       const loc=card.dataset.location
       if(loc==='tavern'){openTavern()}
       else if(loc==='merchant'){openMerchant()}
-      else if(loc==='forest'){if(G&&G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return};switchView('forest');renderForest()}
+      else if(loc==='forest'){if(G&&G.team.every(c=>c.currentHp<=0)){showMessage('Forêt','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return};switchView('forestZones');renderForestZoneMenu()}
     })
   })
   /* Explore */
   document.getElementById('btn-explore').addEventListener('click',exploreForest)
-  document.getElementById('btn-leave-forest').addEventListener('click',()=>{switchView('map');renderMap()})
+  document.getElementById('btn-leave-forest').addEventListener('click',()=>{switchView('forestZones');renderForestZoneMenu()})
+  document.getElementById('btn-forest-zones-back').addEventListener('click',()=>{switchView('map');renderMap()})
+  document.getElementById('forest-zones-list').addEventListener('click',e=>{const btn=e.target.closest('.forest-zone-btn');if(btn)selectForestZone(btn.dataset.zone)})
   /* Combat buttons */
   document.getElementById('btn-cbt-attack').addEventListener('click',combatAttack)
   document.getElementById('btn-cbt-guard').addEventListener('click',combatGuard)
@@ -748,7 +794,6 @@ function init(){
   document.getElementById('btn-victory-continue').addEventListener('click',()=>{
     document.getElementById('popup-victory').classList.add('hidden')
     if(G){G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={}
-      G.forestLevel=Math.min(9,G.forestLevel+1)
       renderAll()
       if(G.team.some(c=>c.statPoints>0)){showNextLevelUp();play('levelup')}
       else{switchView('forest');renderAll()}
@@ -770,24 +815,26 @@ function init(){
   /* Merchant content clicks */
   document.getElementById('merchant-content').addEventListener('click',(e)=>{
     const btn=e.target.closest('.mi-btn');if(!btn)return
+    play('merchant')
     if(btn.dataset.buyCons)processBuy('cons',btn.dataset.buyCons)
     else if(btn.dataset.buyWeapon)processBuy('weapon',btn.dataset.buyWeapon)
     else if(btn.dataset.buyArmor)processBuy('armor',btn.dataset.buyArmor)
     else if(btn.dataset.sellRes){
       const id=btn.dataset.sellRes;const r=RESOURCES[id];const qty=G.inventory.resources[id]||0
-      if(qty>0){G.gold+=(r?r.sellPrice:2);play('coin');G.inventory.resources[id]--;if(G.inventory.resources[id]<=0)delete G.inventory.resources[id];saveGame();merchantSell();updateGold()}
+      if(qty>0){G.gold+=(r?r.sellPrice:2);play('sell');G.inventory.resources[id]--;if(G.inventory.resources[id]<=0)delete G.inventory.resources[id];saveGame();merchantSell();updateGold()}
     }else if(btn.dataset.sellWeapon){
       const idx=parseInt(btn.dataset.sellWeapon);const w=G.inventory.weapons[idx];const item=WEAPONS[w]
-      if(item){G.gold+=item.sellPrice;play('coin');G.inventory.weapons.splice(idx,1);saveGame();merchantSell();updateGold()}
+      if(item){G.gold+=item.sellPrice;play('sell');G.inventory.weapons.splice(idx,1);saveGame();merchantSell();updateGold()}
     }else if(btn.dataset.sellArmor){
       const idx=parseInt(btn.dataset.sellArmor);const a=G.inventory.armors[idx];const item=ARMORS[a]
-      if(item){G.gold+=item.sellPrice;play('coin');G.inventory.armors.splice(idx,1);saveGame();merchantSell();updateGold()}
+      if(item){G.gold+=item.sellPrice;play('sell');G.inventory.armors.splice(idx,1);saveGame();merchantSell();updateGold()}
     }
   })
   /* Popup close buttons */
   document.querySelectorAll('.popup-close,.popup-footer .btn-secondary[data-popup]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const popup=btn.dataset.popup
+      if(popup==='tavern'&&G&&G.tavernResting)cancelTavernRest()
       if(popup)document.getElementById(`popup-${popup}`).classList.add('hidden')
     })
   })
@@ -895,19 +942,13 @@ function showInventoryView(){
   div.addEventListener('click',(e)=>{
     const btn=e.target.closest('.inv-btn');if(!btn)return
     if(btn.dataset.use){
-      const charIdx=prompt(`Sur quel personnage (0-${G.team.length-1}) ?`)||'0'
-      const ci=parseInt(charIdx);if(isNaN(ci)||ci<0||ci>=G.team.length)return
-      useConsumable(btn.dataset.use,ci)
+      showCharSelector('Utiliser sur quel personnage ?',ci=>useConsumable(btn.dataset.use,ci))
     }else if(btn.dataset.equipWeapon){
       const idx=parseInt(btn.dataset.equipWeapon);const wid=G.inventory.weapons[idx]
-      const charIdx=prompt(`Équiper sur quel personnage (0-${G.team.length-1}) ?`)||'0'
-      const ci=parseInt(charIdx);if(isNaN(ci)||ci<0||ci>=G.team.length)return
-      equipWeapon(wid,ci)
+      showCharSelector('Équiper sur quel personnage ?',ci=>equipWeapon(wid,ci))
     }else if(btn.dataset.equipArmor){
       const idx=parseInt(btn.dataset.equipArmor);const aid=G.inventory.armors[idx]
-      const charIdx=prompt(`Équiper sur quel personnage (0-${G.team.length-1}) ?`)||'0'
-      const ci=parseInt(charIdx);if(isNaN(ci)||ci<0||ci>=G.team.length)return
-      equipArmor(aid,ci)
+      showCharSelector('Équiper sur quel personnage ?',ci=>equipArmor(aid,ci))
     }else if(btn.dataset.throw){
       const [section,id]=btn.dataset.throw.split(',');if(section==='weapon'||section==='armor'){if(!confirm(`Jeter ${id} ?`))return};throwItem(section,id)
     }
@@ -915,6 +956,25 @@ function showInventoryView(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
   const btns=document.querySelectorAll('.nav-btn');if(btns[2])btns[2].classList.add('active')
   document.getElementById('header-location').textContent='— Inventaire'
+}
+
+/* ============== CHAR SELECTOR POPUP ============== */
+function showCharSelector(title,callback){
+  const existing=document.getElementById('popup-char-selector')
+  if(existing)existing.remove()
+  const overlay=document.createElement('div');overlay.id='popup-char-selector';overlay.className='popup-overlay'
+  overlay.innerHTML=`<div class="popup popup-small"><div class="popup-header"><h3>${title}</h3><button class="popup-close" id="btn-char-selector-close">✕</button></div><div class="popup-body" style="display:flex;flex-direction:column;gap:6px" id="char-selector-body"></div></div>`
+  document.body.appendChild(overlay)
+  const body=document.getElementById('char-selector-body')
+  G.team.forEach((c,i)=>{
+    const cls=CLASSES[c.classId];const s=getFinalStats(c)
+    const btn=document.createElement('button');btn.className='btn-action';btn.style.textAlign='left'
+    btn.innerHTML=`${cls?.emoji||'👤'} ${c.name} <span style="color:var(--text2);font-size:0.75rem">Lv.${c.level} · ${c.currentHp}/${s.pvMax} PV</span>`
+    btn.addEventListener('click',()=>{overlay.remove();callback(i)})
+    body.appendChild(btn)
+  })
+  document.getElementById('btn-char-selector-close').addEventListener('click',()=>overlay.remove())
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()})
 }
 
 /* ============== LEVEL UP STAT ALLOCATION ============== */

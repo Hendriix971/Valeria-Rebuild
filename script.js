@@ -1,6 +1,6 @@
 /* ============== DATA ============== */
 const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat']},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante']},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu']},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre']},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_morsure_hydre']},guerisseur:{id:'guerisseur',name:'Guérisseur',emoji:'✨',desc:'Soigneur alliant agilité et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux']}}
-const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.4,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1,desc:'Boule de feu explosive.'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1,effects:{defenseReductionPercent:10,duration:3,stackable:false},desc:'Inflige -10% DEF à l\'ennemi pendant 3 tours.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:10,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1.2,desc:'Rayon de lumière sacrée transperçant la cible.'}}
+const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.4,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1,desc:'Boule de feu explosive.'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1,effects:{defenseReductionPercent:10,duration:3,stackable:false},desc:'Inflige -10% DEF à l\'ennemi pendant 3 tours.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:5,powerStat:'magicPower',multiplier:1.2,desc:'Rayon de lumière sacrée transperçant la cible.'}}
 const RESOURCES={gelée_slime:{name:'Gelée de slime',emoji:'🟢',sellPrice:5},noyau_slime:{name:'Noyau de slime',emoji:'🟡',sellPrice:8},griffe_loup:{name:'Griffe de loup',emoji:'🐺',sellPrice:6},croc_loup:{name:'Croc de loup',emoji:'🦷',sellPrice:7},fourrure_loup:{name:'Fourrure de loup',emoji:'🧶',sellPrice:5},peau_sanglier:{name:'Peau de sanglier',emoji:'🟤',sellPrice:8},défense_sanglier:{name:'Défense de sanglier',emoji:'⚪',sellPrice:10},morceau_ferraille:{name:'Morceau de ferraille',emoji:'⚙️',sellPrice:6},os_monstre:{name:'Os de monstre',emoji:'💀',sellPrice:5},soie_araignée:{name:'Soie d\'araignée',emoji:'🕸️',sellPrice:7},venin_araignée:{name:'Venin d\'araignée',emoji:'🧪',sellPrice:9},écaille_serpent:{name:'Écaille de serpent',emoji:'🟩',sellPrice:8},croc_serpent:{name:'Croc de serpent',emoji:'🗡️',sellPrice:10},bois_solide:{name:'Bois solide',emoji:'🪵',sellPrice:6},écorce_ancienne:{name:'Écorce ancienne',emoji:'🌳',sellPrice:9}}
 const CONSUMABLES={potion_vie:{id:'potion_vie',name:'Potion de vie',emoji:'❤️',healPercent:.3,type:'hp',buyPrice:30,sellPrice:15,desc:'Restaure 30% des PV max'},potion_energie:{id:'potion_energie',name:"Potion d'énergie",emoji:'💧',healPercent:.3,type:'pe',buyPrice:30,sellPrice:15,desc:"Restaure 30% des PE max"}}
 const WEAPONS={dague_os:{id:'dague_os',name:'Dague en os',emoji:'🗡️',level:1,stats:{pp:8,crit:3},materials:{os_monstre:2,croc_loup:1},normalPrice:80,reducedPrice:40,sellPrice:20,desc:'+8 PP, +3% CRIT'},epee_ferraille:{id:'epee_ferraille',name:'Épée de ferraille',emoji:'⚔️',level:1,stats:{pp:10,def:5},materials:{morceau_ferraille:3,bois_solide:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+10 PP, +5 DEF'},bouclier_bois:{id:'bouclier_bois',name:'Bouclier en bois',emoji:'🛡️',level:1,stats:{def:8,pvMax:25},materials:{bois_solide:3,peau_sanglier:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+8 DEF, +25 PV max'},baton_bois:{id:'baton_bois',name:'Bâton de bois',emoji:'🪄',level:1,stats:{pm:10,peMax:25},materials:{bois_solide:2,noyau_slime:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+10 PM, +25 PE max'},grimoire_use:{id:'grimoire_use',name:'Grimoire usé',emoji:'📖',level:1,stats:{pm:10,crit:3},materials:{peau_sanglier:1,venin_araignée:1,soie_araignée:1},normalPrice:100,reducedPrice:50,sellPrice:25,desc:'+10 PM, +3% CRIT'}}
@@ -150,19 +150,30 @@ function enemyTurn(){
   processEnemyEffects()
   const alive=G.team.filter(c=>c.currentHp>0)
   if(alive.length===0)return
-  const target=alive[Math.floor(Math.random()*alive.length)]
-  const baseDmg=Math.max(1,ms.pp+Math.floor(Math.random()*5)-2)
-  const tDef=getFinalStats(target).def
-  let dmg=Math.max(1,baseDmg-Math.floor(tDef/2))
-  const isGuarding=G.combat.guarding
-  if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
-  const critRoll=Math.random()*100
-  if(critRoll<ms.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
-  target.currentHp=Math.max(0,target.currentHp-dmg)
-  G.combat.guarding=false
-  play('hit')
-  addCombatLog(`💢 ${getMonster().name} inflige ${dmg} dégâts à ${target.name}`)
-  renderCombat()
+  const m=getMonster()
+  const peCost=Math.max(3,Math.floor(ms.peMax*0.1))
+  if((m.currentPe||0)<peCost){
+    const recover=Math.floor(ms.peMax*0.2)
+    m.currentPe=Math.min(ms.peMax,(m.currentPe||0)+recover)
+    addCombatLog(`💤 ${m.name} est à bout de souffle et récupère ${recover} PE`)
+    G.combat.guarding=false
+    renderCombat()
+  }else{
+    m.currentPe-=peCost
+    const target=alive[Math.floor(Math.random()*alive.length)]
+    const baseDmg=Math.max(1,ms.pp+Math.floor(Math.random()*5)-2)
+    const tDef=getFinalStats(target).def
+    let dmg=Math.max(1,baseDmg-Math.floor(tDef/2))
+    const isGuarding=G.combat.guarding
+    if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
+    const critRoll=Math.random()*100
+    if(critRoll<ms.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
+    target.currentHp=Math.max(0,target.currentHp-dmg)
+    G.combat.guarding=false
+    play('hit')
+    addCombatLog(`💢 ${m.name} inflige ${dmg} dégâts à ${target.name}`)
+    renderCombat()
+  }
   const result=isCombatOver()
   if(result==='defeat'){addCombatLog('💀 Toute l\'équipe est vaincue...');renderCombat();G.combat.defeat=true;document.getElementById('combat-defeat').classList.remove('hidden');document.querySelectorAll('#combat-buttons button').forEach(b=>b.disabled=true);document.getElementById('combat-spells').classList.add('hidden');return}
   G.combat.charActed=G.team.map(()=>false)
@@ -210,12 +221,15 @@ function combatGuard(){
 function resolveTurn(){
   if(!G||!getMonster()||getMonster().currentHp<=0)return
   const actions=[...G.combat.pendingActions];G.combat.pendingActions=[]
+  const ms=getMonsterStats();if(!ms)return
+  let effectiveDef=ms.def
+  if(G.combat.enemyEffects.defRed)effectiveDef=Math.floor(effectiveDef*(1-G.combat.enemyEffects.defRed.value/100))
   for(const a of actions){
     if(getMonster().currentHp<=0)break
     const char=G.team[a.charIndex];if(!char||char.currentHp<=0)continue
     const s=getFinalStats(char);const ms=getMonsterStats();if(!ms)continue
     if(a.type==='attack'){
-      let dmg=Math.max(1,s.pp-Math.floor(ms.def/2))
+      let dmg=Math.max(1,s.pp-Math.floor(effectiveDef/2))
       const critRoll=Math.random()*100;let crit=false
       if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
       const esqRoll=Math.random()*100
@@ -242,7 +256,7 @@ function resolveTurn(){
         if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);play('crit');addCombatLog(`💥 Vrai critique ! x1.5`)}
         else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
       }
-      dmg=Math.max(1,dmg-Math.floor(ms.def/2))
+      dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
       getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
       play('hit')
       addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
@@ -306,6 +320,7 @@ function processEnemyEffects(){
   if(!G||!G.combat.enemyEffects)return
   const eff=G.combat.enemyEffects
   if(eff.energyDrain){const drain=Math.floor((eff.energyDrain.value/100)*getMonsterStats().peMax);getMonster().currentPe=Math.max(0,(getMonster().currentPe||100)-drain);addCombatLog(`💧 ${getMonster().name} perd ${drain} PE (drain)`);eff.energyDrain.duration--;if(eff.energyDrain.duration<=0)delete eff.energyDrain}
+  if(eff.defRed){eff.defRed.duration--;if(eff.defRed.duration<=0)delete eff.defRed}
 }
 
 /* ============== FOREST ============== */
@@ -540,8 +555,10 @@ function renderCombat(){
   document.getElementById('combat-enemy-emoji').textContent=m.emoji
   document.getElementById('combat-enemy-name').textContent=`${m.name} (Niv.${m.level})`
   const hpPct=Math.round((m.currentHp/ms.pvMax)*100)
-  document.getElementById('combat-enemy-stats').textContent=`PV: ${m.currentHp}/${ms.pvMax}`
+  document.getElementById('combat-enemy-stats').textContent=`PV: ${m.currentHp}/${ms.pvMax} • PE: ${(m.currentPe||0)}/${ms.peMax}`
   document.getElementById('combat-enemy-hp').style.width=`${hpPct}%`
+  const pePct=Math.round((m.currentPe/ms.peMax)*100)
+  document.getElementById('combat-enemy-pe').style.width=`${pePct}%`
   const char=G.team[G.activeChar]
   if(char){
     const cls=CLASSES[char.classId]

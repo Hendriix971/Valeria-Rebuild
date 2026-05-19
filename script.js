@@ -1278,9 +1278,9 @@ function maybeBenjyTookDamageReaction(dmg){
 function resolveBenjyDefenseReaction(attacker,incomingDmg,sourceLabel){
   if(!G?.combat?.isBenjyFight)return{cancelled:false,damageToBenjy:incomingDmg}
   const roll=Math.random()
-  if(roll<0.25){play('dodge');addCombatLog(`💨 Benjy esquive ${sourceLabel} sans même regarder.`);return{cancelled:true,damageToBenjy:0}}
-  if(roll<0.50){addCombatLog(`✋ Benjy bloque ${sourceLabel} d'une seule main.`);return{cancelled:true,damageToBenjy:0}}
-  if(roll<0.75){const minHp=getBenjyMercyHp(attacker);const reflectedDmg=damagePercentOfMax(attacker,0.08,minHp);addCombatLog(`↩️ Benjy renvoie ${sourceLabel}. ${attacker.name} subit ${reflectedDmg} PV en retour.`);return{cancelled:true,damageToBenjy:0}}
+  if(roll<0.20){play('dodge');addCombatLog(`💨 Benjy esquive ${sourceLabel} sans même regarder.`);return{cancelled:true,damageToBenjy:0}}
+  if(roll<0.40){addCombatLog(`✋ Benjy bloque ${sourceLabel} d'une seule main.`);return{cancelled:true,damageToBenjy:0}}
+  if(roll<0.70){const minHp=getBenjyMercyHp(attacker);const reflectedDmg=damagePercentOfMax(attacker,0.08,minHp);addCombatLog(`↩️ Benjy renvoie ${sourceLabel}. ${attacker.name} subit ${reflectedDmg} PV en retour.`);return{cancelled:true,damageToBenjy:0}}
   const reducedDmg=Math.max(1,Math.floor(incomingDmg*0.15));addCombatLog(`Benjy encaisse ${sourceLabel} sans reculer.`);return{cancelled:false,damageToBenjy:reducedDmg}
 }
 function startBenjyCombat(){

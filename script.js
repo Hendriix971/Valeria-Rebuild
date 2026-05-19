@@ -1,4 +1,4 @@
-﻿﻿/* ============== DATA ============== */
+﻿/* ============== DATA ============== */
 const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat','assassin_concentration']},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante','epeiste_posture_taureau']},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu','mage_canalisation']},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre','sorcier_clone_ombre']},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_morsure_hydre','tank_provocation']},guerisseur:{id:'guerisseur',name:'Guérisseur',emoji:'✨',desc:'Soigneur alliant agilité et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux','guerisseur_soin_mineur']}}
 const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},assassin_concentration:{id:'assassin_concentration',name:'Concentration',type:'self_buff',target:'self',cost:15,duration:3,effects:{critBuffPercent:20,activationDodge:true},stackable:false,desc:'Se concentre dans l\'ombre. Confère +20% CRIT pendant 3 tours et esquive automatiquement la prochaine attaque reçue pendant l\'activation.'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.6,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},epeiste_posture_taureau:{id:'epeiste_posture_taureau',name:'Posture du Taureau',type:'damage_self_buff',target:'enemy',cost:15,powerStat:'physicalPower',multiplier:1.4,duration:3,effects:{ppBuffPercent:20},stackable:false,desc:'Frappe l\'ennemi avec la force du taureau et augmente la PP du lanceur de 20% pendant 3 tours.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.4,effects:{poisonPercent:3,duration:3,stackable:true,maxStacks:3},desc:'Boule de feu explosive. Inflige une brûlure -3% PV/tour (cumulable 3x, 3 tours).'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:8,powerStat:'magicPower',multiplier:1.2,effects:{defenseReductionPercent:40,duration:4,stackable:false},desc:'Inflige des dégâts magiques et réduit la DEF de l\'ennemi de 40% pendant 4 tours.'},mage_canalisation:{id:'mage_canalisation',name:'Canalisation',type:'self_buff',target:'self',cost:15,duration:3,effects:{pmBuffPercent:20,activationBlock:true},stackable:false,desc:'Canalise la magie. Confère +20% PM pendant 3 tours et bloque les dégâts subis pendant l\'activation.'},sorcier_clone_ombre:{id:'sorcier_clone_ombre',name:'Clone d\'ombre',type:'shadow_clone',target:'self',cost:20,duration:5,cloneHpPercent:70,effects:{activationDodge:true},stackable:false,desc:'Crée un clone d\'ombre qui encaisse les dégâts visant le Sorcier pendant 5 tours ou jusqu\'à sa destruction.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.2,effects:{stunChance:50,duration:1},desc:'Rayon de lumière sacrée. 50% de chance d\'étourdir l\'ennemi pour le tour.'},tank_provocation:{id:'tank_provocation',name:'Provocation',type:'taunt',target:'self',cost:15,duration:3,tauntChance:90,desc:'Provoque l\'ennemi. Pendant 3 tours, le Tank a 90% de chances d\'être ciblé.'},guerisseur_soin_mineur:{id:'guerisseur_soin_mineur',name:'Soin mineur',type:'heal',target:'ally_choice',cost:20,healPercent:40,desc:'Restaure 40% des PV max d\'un allié choisi.'}}
 const RESOURCES={gelée_slime:{name:'Gelée de slime',emoji:'🟢',sellPrice:5},noyau_slime:{name:'Noyau de slime',emoji:'🟡',sellPrice:8},griffe_loup:{name:'Griffe de loup',emoji:'🐺',sellPrice:6},croc_loup:{name:'Croc de loup',emoji:'🦷',sellPrice:7},fourrure_loup:{name:'Fourrure de loup',emoji:'🧶',sellPrice:5},peau_sanglier:{name:'Peau de sanglier',emoji:'🟤',sellPrice:8},défense_sanglier:{name:'Défense de sanglier',emoji:'⚪',sellPrice:10},morceau_ferraille:{name:'Morceau de ferraille',emoji:'⚙️',sellPrice:6},os_monstre:{name:'Os de monstre',emoji:'💀',sellPrice:5},soie_araignée:{name:'Soie d\'araignée',emoji:'🕸️',sellPrice:7},venin_araignée:{name:'Venin d\'araignée',emoji:'🧪',sellPrice:9},écaille_serpent:{name:'Écaille de serpent',emoji:'🟩',sellPrice:8},croc_serpent:{name:'Croc de serpent',emoji:'🗡️',sellPrice:10},bois_solide:{name:'Bois solide',emoji:'🪵',sellPrice:6},écorce_ancienne:{name:'Écorce ancienne',emoji:'🌳',sellPrice:9},lame_rouillee:{name:'Lame rouillée',emoji:'🗡️',sellPrice:14},cuir_gobelin:{name:'Cuir gobelin',emoji:'🟤',sellPrice:12},os_renforce:{name:'Os renforcé',emoji:'💀',sellPrice:13},croc_sanguinaire:{name:'Croc sanguinaire',emoji:'🦷',sellPrice:15},fourrure_epaisse:{name:'Fourrure épaisse',emoji:'🧶',sellPrice:13},griffe_aceree:{name:'Griffe acérée',emoji:'🐾',sellPrice:14},gelée_corrompue:{name:'Gelée corrompue',emoji:'🟣',sellPrice:13},noyau_corrompu:{name:'Noyau corrompu',emoji:'🟡',sellPrice:18},résidu_instable:{name:'Résidu instable',emoji:'✨',sellPrice:16},soie_noire:{name:'Soie noire',emoji:'🕸️',sellPrice:15},venin_virulent:{name:'Venin virulent',emoji:'🧪',sellPrice:18},patte_chitineuse:{name:'Patte chitineuse',emoji:'🕷️',sellPrice:13},cuir_epais:{name:'Cuir épais',emoji:'🟫',sellPrice:15},défense_massive:{name:'Défense massive',emoji:'⚪',sellPrice:20},plaque_osseuse:{name:'Plaque osseuse',emoji:'🦴',sellPrice:18},écaille_nocturne:{name:'Écaille nocturne',emoji:'🌑',sellPrice:16},croc_venimeux:{name:'Croc venimeux',emoji:'🦷',sellPrice:18},sang_froid:{name:'Sang froid',emoji:'💧',sellPrice:16},bois_ancien:{name:'Bois ancien',emoji:'🪵',sellPrice:17},écorce_runique:{name:'Écorce runique',emoji:'🌳',sellPrice:22},sève_vivante:{name:'Sève vivante',emoji:'💚',sellPrice:20},hache_ebrechee:{name:'Hache ébréchée',emoji:'🪓',sellPrice:18},cuir_renforce:{name:'Cuir renforcé',emoji:'🟤',sellPrice:17},croc_ancien:{name:'Croc ancien',emoji:'🦷',sellPrice:20},fourrure_argentee:{name:'Fourrure argentée',emoji:'🧶',sellPrice:22},coeur_ecorce:{name:'Cœur d\'écorce',emoji:'💚',sellPrice:28},bois_sacre:{name:'Bois sacré',emoji:'🪵',sellPrice:24},écaille_abyssale:{name:'Écaille abyssale',emoji:'🌌',sellPrice:24},croc_abyssal:{name:'Croc abyssal',emoji:'🦷',sellPrice:26},venin_noir:{name:'Venin noir',emoji:'⚫',sellPrice:25},insigne_gobelin:{name:'Insigne gobelin',emoji:'🏵️',sellPrice:26},lame_chef:{name:'Lame de chef',emoji:'⚔️',sellPrice:28}}
@@ -317,9 +317,8 @@ function resolveTurn(){
       let dmg=Math.max(1,s.pp-Math.floor(effectiveDef/2))
       const critRoll=Math.random()*100;let crit=false
       if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
-      const esqRoll=Math.random()*100
-      if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}
-      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+      if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,`l'attaque de ${char.name}`);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}}
+      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg)
       crit?play('crit'):play('hit')
       addCombatLog(`${crit?'💥 Critique ! ':''}⚔️ ${char.name} attaque : ${dmg} dégâts`)
       renderCombat()
@@ -335,15 +334,14 @@ function resolveTurn(){
           let total=0;spell.powerStats.forEach(ps=>{if(ps==='physicalPower')total+=s.pp;if(ps==='magicPower')total+=s.pm})
           dmg=Math.floor(total*(spell.multiplier||1))
         }
-        const esqRoll=Math.random()*100
-        if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
         if(spell.id==='assassin_assassinat'){
           const critRoll=Math.random()*100
           if(critRoll<s.crit){dmg=Math.floor(s.pp*1.5);play('crit');addCombatLog(`💥 Vrai critique ! x1.5`)}
           else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
         }
         dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
-        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg)
         play('hit')
         addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
         if(spell.effects){
@@ -402,12 +400,9 @@ function resolveTurn(){
       }else if(spell.type==='damage_self_buff'){
         char.currentPe-=spell.cost
         let dmg=Math.floor(s.pp*(spell.multiplier||1))
-        const esqRoll=Math.random()*100
-        if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}
-        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
-        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
-        play('hit')
-        addCombatLog(`⚔️ ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){dmg=0}else{dmg=reaction.damageToBenjy}}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
+        dmg=Math.max(0,dmg-Math.floor(effectiveDef/2))
+        if(dmg>0){getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg);play('hit');addCombatLog(`⚔️ ${char.name} utilise ${spell.name} : ${dmg} dégâts`)}
         char.effects=char.effects||{}
         char.effects.ppBuff={value:spell.effects.ppBuffPercent,duration:spell.duration,source:spell.id}
         play('bull_stance')
@@ -1270,12 +1265,29 @@ function showBenjyWarningPopup(){
 
 /* ============== BENJY BOSS ============== */
 function createBenjyBoss(){return{id:'benjy',name:'Benjy',emoji:'☠️',level:'??',displayLevel:'??',isBenjy:true,currentHp:999999,currentPe:10000,xpReward:0,drops:[]}}
-function getBenjyStats(){return{pp:80,def:9999,pm:999,pvMax:999999,peMax:10000,crit:0,esq:75,for:10,rap:999,con:999,mana:999}}
+function getBenjyStats(){return{pp:80,def:9999,pm:999,pvMax:999999,peMax:10000,crit:0,esq:45,for:10,rap:999,con:999,mana:999}}
+function maybeBenjyTookDamageReaction(dmg){
+  if(!G?.combat?.isBenjyFight)return
+  if(!dmg||dmg<=0)return
+  if(G.combat.benjyDamageReactionDone)return
+  G.combat.benjyDamageReactionDone=true
+  addCombatLog('Benjy sourit.')
+  addCombatLog('Benjy : "Bien... très bien."')
+}
+
+function resolveBenjyDefenseReaction(attacker,incomingDmg,sourceLabel){
+  if(!G?.combat?.isBenjyFight)return{cancelled:false,damageToBenjy:incomingDmg}
+  const roll=Math.random()
+  if(roll<0.25){play('dodge');addCombatLog(`💨 Benjy esquive ${sourceLabel} sans même regarder.`);return{cancelled:true,damageToBenjy:0}}
+  if(roll<0.50){addCombatLog(`✋ Benjy bloque ${sourceLabel} d'une seule main.`);return{cancelled:true,damageToBenjy:0}}
+  if(roll<0.75){const minHp=getBenjyMercyHp(attacker);const reflectedDmg=damagePercentOfMax(attacker,0.08,minHp);addCombatLog(`↩️ Benjy renvoie ${sourceLabel}. ${attacker.name} subit ${reflectedDmg} PV en retour.`);return{cancelled:true,damageToBenjy:0}}
+  const reducedDmg=Math.max(1,Math.floor(incomingDmg*0.15));addCombatLog(`Benjy encaisse ${sourceLabel} sans reculer.`);return{cancelled:false,damageToBenjy:reducedDmg}
+}
 function startBenjyCombat(){
   if(!G)return
   if(G.team.every(c=>c.currentHp<=0)){showMessage('Antre de Benjy','💀 Toute votre équipe est à terre. Reposez-vous à la taverne avant de repartir au combat.');return}
   const m=createBenjyBoss();const ms=getBenjyStats();m.currentHp=ms.pvMax;m.currentPe=ms.peMax
-  G.combat={monster:m,guarding:false,enemyEffects:{},combatLog:[],monsterStats:ms,defeat:false,charActed:G.team.map(()=>false),pendingActions:[],isBenjyFight:true,benjyOpeningDone:false,benjyTurnCount:0}
+  G.combat={monster:m,guarding:false,enemyEffects:{},combatLog:[],monsterStats:ms,defeat:false,charActed:G.team.map(()=>false),pendingActions:[],isBenjyFight:true,benjyOpeningDone:false,benjyDamageReactionDone:false,benjyTurnCount:0,benjyInitialTeamSize:G.team.length}
   const firstAlive=G.team.findIndex(c=>c.currentHp>0);G.activeChar=firstAlive>=0?firstAlive:0
   addCombatLog(`⚔️ Combat contre Benjy (Niv.??) !`)
   addCombatLog(`Benjy : "Vous êtes vraiment entrés ?"`)
@@ -1288,7 +1300,8 @@ function damagePercentOfMax(char,percent,minimumHp=0){const s=getFinalStats(char
 function pickRandomAlive(){const alive=getAliveTeamEntries();if(alive.length===0)return null;return alive[Math.floor(Math.random()*alive.length)]}
 function pickAliveTank(){const tanks=getAliveTeamEntries().filter(e=>e.char.classId==='tank');if(tanks.length===0)return null;return tanks[Math.floor(Math.random()*tanks.length)]}
 function pickAliveNonTank(){const nonTanks=getAliveTeamEntries().filter(e=>e.char.classId!=='tank');if(nonTanks.length===0)return pickRandomAlive();return nonTanks[Math.floor(Math.random()*nonTanks.length)]}
-function getBenjyMercyHp(char){const s=getFinalStats(char);return Math.max(1,Math.floor(s.pvMax*0.10))}
+function isBenjySoloFight(){return G?.combat?.isBenjyFight&&(G.combat.benjyInitialTeamSize||G.team.length)===1}
+function getBenjyMercyHp(char){const s=getFinalStats(char);const ratio=isBenjySoloFight()?0.20:0.10;return Math.max(1,Math.floor(s.pvMax*ratio))}
 function chooseBenjyOpeningTarget(){
   const alive=getAliveTeamEntries();if(alive.length===0)return null
   const healers=alive.filter(e=>e.char.classId==='guerisseur')
@@ -1301,20 +1314,34 @@ function chooseBenjyOpeningTarget(){
 function benjyOpeningAction(){
   const choice=chooseBenjyOpeningTarget();if(!choice)return
   const target=choice.target.char;const s=getFinalStats(target)
-  addCombatLog(`Benjy disparaît.`)
-  if(choice.kill){target.currentHp=0;addCombatLog(`Benjy frappe ${target.name} d'un revers de la main, l'envoyant traverser la salle avant de s'écraser contre le mur.`);addCombatLog(`${target.name} est mort. 💀`)}
-  else{const dmg=damagePercentOfMax(target,0.50,getBenjyMercyHp(target));addCombatLog(`Benjy frappe ${target.name} d'un revers de la main, l'envoyant traverser la salle avant de s'écraser contre le mur.`);addCombatLog(`${target.name} perd ${dmg} PV et vacille, mais tient debout.`) }
+  if(choice.kill){target.currentHp=0;addCombatLog(`Benjy surgit devant ${target.name} et le projette d'un geste brutal contre le mur du fond. ${target.name} est mort. 💀`)}
+  else{if(!benjyHandleShadowClone(target)){const dmg=damagePercentOfMax(target,getBenjyDamagePercent(0.50),getBenjyMercyHp(target));addCombatLog(`Benjy surgit devant ${target.name} et le projette d'un geste brutal contre le mur du fond. ${target.name} perd ${dmg} PV et vacille, mais tient debout.`) }}
   G.combat.benjyOpeningDone=true;renderCombat()
 }
+function benjyHandleShadowClone(target){
+  if(!G?.combat?.isBenjyFight)return false
+  if(!target?.effects?.shadowClone)return false
+  const clone=target.effects.shadowClone;const roll=Math.random()
+  if(roll<0.40){delete target.effects.shadowClone;play('clone_dissipate');addCombatLog('Benjy fixe le Clone d\'ombre de '+target.name+', puis le balaie d\'un revers de la main. 💥 Le Clone d\'ombre se dissipe !');return true}
+  if(roll<0.75){const minHp=getBenjyMercyHp(target);const dmg=damagePercentOfMax(target,0.10,minHp);addCombatLog('Le Clone d\'ombre s\'interpose, mais Benjy dispara\u00eet et r\u00e9appara\u00eet derri\u00e8re '+target.name+'. Un coup sec traverse sa garde. '+target.name+' perd '+dmg+' PV.');return true}
+  const dmgToClone=Math.max(1,Math.floor(clone.maxHp*0.35));clone.hp=Math.max(0,clone.hp-dmgToClone);addCombatLog('Benjy : "Une ombre ?"');addCombatLog('Benjy frappe le Clone d\'ombre de '+target.name+'. 🌑 Le Clone d\'ombre perd '+dmgToClone+' PV. ('+Math.max(0,clone.hp)+'/'+clone.maxHp+')')
+  if(clone.hp<=0){delete target.effects.shadowClone;play('clone_dissipate');addCombatLog('💥 Le Clone d\'ombre se dissipe !')}
+  return true
+}
+function getBenjyDamagePercent(basePercent){if(isBenjySoloFight())return basePercent*0.70;return basePercent}
 function benjyWallThrow(){
   const targetEntry=pickAliveNonTank();if(!targetEntry)return
-  const target=targetEntry.char;const dmg=damagePercentOfMax(target,0.30,getBenjyMercyHp(target))
-  addCombatLog(`Benjy saisit ${target.name} par la gorge et le projette contre le mur.`);addCombatLog(`${target.name} perd ${dmg} PV.`)
+  const target=targetEntry.char
+  if(benjyHandleShadowClone(target))return
+  const dmg=damagePercentOfMax(target,getBenjyDamagePercent(0.30),getBenjyMercyHp(target))
+  addCombatLog(`Benjy saisit ${target.name} par la gorge et le projette contre le mur. ${target.name} perd ${dmg} PV.`)
 }
 function benjyBackhand(){
   const targetEntry=pickRandomAlive();if(!targetEntry)return
-  const target=targetEntry.char;const dmg=damagePercentOfMax(target,0.22,getBenjyMercyHp(target))
-  addCombatLog(`Benjy frappe ${target.name} d'un revers négligent.`);addCombatLog(`${target.name} perd ${dmg} PV.`)
+  const target=targetEntry.char
+  if(benjyHandleShadowClone(target))return
+  const dmg=damagePercentOfMax(target,getBenjyDamagePercent(0.22),getBenjyMercyHp(target))
+  addCombatLog(`Benjy repousse ${target.name} d'un mouvement sec. ${target.name} perd ${dmg} PV.`)
 }
 function benjyUsesTankAsWeapon(){
   const tankEntry=pickAliveTank();const alive=getAliveTeamEntries()
@@ -1323,20 +1350,22 @@ function benjyUsesTankAsWeapon(){
   if(possibleTargets.length===0){benjyWallThrow();return}
   const otherEntry=possibleTargets[Math.floor(Math.random()*possibleTargets.length)]
   const tank=tankEntry.char;const other=otherEntry.char
-  const tankDmg=damagePercentOfMax(tank,0.35,getBenjyMercyHp(tank));const otherDmg=damagePercentOfMax(other,0.25,getBenjyMercyHp(other))
-  addCombatLog(`Benjy attrape ${tank.name} et l'écrase sur ${other.name}.`);addCombatLog(`${tank.name} perd ${tankDmg} PV.`);addCombatLog(`${other.name} perd ${otherDmg} PV.`)
+  const hasOtherClone=other?.effects?.shadowClone
+  if(hasOtherClone){benjyHandleShadowClone(other)}
+  const tankDmg=damagePercentOfMax(tank,getBenjyDamagePercent(0.35),getBenjyMercyHp(tank));const otherDmg=hasOtherClone?0:damagePercentOfMax(other,getBenjyDamagePercent(0.25),getBenjyMercyHp(other))
+  if(otherDmg>0)addCombatLog(`Benjy attrape ${tank.name} par l'armure et l'utilise comme projectile contre ${other.name}. ${tank.name} perd ${tankDmg} PV, ${other.name} perd ${otherDmg} PV.`);else addCombatLog(`Benjy attrape ${tank.name} par l'armure et l'utilise comme projectile contre ${other.name}. ${tank.name} perd ${tankDmg} PV.`)
 }
 function benjyPunishTaunt(){
   if(!G.combat.taunt)return false
   const tankIndex=G.combat.taunt.charIndex;const tank=G.team[tankIndex]
   if(!tank||tank.currentHp<=0)return false
-  const dmg=damagePercentOfMax(tank,0.80,getBenjyMercyHp(tank))
-  addCombatLog(`Benjy : "Tu voulais mon attention ?"`)
-  addCombatLog(`Benjy disparaît, puis réapparaît en saisissant ${tank.name} par la tête.`)
-  addCombatLog(`Benjy encastre ${tank.name} dans le sol.`);addCombatLog(`${tank.name} perd ${dmg} PV.`)
+  if(benjyHandleShadowClone(tank)){delete G.combat.taunt;return true}
+  const dmg=damagePercentOfMax(tank,getBenjyDamagePercent(0.80),getBenjyMercyHp(tank))
+  addCombatLog(`Benjy : "Mauvaise idée."`)
+  addCombatLog(`Benjy attrape ${tank.name} par la tête et l'encastre dans le sol. ${tank.name} perd ${dmg} PV.`)
   delete G.combat.taunt;return true
 }
-function isTeamUnderBenjyLimit(){if(!G||!G.team)return false;return G.team.every(char=>{const s=getFinalStats(char);return char.currentHp<=Math.max(1,Math.floor(s.pvMax*0.10))})}
+function isTeamUnderBenjyLimit(){if(!G||!G.team)return false;const ratio=isBenjySoloFight()?0.20:0.10;return G.team.every(char=>{const s=getFinalStats(char);return char.currentHp<=Math.max(1,Math.floor(s.pvMax*ratio))})}
 function checkBenjyEndCondition(){
   if(!G?.combat?.isBenjyFight)return false
   const allDead=G.team.every(c=>c.currentHp<=0)
@@ -1351,6 +1380,48 @@ function startNextTurnAfterBenjy(){
   if(aliveIdx>=0){G.activeChar=aliveIdx;addCombatLog(`--- Tour suivant ---`);addCombatLog(`👉 ${G.team[G.activeChar].name}, à toi !`);renderCombat()}
   else checkBenjyEndCondition()
 }
+
+function benjyPalmStrike(){
+  const targetEntry=pickRandomAlive();if(!targetEntry)return
+  const target=targetEntry.char
+  if(typeof benjyHandleShadowClone==='function'&&benjyHandleShadowClone(target))return
+  const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.10);const dmg=damagePercentOfMax(target,percent,minHp)
+  addCombatLog(`Benjy pose deux doigts sur le torse de ${target.name} et le projette en arrière. ${target.name} perd ${dmg} PV.`)
+}
+function benjyGroundSlam(){
+  const targetEntry=pickAliveNonTank();if(!targetEntry)return
+  const target=targetEntry.char
+  if(typeof benjyHandleShadowClone==='function'&&benjyHandleShadowClone(target))return
+  const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.14);const dmg=damagePercentOfMax(target,percent,minHp)
+  addCombatLog(`Benjy saisit ${target.name} et l'écrase au sol. ${target.name} perd ${dmg} PV.`)
+}
+function benjyPressureWave(){
+  const alive=getAliveTeamEntries();if(alive.length===0)return
+  const results=[]
+  alive.forEach(e=>{const target=e.char;const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.06);const dmg=damagePercentOfMax(target,percent,minHp);results.push(target.name+" perd "+dmg+" PV")})
+  addCombatLog(`Benjy fait un pas en avant. Une onde de pression traverse la salle : ${results.join(", ")}.`)
+}
+function benjyDisappearStrike(){
+  const targetEntry=pickRandomAlive();if(!targetEntry)return
+  const target=targetEntry.char
+  if(typeof benjyHandleShadowClone==='function'&&benjyHandleShadowClone(target))return
+  const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.12);const dmg=damagePercentOfMax(target,percent,minHp)
+  addCombatLog(`Benjy disparaît, réapparaît sur le côté de ${target.name} et le fauche d'un coup de pied fulgurant. ${target.name} perd ${dmg} PV.`)
+}
+function benjyWeaponCatch(){
+  const targetEntry=pickRandomAlive();if(!targetEntry)return
+  const target=targetEntry.char
+  if(typeof benjyHandleShadowClone==='function'&&benjyHandleShadowClone(target))return
+  const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.08);const dmg=damagePercentOfMax(target,percent,minHp)
+  addCombatLog(`Benjy arrête l'élan de ${target.name} d'une seule main et le repousse d'un geste sec. ${target.name} perd ${dmg} PV.`)
+}
+function benjySilenceMoment(){
+  const alive=getAliveTeamEntries();if(alive.length===0)return
+  const targetEntry=alive[Math.floor(Math.random()*alive.length)];const target=targetEntry.char
+  const minHp=getBenjyMercyHp(target);const percent=getBenjyDamagePercent(0.05);const dmg=damagePercentOfMax(target,percent,minHp)
+  addCombatLog(`Benjy ne bouge pas. Une pression invisible écrase ${target.name}, qui perd ${dmg} PV.`)
+}
+
 function benjyEnemyTurn(){
   if(!G||!G.combat?.isBenjyFight)return
   G.combat.benjyTurnCount=(G.combat.benjyTurnCount||0)+1
@@ -1359,7 +1430,7 @@ function benjyEnemyTurn(){
   else if(G.combat.benjyTurnCount===4)addCombatLog(`Benjy : "Vous insistez vraiment."`)
   else if(G.combat.benjyTurnCount===6)addCombatLog(`Benjy : "Bon. Je vais faire simple."`)
   if(G.combat.taunt&&Math.random()<0.80)benjyPunishTaunt()
-  else{const roll=Math.random();if(roll<0.35)benjyWallThrow();else if(roll<0.65)benjyBackhand();else benjyUsesTankAsWeapon()}
+  else{let actions=[benjyWallThrow,benjyBackhand,benjyPalmStrike,benjyGroundSlam,benjyPressureWave,benjyDisappearStrike,benjyWeaponCatch,benjySilenceMoment];if(typeof pickAliveTank==='function'&&typeof getAliveTeamEntries==='function'&&pickAliveTank()&&getAliveTeamEntries().length>=2)actions.push(benjyUsesTankAsWeapon);const action=actions[Math.floor(Math.random()*actions.length)];action()}
   renderCombat();checkBenjyEndCondition();if(!G.combat.monster)return;startNextTurnAfterBenjy()
 }
 function endBenjyFight(){

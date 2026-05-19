@@ -834,6 +834,15 @@ function renderForestInventory(){
   el.innerHTML=html
 }
 function getActiveBuffEmojis(char,charIndex){if(!char)return '';const emojis=[];if(char.effects?.critBuff)emojis.push('🎯');if(char.effects?.ppBuff)emojis.push('🐂');if(char.effects?.pmBuff)emojis.push('✨');if(char.effects?.shadowClone)emojis.push('🌑');if(G?.combat?.taunt&&G.combat.taunt.charIndex===charIndex)emojis.push('🦁');return emojis.join(' ')}
+function getSpellDescription(spell,char){
+  if(!spell)return ''
+  if(spell.type==='heal_formula'){
+    const casterStats=getFinalStats(char)
+    const heal=Math.floor(spell.baseHeal+(spell.levelScaling*char.level)+(spell.manaScaling*casterStats.mana))
+    return `Restaure ${heal} PV à un allié choisi.`
+  }
+  return spell.desc||''
+}
 function renderCombat(){
   if(!G||!getMonster())return
   renderTeamBar()
@@ -864,7 +873,7 @@ function renderCombat(){
     spellsList.innerHTML=char.spells.map(sid=>{
       const sp=SPELLS[sid];if(!sp)return''
       const canCast=char.currentPe>=sp.cost
-      return `<button class="spell-btn${canCast?'':' disabled'}" data-spell="${sid}"${canCast?'':' disabled'}>${sp.name} <span class="spell-cost">(${sp.cost} PE)</span><br><span style="font-size:0.7rem;color:var(--text2)">${sp.desc}</span></button>`
+      return `<button class="spell-btn${canCast?'':' disabled'}" data-spell="${sid}"${canCast?'':' disabled'}>${sp.name} <span class="spell-cost">(${sp.cost} PE)</span><br><span style="font-size:0.7rem;color:var(--text2)">${getSpellDescription(sp,char)}</span></button>`
     }).join('')
   }
   renderCombatLog()
@@ -1003,7 +1012,7 @@ function init(){
       document.getElementById('spells-list').innerHTML=spells.map(sid=>{
         const sp=SPELLS[sid];if(!sp)return''
         const canCast=char.currentPe>=sp.cost
-        return `<button class="spell-btn${canCast?'':' disabled'}" data-spell="${sid}"${canCast?'':' disabled'}>${sp.name} <span class="spell-cost">(${sp.cost} PE)</span><br><span style="font-size:0.7rem;color:var(--text2)">${sp.desc}</span></button>`
+        return `<button class="spell-btn${canCast?'':' disabled'}" data-spell="${sid}"${canCast?'':' disabled'}>${sp.name} <span class="spell-cost">(${sp.cost} PE)</span><br><span style="font-size:0.7rem;color:var(--text2)">${getSpellDescription(sp,char)}</span></button>`
       }).join('')
     }else{spellView.classList.add('hidden');mainBtns.classList.remove('hidden')}
   })
@@ -1119,7 +1128,7 @@ function showCharacterDetail(idx){
   html+=`<div class="equip-slot"><span class="equip-slot-label">🛡️ Armure</span>${c.armor?`<span class="equip-slot-item">${ARMORS[c.armor]?.emoji||''} ${ARMORS[c.armor]?.name||c.armor}</span><button class="equip-btn" data-unequip="${idx},armor">Déséquiper</button>`:'<span class="equip-slot-empty">— Vide —</span>'}</div></div>`
   if(c.spells&&c.spells.length>0){
     html+=`<div style="margin-bottom:8px"><div style="font-size:0.8rem;color:var(--purple);font-weight:bold;margin-bottom:4px">🔮 Sorts</div>`
-    c.spells.forEach(sid=>{const sp=SPELLS[sid];if(sp)html+=`<div style="font-size:0.75rem;padding:3px 6px;background:var(--surface);border-radius:4px;margin-bottom:2px"><b>${sp.name}</b> (${sp.cost} PE) — ${sp.desc}</div>`})
+    c.spells.forEach(sid=>{const sp=SPELLS[sid];if(sp)html+=`<div style="font-size:0.75rem;padding:3px 6px;background:var(--surface);border-radius:4px;margin-bottom:2px"><b>${sp.name}</b> (${sp.cost} PE) — ${getSpellDescription(sp,c)}</div>`})
     html+=`</div>`
   }
   html+=`<button class="btn-secondary" onclick="switchView('team');showTeamView()">← Retour à l'équipe</button></div>`

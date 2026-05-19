@@ -1274,7 +1274,7 @@ function maybeBenjyTookDamageReaction(dmg){
   if(!dmg||dmg<=0)return
   if(G.combat.benjyDamageReactionDone)return
   G.combat.benjyDamageReactionDone=true
-  addCombatLog(`Benjy sourit. Benjy : "Bien... très bien."`)
+  addCombatLog(`Benjy sourit : "Bien... très bien."`)
 }
 
 function resolveBenjyDefenseReaction(attacker,incomingDmg,sourceLabel){
@@ -1283,7 +1283,7 @@ function resolveBenjyDefenseReaction(attacker,incomingDmg,sourceLabel){
   if(roll<0.20){play('dodge');addCombatLog(`💨 Benjy esquive ${sourceLabel} sans même regarder.`);return{cancelled:true,damageToBenjy:0}}
   if(roll<0.40){addCombatLog(`✋ Benjy bloque ${sourceLabel} d'une seule main.`);return{cancelled:true,damageToBenjy:0}}
   if(roll<0.70){const minHp=getBenjyMercyHp(attacker);const reflectedDmg=damagePercentOfMax(attacker,0.08,minHp);addCombatLog(`↩️ Benjy renvoie ${sourceLabel}. ${attacker.name} subit ${reflectedDmg} PV en retour.`);return{cancelled:true,damageToBenjy:0}}
-  const reducedDmg=Math.max(1,Math.floor(incomingDmg*0.15));addCombatLog(`Benjy encaisse ${sourceLabel} sans reculer.`);return{cancelled:false,damageToBenjy:reducedDmg}
+  const reducedDmg=Math.max(1,Math.floor(incomingDmg*0.15));return{cancelled:false,damageToBenjy:reducedDmg}
 }
 function startBenjyCombat(){
   if(!G)return

@@ -318,9 +318,10 @@ function resolveTurn(){
       const critRoll=Math.random()*100;let crit=false
       if(critRoll<s.crit){dmg=Math.floor(dmg*1.5);crit=true}
       if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,`l'attaque de ${char.name}`);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive l'attaque de ${char.name}!`);renderCombat();continue}}
-      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg)
+      getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
       crit?play('crit'):play('hit')
       addCombatLog(`${crit?'💥 Critique ! ':''}⚔️ ${char.name} attaque : ${dmg} dégâts`)
+      maybeBenjyTookDamageReaction(dmg)
       renderCombat()
       if(getMonster().currentHp<=0){setTimeout(victory,400);return}
     }else if(a.type==='spell'){
@@ -341,7 +342,7 @@ function resolveTurn(){
           else{dmg=Math.floor(s.pp*1.2);addCombatLog(`⚡ Critique léger x1.2`)}
         }
         dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
-        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg)
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
         play('hit')
         addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
         if(spell.effects){
@@ -365,6 +366,7 @@ function resolveTurn(){
               addCombatLog(`💫 ${getMonster().name} est étourdi !`)}
           }
         }
+        maybeBenjyTookDamageReaction(dmg)
         renderCombat()
         if(getMonster().currentHp<=0){setTimeout(victory,400);return}
       }else if(spell.type==='heal'){
@@ -402,11 +404,12 @@ function resolveTurn(){
         let dmg=Math.floor(s.pp*(spell.multiplier||1))
         if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){dmg=0}else{dmg=reaction.damageToBenjy}}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
         dmg=Math.max(0,dmg-Math.floor(effectiveDef/2))
-        if(dmg>0){getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);maybeBenjyTookDamageReaction(dmg);play('hit');addCombatLog(`⚔️ ${char.name} utilise ${spell.name} : ${dmg} dégâts`)}
+        if(dmg>0){getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg);play('hit');addCombatLog(`⚔️ ${char.name} utilise ${spell.name} : ${dmg} dégâts`)}
         char.effects=char.effects||{}
         char.effects.ppBuff={value:spell.effects.ppBuffPercent,duration:spell.duration,source:spell.id}
         play('bull_stance')
         addCombatLog(`🐂 ${char.name} adopte la Posture du Taureau !`)
+        if(dmg>0)maybeBenjyTookDamageReaction(dmg)
         renderCombat()
         if(getMonster().currentHp<=0){setTimeout(victory,400);return}
       }else if(spell.type==='shadow_clone'){
@@ -1271,8 +1274,7 @@ function maybeBenjyTookDamageReaction(dmg){
   if(!dmg||dmg<=0)return
   if(G.combat.benjyDamageReactionDone)return
   G.combat.benjyDamageReactionDone=true
-  addCombatLog('Benjy sourit.')
-  addCombatLog('Benjy : "Bien... très bien."')
+  addCombatLog(`Benjy sourit. Benjy : "Bien... très bien."`)
 }
 
 function resolveBenjyDefenseReaction(attacker,incomingDmg,sourceLabel){

@@ -944,12 +944,19 @@ function showMessage(title,msg,cb){
 }
 
 /* ============== SAVES UI ============== */
+function getSaveTeamTitle(save){
+  if(!save||!Array.isArray(save.team)||save.team.length===0)return 'Équipe vide'
+  const shown=save.team.slice(0,3).map(c=>`${c.name||'Héros'} Niv.${c.level||1}`)
+  const remaining=save.team.length-shown.length
+  return shown.join(' • ')+(remaining>0?` +${remaining}`:'')
+}
 function renderSaves(){
   const list=document.getElementById('saves-list');const saves=saveSlots()
   if(saves.length===0){list.innerHTML='<div class="save-empty">Aucune sauvegarde existante.<br>Créez une nouvelle partie !</div>';return}
   list.innerHTML=saves.map((s,i)=>{
     const d=new Date(s.created);const dateStr=`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`
-    return `<div class="save-card" data-slot="${i}"><div class="save-info"><div class="save-name">${s.slotName||'Partie'}</div><div class="save-detail">${s.team.length} persos • Niv.${s.forestLevel} • ${dateStr} • ${s.gold}💰</div></div><button class="save-delete" data-del="${i}">🗑️</button></div>`
+    const teamTitle=getSaveTeamTitle(s)
+    return `<div class="save-card" data-slot="${i}"><div class="save-info"><div class="save-name">${teamTitle}</div><div class="save-detail">${s.team.length} perso${s.team.length>1?'s':''} • ${dateStr} • ${s.gold}💰</div></div><button class="save-delete" data-del="${i}">🗑️</button></div>`
   }).join('')
 }
 

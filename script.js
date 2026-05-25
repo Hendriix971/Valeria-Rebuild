@@ -499,6 +499,20 @@ function combatFlee(){
   }
   renderCombat()
 }
+let victoryAutoContinueTimer=null
+let victoryCountdownInterval=null
+function continueAfterVictory(){
+  if(victoryAutoContinueTimer){clearTimeout(victoryAutoContinueTimer);victoryAutoContinueTimer=null}
+  if(victoryCountdownInterval){clearInterval(victoryCountdownInterval);victoryCountdownInterval=null}
+  const btn=document.getElementById('btn-victory-continue')
+  if(btn)btn.textContent='Continuer'
+  document.getElementById('popup-victory').classList.add('hidden')
+  if(G&&G.combat){G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={}
+    renderAll()
+    if(G.team.some(c=>(c.statPointsAvailable||0)>0)){showNextLevelUp();play('levelup')}
+    else{switchView('forest');renderAll()}
+  }
+}
 function victory(){
   if(!G||!getMonster())return
   if(G?.combat?.isBenjyFight){addCombatLog(`Benjy : "Tu y as cru ?"`);const m=getMonster(),ms=getMonsterStats();if(m&&ms)m.currentHp=ms.pvMax;renderCombat();return}
@@ -517,6 +531,13 @@ function victory(){
   document.getElementById('popup-victory').classList.remove('hidden')
   play('victory')
   renderAll()
+  if(victoryAutoContinueTimer)clearTimeout(victoryAutoContinueTimer)
+  if(victoryCountdownInterval)clearInterval(victoryCountdownInterval)
+  let sec=3
+  const btn=document.getElementById('btn-victory-continue')
+  btn.textContent=`Continuer (${sec}s)`
+  victoryCountdownInterval=setInterval(()=>{sec--;if(sec>0)btn.textContent=`Continuer (${sec}s)`},1000)
+  victoryAutoContinueTimer=setTimeout(()=>{continueAfterVictory()},3000)
 }
 function processEnemyEffects(){
   if(!G||!G.combat.enemyEffects)return
@@ -959,6 +980,22 @@ function renderSaves(){
     return `<div class="save-card" data-slot="${i}"><div class="save-info"><div class="save-name">${teamTitle}</div><div class="save-detail">${s.team.length} perso${s.team.length>1?'s':''} • ${dateStr} • ${s.gold}💰</div></div><button class="save-delete" data-del="${i}">🗑️</button></div>`
   }).join('')
 }
+function showDeleteSaveConfirm(slot){
+  const saves=saveSlots();const save=saves[slot]
+  if(!save)return
+  const existing=document.getElementById('popup-delete-save')
+  if(existing)existing.remove()
+  const title=typeof getSaveTeamTitle==='function'?getSaveTeamTitle(save):(save.slotName||'Partie')
+  const overlay=document.createElement('div')
+  overlay.id='popup-delete-save';overlay.className='popup-overlay'
+  overlay.innerHTML=`<div class="popup popup-small"><div class="popup-header"><h3>Supprimer la partie ?</h3><button class="popup-close" id="btn-delete-save-close">✕</button></div><div class="popup-body" style="text-align:center;font-size:0.9rem;line-height:1.6"><p><b>${title}</b></p><p>Cette action est définitive.</p><p>Voulez-vous vraiment supprimer cette sauvegarde ?</p></div><div class="popup-footer"><button id="btn-delete-save-cancel" class="btn-secondary">Annuler</button><button id="btn-delete-save-confirm" class="btn-primary" style="border-color:var(--red);color:var(--red)">Supprimer</button></div></div>`
+  document.body.appendChild(overlay)
+  const close=()=>overlay.remove()
+  document.getElementById('btn-delete-save-close').addEventListener('click',close)
+  document.getElementById('btn-delete-save-cancel').addEventListener('click',close)
+  document.getElementById('btn-delete-save-confirm').addEventListener('click',()=>{deleteSave(slot);close();renderSaves()})
+  overlay.addEventListener('click',e=>{if(e.target===overlay)close()})
+}
 
 /* ============== INIT ============== */
 function init(){
@@ -977,7 +1014,7 @@ function init(){
   })
   document.getElementById('saves-list').addEventListener('click',(e)=>{
     const del=e.target.closest('.save-delete');if(!del)return
-    const slot=parseInt(del.dataset.del);deleteSave(slot);renderSaves()
+    const slot=parseInt(del.dataset.del);showDeleteSaveConfirm(slot)
   })
   /* Create team screen */
   function renderCreateTeam(){
@@ -1091,14 +1128,7 @@ function init(){
     const idx=parseInt(el.dataset.char);if(G.team[idx]&&G.team[idx].currentHp>0){G.activeChar=idx;renderTeamBar();document.getElementById('combat-spells').classList.add('hidden');document.getElementById('combat-buttons').classList.remove('hidden');const combatView=document.getElementById('view-combat');if(!combatView.classList.contains('hidden'))renderCombat()}
   })
   /* Victory popup */
-  document.getElementById('btn-victory-continue').addEventListener('click',()=>{
-    document.getElementById('popup-victory').classList.add('hidden')
-    if(G){G.combat.monster=null;G.combat.combatLog=[];G.combat.guarding=false;G.combat.enemyEffects={}
-      renderAll()
-      if(G.team.some(c=>(c.statPointsAvailable||0)>0)){showNextLevelUp();play('levelup')}
-      else{switchView('forest');renderAll()}
-    }
-  })
+  document.getElementById('btn-victory-continue').addEventListener('click',continueAfterVictory)
   /* Tavern */
   document.getElementById('btn-tavern-rest').addEventListener('click',tavernRest)
   document.getElementById('btn-tavern-drink').addEventListener('click',tavernDrink)

@@ -1,6 +1,6 @@
 ﻿/* ============== DATA ============== */
-const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat','assassin_concentration']},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante','epeiste_garde_croisee','epeiste_posture_taureau','epeiste_brise_garde','epeiste_double_entaille','epeiste_contre_lame','epeiste_lame_titan'],spellUnlocks:[{level:1,spell:'epeiste_frappe_percante'},{level:5,spell:'epeiste_garde_croisee'},{level:10,spell:'epeiste_posture_taureau'},{level:15,spell:'epeiste_brise_garde'},{level:20,spell:'epeiste_double_entaille'},{level:25,spell:'epeiste_contre_lame'},{level:30,spell:'epeiste_lame_titan'}]},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu','mage_blizzard','mage_canalisation','mage_lame_vent','mage_eclair','mage_priere','mage_canon_solaire'],spellUnlocks:[{level:1,spell:'mage_boule_de_feu'},{level:5,spell:'mage_blizzard'},{level:10,spell:'mage_canalisation'},{level:15,spell:'mage_lame_vent'},{level:20,spell:'mage_eclair'},{level:25,spell:'mage_priere'},{level:30,spell:'mage_canon_solaire'}]},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre','sorcier_entrave','sorcier_clone_ombre','sorcier_faiblesse','sorcier_dissonance','sorcier_absorption','sorcier_avalame'],spellUnlocks:[{level:1,spell:'sorcier_fleche_ombre'},{level:5,spell:'sorcier_entrave'},{level:10,spell:'sorcier_clone_ombre'},{level:15,spell:'sorcier_faiblesse'},{level:20,spell:'sorcier_dissonance'},{level:25,spell:'sorcier_absorption'},{level:30,spell:'sorcier_avalame'}]},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_morsure_hydre','tank_provocation']},guerisseur:{id:'guerisseur',name:'Guérisseur',emoji:'✨',desc:'Soigneur alliant agilité et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux','guerisseur_soin_mineur','guerisseur_soin_majeur','guerisseur_guerison']}}
-const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},assassin_concentration:{id:'assassin_concentration',name:'Concentration',type:'self_buff',target:'self',cost:15,duration:3,cooldown:3,effects:{critBuffPercent:20,activationDodge:true},stackable:false,desc:'Se concentre dans l\'ombre. Confère +20% CRIT pendant 3 tours et esquive automatiquement la prochaine attaque reçue pendant l\'activation.'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.6,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},epeiste_posture_taureau:{id:'epeiste_posture_taureau',name:'Posture du Taureau',type:'damage_self_buff',target:'enemy',cost:15,powerStat:'physicalPower',multiplier:1.4,duration:3,cooldown:3,effects:{ppBuffPercent:20},stackable:false,desc:'Frappe l\'ennemi avec la force du taureau et augmente la PP du lanceur de 20% pendant 3 tours.'},epeiste_garde_croisee:{id:'epeiste_garde_croisee',name:'Garde croisée',type:'team_guard',target:'team',cost:20,cooldown:4,duration:1,damageReductionPercent:40,desc:'L\'\u00c9p\u00e9iste croise sa lame devant l\'\u00e9quipe. R\u00e9duit de 40% les d\u00e9g\u00e2ts de la prochaine attaque ennemie.'},epeiste_brise_garde:{id:'epeiste_brise_garde',name:'Brise-garde',type:'damage',target:'enemy',cost:24,powerStat:'physicalPower',multiplier:2.0,effects:{defenseReductionPercent:20,duration:3,stackable:false},desc:'Frappe violemment la garde ennemie. Inflige des d\u00e9g\u00e2ts et r\u00e9duit la DEF ennemie de 20% pendant 3 tours.'},epeiste_double_entaille:{id:'epeiste_double_entaille',name:'Double entaille',type:'damage',target:'enemy',cost:30,powerStat:'physicalPower',multiplier:2.4,desc:'Encha\u00eene deux frappes rapides sur l\'ennemi.'},epeiste_contre_lame:{id:'epeiste_contre_lame',name:'Contre-lame',type:'damage_counter',target:'enemy',cost:36,powerStat:'physicalPower',multiplier:2.8,cooldown:3,counterMultiplier:1.0,desc:'Inflige des d\u00e9g\u00e2ts et pr\u00e9pare une riposte. Si l\'ennemi cible l\'\u00c9p\u00e9iste avant le prochain tour, il contre-attaque automatiquement.'},epeiste_lame_titan:{id:'epeiste_lame_titan',name:'Lame du titan',type:'damage',target:'enemy',cost:42,powerStat:'physicalPower',multiplier:3.2,desc:'D\u00e9cha\u00eene une frappe monumentale capable de fendre la garde ennemie.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.4,effects:{poisonPercent:3,duration:3,stackable:true,maxStacks:3},desc:'Boule de feu explosive. Inflige une brûlure -3% PV/tour pendant 3 tours. Cumulable 3 fois.'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:12,powerStat:'magicPower',multiplier:1.2,effects:{defenseReductionPercent:40,duration:4,stackable:false},desc:'Inflige des dégâts magiques et réduit la DEF de l\'ennemi de 40% pendant 4 tours.'},mage_blizzard:{id:'mage_blizzard',name:'Blizzard',type:'damage',target:'enemy',cost:15,powerStat:'magicPower',multiplier:1.8,cooldown:2,effects:{rapidityReductionPercent:5,duration:3,stackable:false},desc:'Inflige des dégâts magiques et réduit la RAP de l\'ennemi de 5% pendant 3 tours. Non cumulable.'},mage_lame_vent:{id:'mage_lame_vent',name:'Lame de vent',type:'damage',target:'enemy',cost:25,powerStat:'magicPower',multiplier:2.2,cooldown:2,effects:{critReductionPercent:30,duration:3,stackable:false},desc:'Inflige des dégâts magiques et réduit le taux de CRIT de l\'ennemi de 30% pendant 3 tours.'},mage_eclair:{id:'mage_eclair',name:'Éclair',type:'damage',target:'enemy',cost:30,powerStat:'magicPower',multiplier:2.6,cooldown:3,effects:{stunChance:30,duration:1},desc:'Inflige de gros dégâts de foudre. 30% de chance d\'étourdir l\'ennemi pour le tour courant. Cooldown : 3 tours.'},mage_canon_solaire:{id:'mage_canon_solaire',name:'Canon solaire',type:'damage',target:'enemy',cost:50,powerStat:'magicPower',multiplier:3.0,cooldown:3,desc:'Concentre la lumière en un rayon destructeur. Inflige de très gros dégâts magiques.'},mage_canalisation:{id:'mage_canalisation',name:'Canalisation',type:'self_buff',target:'self',cost:20,duration:3,cooldown:3,effects:{pmBuffPercent:20,activationBlock:true},stackable:false,desc:'Canalise la magie. Confère +20% PM pendant 3 tours et bloque les dégâts subis pendant l\'activation.'},sorcier_clone_ombre:{id:'sorcier_clone_ombre',name:'Clone d\'ombre',type:'shadow_clone',target:'self',cost:24,duration:5,cloneHpPercent:70,effects:{activationDodge:true},stackable:false,desc:'Crée un clone d\'ombre qui encaisse les dégâts visant le Sorcier pendant 5 tours ou jusqu\'à sa destruction.'},sorcier_entrave:{id:'sorcier_entrave',name:'Entrave',type:'damage',target:'enemy',cost:18,powerStat:'magicPower',multiplier:1.6,effects:{rapidityReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la RAP de l\'ennemi de 40% pendant 4 tours.'},sorcier_faiblesse:{id:'sorcier_faiblesse',name:'Faiblesse',type:'damage',target:'enemy',cost:28,powerStat:'magicPower',multiplier:2.0,effects:{ppReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la PP de l\'ennemi de 40% pendant 4 tours.'},sorcier_dissonance:{id:'sorcier_dissonance',name:'Dissonance',type:'damage',target:'enemy',cost:32,powerStat:'magicPower',multiplier:2.4,effects:{pmReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la PM de l\'ennemi de 40% pendant 4 tours.'},sorcier_absorption:{id:'sorcier_absorption',name:'Absorption',type:'damage',target:'enemy',cost:36,powerStat:'magicPower',multiplier:2.8,effects:{energySteal:true},desc:'Inflige des d\u00e9g\u00e2ts magiques et retire au monstre autant de PE que les d\u00e9g\u00e2ts inflig\u00e9s.'},sorcier_avalame:{id:'sorcier_avalame',name:'Aval\u00e2me',type:'damage',target:'enemy',cost:40,powerStat:'magicPower',multiplier:3.2,effects:{lifeSteal:true},desc:'Inflige de lourds d\u00e9g\u00e2ts magiques et rend au Sorcier autant de PV que les d\u00e9g\u00e2ts inflig\u00e9s.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:.8,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. (PP+PM)x0.8 + drain d\'énergie.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.2,effects:{stunChance:50,duration:1},desc:'Rayon de lumière sacrée. 50% de chance d\'étourdir l\'ennemi pour le tour.'},tank_provocation:{id:'tank_provocation',name:'Provocation',type:'taunt',target:'self',cost:15,duration:3,cooldown:3,tauntChance:90,desc:'Provoque l\'ennemi. Pendant 3 tours, le Tank a 90% de chances d\'être ciblé.'},guerisseur_soin_mineur:{id:'guerisseur_soin_mineur',name:'Soin mineur',type:'heal',target:'ally_choice',cost:20,cooldown:1,healPercent:40,desc:'Restaure 40% des PV max d\'un allié choisi.'},guerisseur_soin_majeur:{id:'guerisseur_soin_majeur',name:'Soin majeur',type:'heal',target:'ally_choice',cost:40,cooldown:2,healPercent:60,desc:'Restaure 60% des PV max d\'un allié choisi.'},guerisseur_guerison:{id:'guerisseur_guerison',name:'Guérison',type:'heal_formula',target:'ally_choice',cost:20,cooldown:2,baseHeal:70,levelScaling:5,manaScaling:5,desc:'Restaure 70 + 5×niveau + 5×MANA PV à un allié choisi.'},mage_priere:{id:'mage_priere',name:'Prière',type:'regen_self',target:'self',cost:40,duration:3,cooldown:3,levelScaling:4,stackable:false,desc:'Restaure niveau × 4 PV par tour pendant 3 tours. Non cumulable, mais renouvelable.'}}
+const CLASSES={assassin:{id:'assassin',name:'Assassin',emoji:'🗡️',desc:'Spécialiste des attaques furtives.',bonuses:{for:1,rap:3,con:-3,mana:-1},spells:['assassin_assassinat','assassin_lame_empoisonnee','assassin_concentration','assassin_bombe_aveuglante','assassin_entaille_sanglante','assassin_pas_ombre','assassin_execution'],spellUnlocks:[{level:1,spell:'assassin_assassinat'},{level:5,spell:'assassin_lame_empoisonnee'},{level:10,spell:'assassin_concentration'},{level:15,spell:'assassin_bombe_aveuglante'},{level:20,spell:'assassin_entaille_sanglante'},{level:25,spell:'assassin_pas_ombre'},{level:30,spell:'assassin_execution'}]},epeiste:{id:'epeiste',name:'Épéiste',emoji:'⚔️',desc:'Combattant physique polyvalent.',bonuses:{for:2,rap:-3,con:2,mana:-1},spells:['epeiste_frappe_percante','epeiste_garde_croisee','epeiste_posture_taureau','epeiste_brise_garde','epeiste_double_entaille','epeiste_contre_lame','epeiste_lame_titan'],spellUnlocks:[{level:1,spell:'epeiste_frappe_percante'},{level:5,spell:'epeiste_garde_croisee'},{level:10,spell:'epeiste_posture_taureau'},{level:15,spell:'epeiste_brise_garde'},{level:20,spell:'epeiste_double_entaille'},{level:25,spell:'epeiste_contre_lame'},{level:30,spell:'epeiste_lame_titan'}]},mage:{id:'mage',name:'Mage',emoji:'🔮',desc:'Utilisateur de magie destructrice.',bonuses:{for:0,rap:-1,con:-3,mana:4},spells:['mage_boule_de_feu','mage_blizzard','mage_canalisation','mage_lame_vent','mage_eclair','mage_priere','mage_canon_solaire'],spellUnlocks:[{level:1,spell:'mage_boule_de_feu'},{level:5,spell:'mage_blizzard'},{level:10,spell:'mage_canalisation'},{level:15,spell:'mage_lame_vent'},{level:20,spell:'mage_eclair'},{level:25,spell:'mage_priere'},{level:30,spell:'mage_canon_solaire'}]},sorcier:{id:'sorcier',name:'Sorcier',emoji:'🧙',desc:'Mage obscur aux sorts affaiblissants.',bonuses:{for:-4,rap:3,con:0,mana:1},spells:['sorcier_fleche_ombre','sorcier_entrave','sorcier_clone_ombre','sorcier_faiblesse','sorcier_dissonance','sorcier_absorption','sorcier_avalame'],spellUnlocks:[{level:1,spell:'sorcier_fleche_ombre'},{level:5,spell:'sorcier_entrave'},{level:10,spell:'sorcier_clone_ombre'},{level:15,spell:'sorcier_faiblesse'},{level:20,spell:'sorcier_dissonance'},{level:25,spell:'sorcier_absorption'},{level:30,spell:'sorcier_avalame'}]},tank:{id:'tank',name:'Tank',emoji:'🛡️',desc:'Protecteur capable d\'encaisser.',bonuses:{for:-1,rap:-2,con:4,mana:-1},spells:['tank_frappe_runique','tank_rempart','tank_provocation','tank_morsure_hydre','tank_frappe_sang','tank_venin_hydre','tank_rupture_ecarlate'],spellUnlocks:[{level:1,spell:'tank_frappe_runique'},{level:5,spell:'tank_rempart'},{level:10,spell:'tank_provocation'},{level:15,spell:'tank_morsure_hydre'},{level:15,spell:'tank_frappe_sang'},{level:25,spell:'tank_venin_hydre'},{level:25,spell:'tank_rupture_ecarlate'}]},guerisseur:{id:'guerisseur',name:'Gu\u00e9risseur',emoji:'\u2728',desc:'Soigneur alliant agilit\u00e9 et endurance.',bonuses:{for:-2,rap:2,con:2,mana:-2},spells:['guerisseur_lux','guerisseur_guerison','guerisseur_soin_mineur','guerisseur_soin_majeur','guerisseur_chatiment_sacre','guerisseur_rayon_purificateur','guerisseur_resurrection'],spellUnlocks:[{level:1,spell:'guerisseur_lux'},{level:5,spell:'guerisseur_guerison'},{level:10,spell:'guerisseur_soin_mineur'},{level:15,spell:'guerisseur_soin_majeur'},{level:20,spell:'guerisseur_chatiment_sacre'},{level:25,spell:'guerisseur_rayon_purificateur'},{level:30,spell:'guerisseur_resurrection'}]}}
+const SPELLS={assassin_assassinat:{id:'assassin_assassinat',name:'Assassinat',type:'damage',target:'enemy',cost:7,powerStat:'physicalPower',multiplier:1,guaranteedWeakCrit:true,weakCritMultiplier:1.2,normalCritMultiplier:1.5,desc:'Frappe un point vital. Au minimum critique léger (x1.2), chance vrai critique (x1.5).'},assassin_concentration:{id:'assassin_concentration',name:'Concentration',type:'self_buff',target:'self',cost:21,duration:3,cooldown:3,effects:{critBuffPercent:20,activationDodge:true},stackable:false,desc:'Se concentre dans l\'ombre. Confère +20% CRIT pendant 3 tours et esquive automatiquement la prochaine attaque reçue pendant l\'activation.'},assassin_lame_empoisonnee:{id:'assassin_lame_empoisonnee',name:'Lame empoisonn\u00e9e',type:'damage',target:'enemy',cost:14,powerStat:'physicalPower',multiplier:1.4,effects:{poisonPercent:4,duration:3,stackable:false,maxStacks:1},desc:'Enduit la lame d\'un poison sombre. Inflige des d\u00e9g\u00e2ts physiques et empoisonne l\'ennemi pendant 3 tours.'},assassin_bombe_aveuglante:{id:'assassin_bombe_aveuglante',name:'Bombe aveuglante',type:'damage_team_dodge',target:'enemy',cost:28,powerStat:'physicalPower',multiplier:0.5,cooldown:4,duration:2,desc:'Lance une bombe qui explose en flash aveuglant, puis projette des \u00e9clats tranchants. Inflige de faibles d\u00e9g\u00e2ts et permet \u00e0 l\'\u00e9quipe d\'esquiver la prochaine attaque re\u00e7ue.'},assassin_entaille_sanglante:{id:'assassin_entaille_sanglante',name:'Entaille sanglante',type:'damage',target:'enemy',cost:35,powerStat:'physicalPower',multiplier:2.2,effects:{bleedPercent:6,duration:2,stackable:false},desc:'Ouvre une profonde blessure. Inflige des d\u00e9g\u00e2ts physiques et applique un saignement pendant 2 tours.'},assassin_pas_ombre:{id:'assassin_pas_ombre',name:'Pas de l\'ombre',type:'damage_self_dodge',target:'enemy',cost:42,powerStat:'physicalPower',multiplier:2.6,cooldown:3,desc:'L\'Assassin surgit depuis l\'ombre, frappe l\'ennemi, puis dispara\u00eet avant la riposte.'},assassin_execution:{id:'assassin_execution',name:'Ex\u00e9cution',type:'execute',target:'enemy',cost:49,powerStat:'physicalPower',multiplier:3.0,executeThresholdPercent:30,executeBonusPercent:50,cooldown:3,desc:'Frappe pour achever l\'ennemi. Inflige de lourds d\u00e9g\u00e2ts, augment\u00e9s si la cible a moins de 30% de ses PV.'},epeiste_frappe_percante:{id:'epeiste_frappe_percante',name:'Frappe perçante',type:'damage',target:'enemy',cost:10,powerStat:'physicalPower',multiplier:1.6,desc:'Se précipite pour frapper l\'ennemi avec puissance.'},epeiste_posture_taureau:{id:'epeiste_posture_taureau',name:'Posture du Taureau',type:'damage_self_buff',target:'enemy',cost:15,powerStat:'physicalPower',multiplier:1.4,duration:3,cooldown:3,effects:{ppBuffPercent:20},stackable:false,desc:'Frappe l\'ennemi avec la force du taureau et augmente la PP du lanceur de 20% pendant 3 tours.'},epeiste_garde_croisee:{id:'epeiste_garde_croisee',name:'Garde croisée',type:'team_guard',target:'team',cost:20,cooldown:4,duration:1,damageReductionPercent:40,desc:'L\'\u00c9p\u00e9iste croise sa lame devant l\'\u00e9quipe. R\u00e9duit de 40% les d\u00e9g\u00e2ts de la prochaine attaque ennemie.'},epeiste_brise_garde:{id:'epeiste_brise_garde',name:'Brise-garde',type:'damage',target:'enemy',cost:24,powerStat:'physicalPower',multiplier:2.0,effects:{defenseReductionPercent:20,duration:3,stackable:false},desc:'Frappe violemment la garde ennemie. Inflige des d\u00e9g\u00e2ts et r\u00e9duit la DEF ennemie de 20% pendant 3 tours.'},epeiste_double_entaille:{id:'epeiste_double_entaille',name:'Double entaille',type:'damage',target:'enemy',cost:30,powerStat:'physicalPower',multiplier:2.4,desc:'Encha\u00eene deux frappes rapides sur l\'ennemi.'},epeiste_contre_lame:{id:'epeiste_contre_lame',name:'Contre-lame',type:'damage_counter',target:'enemy',cost:36,powerStat:'physicalPower',multiplier:2.8,cooldown:3,counterMultiplier:1.0,desc:'Inflige des d\u00e9g\u00e2ts et pr\u00e9pare une riposte. Si l\'ennemi cible l\'\u00c9p\u00e9iste avant le prochain tour, il contre-attaque automatiquement.'},epeiste_lame_titan:{id:'epeiste_lame_titan',name:'Lame du titan',type:'damage',target:'enemy',cost:42,powerStat:'physicalPower',multiplier:3.2,desc:'D\u00e9cha\u00eene une frappe monumentale capable de fendre la garde ennemie.'},mage_boule_de_feu:{id:'mage_boule_de_feu',name:'Boule de feu',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.4,effects:{poisonPercent:3,duration:3,stackable:true,maxStacks:3},desc:'Boule de feu explosive. Inflige une brûlure -3% PV/tour pendant 3 tours. Cumulable 3 fois.'},sorcier_fleche_ombre:{id:'sorcier_fleche_ombre',name:'Flèche d\'ombre',type:'damage',target:'enemy',cost:12,powerStat:'magicPower',multiplier:1.2,effects:{defenseReductionPercent:40,duration:4,stackable:false},desc:'Inflige des dégâts magiques et réduit la DEF de l\'ennemi de 40% pendant 4 tours.'},mage_blizzard:{id:'mage_blizzard',name:'Blizzard',type:'damage',target:'enemy',cost:15,powerStat:'magicPower',multiplier:1.8,cooldown:2,effects:{rapidityReductionPercent:5,duration:3,stackable:false},desc:'Inflige des dégâts magiques et réduit la RAP de l\'ennemi de 5% pendant 3 tours. Non cumulable.'},mage_lame_vent:{id:'mage_lame_vent',name:'Lame de vent',type:'damage',target:'enemy',cost:25,powerStat:'magicPower',multiplier:2.2,cooldown:2,effects:{critReductionPercent:30,duration:3,stackable:false},desc:'Inflige des dégâts magiques et réduit le taux de CRIT de l\'ennemi de 30% pendant 3 tours.'},mage_eclair:{id:'mage_eclair',name:'Éclair',type:'damage',target:'enemy',cost:30,powerStat:'magicPower',multiplier:2.6,cooldown:3,effects:{stunChance:30,duration:1},desc:'Inflige de gros dégâts de foudre. 30% de chance d\'étourdir l\'ennemi pour le tour courant. Cooldown : 3 tours.'},mage_canon_solaire:{id:'mage_canon_solaire',name:'Canon solaire',type:'damage',target:'enemy',cost:50,powerStat:'magicPower',multiplier:3.0,cooldown:3,desc:'Concentre la lumière en un rayon destructeur. Inflige de très gros dégâts magiques.'},mage_canalisation:{id:'mage_canalisation',name:'Canalisation',type:'self_buff',target:'self',cost:20,duration:3,cooldown:3,effects:{pmBuffPercent:20,activationBlock:true},stackable:false,desc:'Canalise la magie. Confère +20% PM pendant 3 tours et bloque les dégâts subis pendant l\'activation.'},sorcier_clone_ombre:{id:'sorcier_clone_ombre',name:'Clone d\'ombre',type:'shadow_clone',target:'self',cost:24,duration:5,cloneHpPercent:70,effects:{activationDodge:true},stackable:false,desc:'Crée un clone d\'ombre qui encaisse les dégâts visant le Sorcier pendant 5 tours ou jusqu\'à sa destruction.'},sorcier_entrave:{id:'sorcier_entrave',name:'Entrave',type:'damage',target:'enemy',cost:18,powerStat:'magicPower',multiplier:1.6,effects:{rapidityReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la RAP de l\'ennemi de 40% pendant 4 tours.'},sorcier_faiblesse:{id:'sorcier_faiblesse',name:'Faiblesse',type:'damage',target:'enemy',cost:28,powerStat:'magicPower',multiplier:2.0,effects:{ppReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la PP de l\'ennemi de 40% pendant 4 tours.'},sorcier_dissonance:{id:'sorcier_dissonance',name:'Dissonance',type:'damage',target:'enemy',cost:32,powerStat:'magicPower',multiplier:2.4,effects:{pmReductionPercent:40,duration:4,stackable:false},desc:'Inflige des d\u00e9g\u00e2ts magiques et r\u00e9duit la PM de l\'ennemi de 40% pendant 4 tours.'},sorcier_absorption:{id:'sorcier_absorption',name:'Absorption',type:'damage',target:'enemy',cost:36,powerStat:'magicPower',multiplier:2.8,effects:{energySteal:true},desc:'Inflige des d\u00e9g\u00e2ts magiques et retire au monstre autant de PE que les d\u00e9g\u00e2ts inflig\u00e9s.'},sorcier_avalame:{id:'sorcier_avalame',name:'Aval\u00e2me',type:'damage',target:'enemy',cost:40,powerStat:'magicPower',multiplier:3.2,effects:{lifeSteal:true},desc:'Inflige de lourds d\u00e9g\u00e2ts magiques et rend au Sorcier autant de PV que les d\u00e9g\u00e2ts inflig\u00e9s.'},tank_morsure_hydre:{id:'tank_morsure_hydre',name:'Morsure de l\'hydre',type:'damage',target:'enemy',cost:25,powerStat:'magicPower',multiplier:2.0,effects:{energyDrainPercent:20,duration:3},desc:'Hydre jaillissant du bouclier. Inflige des d\u00e9g\u00e2ts magiques PM x2.0 et draine l\'\u00e9nergie ennemie.'},tank_frappe_runique:{id:'tank_frappe_runique',name:'Frappe runique',type:'damage',target:'enemy',cost:10,powerStats:['physicalPower','magicPower'],multiplier:1.0,desc:'Le Tank frappe avec son arme ou son bouclier et lib\u00e8re une onde runique. Inflige (PP + PM) x1.0 d\u00e9g\u00e2ts.'},tank_rempart:{id:'tank_rempart',name:'Rempart',type:'team_guard',target:'team',cost:15,cooldown:3,duration:1,damageReductionPercent:30,desc:'Le Tank prot\u00e8ge son \u00e9quipe. R\u00e9duit les d\u00e9g\u00e2ts subis par le groupe de 30% pendant 1 tour.'},tank_frappe_sang:{id:'tank_frappe_sang',name:'Frappe de sang',type:'blood_attack',target:'enemy',cost:15,powerStat:'physicalPower',multiplier:2.0,hpSacrificePercent:10,desc:'Le Tank enduit son arme ou son bouclier de son propre sang avant de frapper.'},tank_venin_hydre:{id:'tank_venin_hydre',name:'Venin de l\'Hydre',type:'damage',target:'enemy',cost:35,powerStat:'magicPower',multiplier:3.0,effects:{ppReductionPercent:30,duration:3,stackable:false},desc:'Le venin de l\'Hydre affaiblit la puissance physique ennemie.'},tank_rupture_ecarlate:{id:'tank_rupture_ecarlate',name:'Rupture \u00e9carlate',type:'blood_attack',target:'enemy',cost:25,powerStat:'physicalPower',multiplier:3.0,hpSacrificePercent:10,desc:'Le Tank concentre son sang dans une frappe destructrice.'},guerisseur_lux:{id:'guerisseur_lux',name:'Lux',type:'damage',target:'enemy',cost:10,powerStat:'magicPower',multiplier:1.2,effects:{stunChance:50,duration:1},desc:'Rayon de lumière sacrée. 50% de chance d\'étourdir l\'ennemi pour le tour.'},tank_provocation:{id:'tank_provocation',name:'Provocation',type:'taunt',target:'self',cost:20,duration:3,cooldown:3,tauntChance:90,desc:'Provoque l\'ennemi. Pendant 3 tours, le Tank a 90% de chances d\'être ciblé.'},guerisseur_soin_mineur:{id:'guerisseur_soin_mineur',name:'Soin mineur',type:'heal',target:'ally_choice',cost:20,cooldown:1,healPercent:40,desc:'Restaure 40% des PV max d\'un allié choisi.'},guerisseur_soin_majeur:{id:'guerisseur_soin_majeur',name:'Soin majeur',type:'heal',target:'ally_choice',cost:40,cooldown:2,healPercent:60,desc:'Restaure 60% des PV max d\'un allié choisi.'},guerisseur_guerison:{id:'guerisseur_guerison',name:'Gu\u00e9rison',type:'heal_formula',target:'ally_choice',cost:15,cooldown:2,baseHeal:70,levelScaling:5,manaScaling:5,desc:'Restaure 70 + 5\u00d7niveau + 5\u00d7MANA PV \u00e0 un alli\u00e9 choisi.'},guerisseur_chatiment_sacre:{id:'guerisseur_chatiment_sacre',name:'Ch\u00e2timent sacr\u00e9',type:'damage',target:'enemy',cost:30,powerStat:'magicPower',multiplier:2.0,desc:'Le Gu\u00e9risseur frappe l\u2019ennemi d\u2019une lumi\u00e8re sacr\u00e9e.'},guerisseur_rayon_purificateur:{id:'guerisseur_rayon_purificateur',name:'Rayon purificateur',type:'damage_cleanse_random_ally',target:'enemy',cost:40,powerStat:'magicPower',multiplier:2.5,desc:'Un rayon de lumi\u00e8re frappe l\u2019ennemi et purifie un effet n\u00e9gatif al\u00e9atoire sur un alli\u00e9.'},guerisseur_resurrection:{id:'guerisseur_resurrection',name:'R\u00e9surrection',type:'resurrect',target:'ally_dead_choice',cost:60,cooldown:5,reviveHpPercent:40,desc:'Ressuscite un alli\u00e9 KO avec 40% de ses PV max.'},mage_priere:{id:'mage_priere',name:'Pri\u00e8re',type:'regen_self',target:'self',cost:40,duration:3,cooldown:3,levelScaling:4,stackable:false,desc:'Restaure niveau × 4 PV par tour pendant 3 tours. Non cumulable, mais renouvelable.'}}
 const RESOURCES={gelée_slime:{name:'Gelée de slime',emoji:'🟢',sellPrice:5},noyau_slime:{name:'Noyau de slime',emoji:'🟡',sellPrice:8},griffe_loup:{name:'Griffe de loup',emoji:'🐺',sellPrice:6},croc_loup:{name:'Croc de loup',emoji:'🦷',sellPrice:7},fourrure_loup:{name:'Fourrure de loup',emoji:'🧶',sellPrice:5},peau_sanglier:{name:'Peau de sanglier',emoji:'🟤',sellPrice:8},défense_sanglier:{name:'Défense de sanglier',emoji:'⚪',sellPrice:10},morceau_ferraille:{name:'Morceau de ferraille',emoji:'⚙️',sellPrice:6},os_monstre:{name:'Os de monstre',emoji:'💀',sellPrice:5},soie_araignée:{name:'Soie d\'araignée',emoji:'🕸️',sellPrice:7},venin_araignée:{name:'Venin d\'araignée',emoji:'🧪',sellPrice:9},écaille_serpent:{name:'Écaille de serpent',emoji:'🟩',sellPrice:8},croc_serpent:{name:'Croc de serpent',emoji:'🗡️',sellPrice:10},bois_solide:{name:'Bois solide',emoji:'🪵',sellPrice:6},écorce_ancienne:{name:'Écorce ancienne',emoji:'🌳',sellPrice:9},lame_rouillee:{name:'Lame rouillée',emoji:'🗡️',sellPrice:14},cuir_gobelin:{name:'Cuir gobelin',emoji:'🟤',sellPrice:12},os_renforce:{name:'Os renforcé',emoji:'💀',sellPrice:13},croc_sanguinaire:{name:'Croc sanguinaire',emoji:'🦷',sellPrice:15},fourrure_epaisse:{name:'Fourrure épaisse',emoji:'🧶',sellPrice:13},griffe_aceree:{name:'Griffe acérée',emoji:'🐾',sellPrice:14},gelée_corrompue:{name:'Gelée corrompue',emoji:'🟣',sellPrice:13},noyau_corrompu:{name:'Noyau corrompu',emoji:'🟡',sellPrice:18},résidu_instable:{name:'Résidu instable',emoji:'✨',sellPrice:16},soie_noire:{name:'Soie noire',emoji:'🕸️',sellPrice:15},venin_virulent:{name:'Venin virulent',emoji:'🧪',sellPrice:18},patte_chitineuse:{name:'Patte chitineuse',emoji:'🕷️',sellPrice:13},cuir_epais:{name:'Cuir épais',emoji:'🟫',sellPrice:15},défense_massive:{name:'Défense massive',emoji:'⚪',sellPrice:20},plaque_osseuse:{name:'Plaque osseuse',emoji:'🦴',sellPrice:18},écaille_nocturne:{name:'Écaille nocturne',emoji:'🌑',sellPrice:16},croc_venimeux:{name:'Croc venimeux',emoji:'🦷',sellPrice:18},sang_froid:{name:'Sang froid',emoji:'💧',sellPrice:16},bois_ancien:{name:'Bois ancien',emoji:'🪵',sellPrice:17},écorce_runique:{name:'Écorce runique',emoji:'🌳',sellPrice:22},sève_vivante:{name:'Sève vivante',emoji:'💚',sellPrice:20},hache_ebrechee:{name:'Hache ébréchée',emoji:'🪓',sellPrice:18},cuir_renforce:{name:'Cuir renforcé',emoji:'🟤',sellPrice:17},croc_ancien:{name:'Croc ancien',emoji:'🦷',sellPrice:20},fourrure_argentee:{name:'Fourrure argentée',emoji:'🧶',sellPrice:22},coeur_ecorce:{name:'Cœur d\'écorce',emoji:'💚',sellPrice:28},bois_sacre:{name:'Bois sacré',emoji:'🪵',sellPrice:24},écaille_abyssale:{name:'Écaille abyssale',emoji:'🌌',sellPrice:24},croc_abyssal:{name:'Croc abyssal',emoji:'🦷',sellPrice:26},venin_noir:{name:'Venin noir',emoji:'⚫',sellPrice:25},insigne_gobelin:{name:'Insigne gobelin',emoji:'🏵️',sellPrice:26},lame_chef:{name:'Lame de chef',emoji:'⚔️',sellPrice:28},spores_geantes:{name:'Spores géantes',emoji:'🍄',sellPrice:30},chapeau_toxique:{name:'Chapeau toxique',emoji:'☠️',sellPrice:38},flamme_spectrale:{name:'Flamme spectrale',emoji:'🔥',sellPrice:32},essence_lumineuse:{name:'Essence lumineuse',emoji:'✨',sellPrice:40},racine_hurlante:{name:'Racine hurlante',emoji:'🌱',sellPrice:34},seve_amere:{name:'Sève amère',emoji:'💚',sellPrice:42},fragment_gargouille:{name:'Fragment de gargouille',emoji:'🗿',sellPrice:36},mousse_petrifiee:{name:'Mousse pétrifiée',emoji:'🪨',sellPrice:44},bois_spectral:{name:'Bois spectral',emoji:'🦌',sellPrice:38},larme_esprit:{name:'Larme d\'esprit',emoji:'💧',sellPrice:48},plume_tranchante:{name:'Plume tranchante',emoji:'🪶',sellPrice:36},serre_harpie:{name:'Serre de harpie',emoji:'🦅',sellPrice:45},ronces_solides:{name:'Ronces solides',emoji:'🌿',sellPrice:40},coeur_epines:{name:'Cœur d\'épines',emoji:'💚',sellPrice:52},ecaille_vouivre:{name:'Écaille de vouivre',emoji:'🐉',sellPrice:45},croc_vouivre:{name:'Croc de vouivre',emoji:'🦷',sellPrice:55},eclat_ame:{name:'Éclat d\'âme',emoji:'👻',sellPrice:46},linceul_ancien:{name:'Linceul ancien',emoji:'🕯️',sellPrice:58},ecaille_lave:{name:'Écaille de lave',emoji:'🔥',sellPrice:55},coeur_braise:{name:'Cœur de braise',emoji:'❤️‍🔥',sellPrice:65},cendre_vive:{name:'Cendre vive',emoji:'🌫️',sellPrice:52},croc_cendre:{name:'Croc de cendre',emoji:'🦷',sellPrice:60},fragment_magma:{name:'Fragment de magma',emoji:'🪨',sellPrice:58},noyau_magmatique:{name:'Noyau magmatique',emoji:'🟠',sellPrice:72},ecaille_obsidienne:{name:'Écaille d\'obsidienne',emoji:'⚫',sellPrice:62},venin_bouillant:{name:'Venin bouillant',emoji:'🧪',sellPrice:68},aile_incandescente:{name:'Aile incandescente',emoji:'🦇',sellPrice:60},griffe_incandescente:{name:'Griffe incandescente',emoji:'🐾',sellPrice:66},ecaille_cendre:{name:'Écaille de cendre',emoji:'🐉',sellPrice:70},croc_incandescent:{name:'Croc incandescent',emoji:'🦷',sellPrice:78},fragment_basalte:{name:'Fragment de basalte',emoji:'🗿',sellPrice:72},coeur_basalte:{name:'Cœur de basalte',emoji:'🖤',sellPrice:85},eclat_calcine:{name:'Éclat calciné',emoji:'👻',sellPrice:74},linceul_brule:{name:'Linceul brûlé',emoji:'🕯️',sellPrice:88},roche_fondue:{name:'Roche fondue',emoji:'🌋',sellPrice:64},braise_eternelle:{name:'Braise éternelle',emoji:'🔥',sellPrice:95}}
 const CONSUMABLES={potion_vie:{id:'potion_vie',name:'Potion de vie',emoji:'❤️',healPercent:.3,type:'hp',buyPrice:30,sellPrice:15,desc:'Restaure 30% des PV max'},potion_energie:{id:'potion_energie',name:"Potion d'énergie",emoji:'💧',healPercent:.3,type:'pe',buyPrice:30,sellPrice:15,desc:"Restaure 30% des PE max"}}
 const WEAPONS={dague_os:{id:'dague_os',name:'Dague en os',emoji:'🗡️',level:1,stats:{pp:40,crit:3},materials:{os_monstre:2,croc_loup:1},normalPrice:80,reducedPrice:40,sellPrice:20,desc:'+40 PP, +3% CRIT'},epee_ferraille:{id:'epee_ferraille',name:'Épée de ferraille',emoji:'⚔️',level:1,stats:{pp:50,def:25},materials:{morceau_ferraille:3,bois_solide:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+50 PP, +25 DEF'},bouclier_bois:{id:'bouclier_bois',name:'Bouclier en bois',emoji:'🛡️',level:1,stats:{def:40,pvMax:125},materials:{bois_solide:3,peau_sanglier:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+40 DEF, +125 PV max'},baton_bois:{id:'baton_bois',name:'Bâton de bois',emoji:'🪄',level:1,stats:{pm:50,peMax:125},materials:{bois_solide:2,noyau_slime:1},normalPrice:90,reducedPrice:45,sellPrice:22,desc:'+50 PM, +125 PE max'},grimoire_use:{id:'grimoire_use',name:'Grimoire usé',emoji:'📖',level:1,stats:{pm:40,crit:3},materials:{peau_sanglier:1,venin_araignée:1,soie_araignée:1},normalPrice:100,reducedPrice:50,sellPrice:25,desc:'+40 PM, +3% CRIT'},dague_sanguinaire:{id:'dague_sanguinaire',name:'Dague sanguinaire',emoji:'🗡️',level:10,stats:{pp:80,crit:4},materials:{croc_sanguinaire:2,griffe_aceree:2,cuir_gobelin:1},normalPrice:300,reducedPrice:150,sellPrice:75,desc:'+80 PP, +4% CRIT'},epee_renforcee:{id:'epee_renforcee',name:'Épée renforcée',emoji:'⚔️',level:10,stats:{pp:100,def:50},materials:{lame_rouillee:2,os_renforce:2,cuir_gobelin:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+100 PP, +50 DEF'},bouclier_ecorce:{id:'bouclier_ecorce',name:"Bouclier d'écorce",emoji:'🛡️',level:10,stats:{def:80,pvMax:250},materials:{bois_ancien:2,écorce_runique:1,cuir_epais:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+80 DEF, +250 PV max'},baton_corrompu:{id:'baton_corrompu',name:'Bâton corrompu',emoji:'🪄',level:10,stats:{pm:100,peMax:250},materials:{noyau_corrompu:2,résidu_instable:2,bois_ancien:1},normalPrice:320,reducedPrice:160,sellPrice:80,desc:'+100 PM, +250 PE max'},grimoire_noirci:{id:'grimoire_noirci',name:'Grimoire noirci',emoji:'📖',level:10,stats:{pm:80,crit:4},materials:{soie_noire:2,venin_virulent:1,résidu_instable:1},normalPrice:350,reducedPrice:175,sellPrice:88,desc:'+80 PM, +4% CRIT'},dague_spectrale:{id:'dague_spectrale',name:'Dague spectrale',emoji:'🗡️',level:20,stats:{pp:160,crit:5},materials:{eclat_ame:3,croc_vouivre:1,plume_tranchante:2},normalPrice:1200,reducedPrice:600,sellPrice:300,desc:'+160 PP, +5% CRIT'},epee_ronces:{id:'epee_ronces',name:'Épée de ronces',emoji:'⚔️',level:20,stats:{pp:200,def:100},materials:{ronces_solides:4,fragment_gargouille:2,serre_harpie:1},normalPrice:1300,reducedPrice:650,sellPrice:325,desc:'+200 PP, +100 DEF'},bouclier_gargouille:{id:'bouclier_gargouille',name:'Bouclier de gargouille',emoji:'🛡️',level:20,stats:{def:160,pvMax:500},materials:{fragment_gargouille:3,mousse_petrifiee:2,coeur_epines:1},normalPrice:1400,reducedPrice:700,sellPrice:350,desc:'+160 DEF, +500 PV max'},baton_follet:{id:'baton_follet',name:'Bâton du feu follet',emoji:'🪄',level:20,stats:{pm:200,peMax:500},materials:{flamme_spectrale:4,essence_lumineuse:2,bois_spectral:1},normalPrice:1400,reducedPrice:700,sellPrice:350,desc:'+200 PM, +500 PE max'},grimoire_sylvestre:{id:'grimoire_sylvestre',name:'Grimoire sylvestre',emoji:'📖',level:20,stats:{pm:160,crit:5},materials:{linceul_ancien:1,eclat_ame:3,seve_amere:2},normalPrice:1300,reducedPrice:650,sellPrice:325,desc:'+160 PM, +5% CRIT'},dague_cendres:{id:'dague_cendres',name:'Dague des cendres',emoji:'🗡️',level:30,stats:{pp:320,crit:6},materials:{eclat_calcine:3,croc_incandescent:1,cendre_vive:4},normalPrice:3600,reducedPrice:1800,sellPrice:900,desc:'+320 PP, +6% CRIT'},epee_magma:{id:'epee_magma',name:'Épée de magma',emoji:'⚔️',level:30,stats:{pp:400,def:200},materials:{fragment_magma:4,noyau_magmatique:2,roche_fondue:3},normalPrice:4000,reducedPrice:2000,sellPrice:1000,desc:'+400 PP, +200 DEF'},bouclier_basalte:{id:'bouclier_basalte',name:'Bouclier de basalte',emoji:'🛡️',level:30,stats:{def:320,pvMax:1000},materials:{fragment_basalte:4,coeur_basalte:2,roche_fondue:3},normalPrice:4200,reducedPrice:2100,sellPrice:1050,desc:'+320 DEF, +1000 PV max'},baton_braise:{id:'baton_braise',name:'Bâton de braise',emoji:'🪄',level:30,stats:{pm:400,peMax:1000},materials:{coeur_braise:3,braise_eternelle:1,cendre_vive:5},normalPrice:4200,reducedPrice:2100,sellPrice:1050,desc:'+400 PM, +1000 PE max'},grimoire_calcine:{id:'grimoire_calcine',name:'Grimoire calciné',emoji:'📖',level:30,stats:{pm:320,crit:6},materials:{linceul_brule:2,eclat_calcine:3,braise_eternelle:1},normalPrice:4000,reducedPrice:2000,sellPrice:1000,desc:'+320 PM, +6% CRIT'}}
@@ -74,7 +74,10 @@ function loadGame(slotData){G=JSON.parse(JSON.stringify(slotData));G.combat=G.co
 /* ============== STATS ============== */
 function getUnlockedSpells(cls,level){
   if(!cls||!cls.spellUnlocks)return cls?.spells||[]
-  return cls.spells||[]
+  return (cls.spells||[]).filter(s=>{
+    const unlock=cls.spellUnlocks.find(u=>u.spell===s)
+    return !unlock||level>=unlock.level
+  })
 }
 function computeDerivedStats(char){
   const l=char.level||1,f=char.baseStats.for||1,r=char.baseStats.rap||1,c=char.baseStats.con||1,m=char.baseStats.mana||1
@@ -99,6 +102,33 @@ function getFinalStats(char){
   if(char.effects?.ppBuff)pp=Math.floor(pp*(1+char.effects.ppBuff.value/100))
   if(char.effects?.pmBuff)pm=Math.floor(pm*(1+char.effects.pmBuff.value/100))
   return{pp,def,pm,pvMax,peMax,crit,esq,for:forStat,rap,con,mana}
+}
+function getTankBloodPpBonusPercent(char){
+  if(!char||char.classId!=='tank')return 0
+  const s=getFinalStats(char)
+  const ratio=char.currentHp/s.pvMax
+  if(ratio<=0.50)return 50
+  if(ratio<=0.60)return 40
+  if(ratio<=0.70)return 30
+  if(ratio<=0.80)return 20
+  if(ratio<=0.90)return 10
+  return 0
+}
+function cleanseRandomNegativeEffectFromTeam(){
+  const negativeEffects=['poison','bleed']
+  const alive=G.team.filter(c=>c.currentHp>0)
+  const candidates=alive.filter(c=>{
+    if(!c.effects)return false
+    return negativeEffects.some(e=>c.effects[e])
+  })
+  if(candidates.length===0)return null
+  const target=candidates[Math.floor(Math.random()*candidates.length)]
+  const available=negativeEffects.filter(e=>target.effects[e])
+  if(available.length===0)return null
+  const removed=available[Math.floor(Math.random()*available.length)]
+  delete target.effects[removed]
+  if(Object.keys(target.effects).length===0)delete target.effects
+  return{target,removed}
 }
 function clampChar(char){
   const s=getFinalStats(char)
@@ -219,16 +249,27 @@ function enemyTurn(){
     const tDef=getFinalStats(target).def
     let dmg=Math.max(1,baseDmg-Math.floor(tDef/2))
     const isGuarding=G.combat.guarding
-    if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
+    const teamGuard=G.combat.teamGuard
+    if(teamGuard){const reduction=teamGuard.percent/100;dmg=Math.max(1,Math.floor(dmg*(1-reduction)));addCombatLog(`🛡️ L'équipe est protégée ! Dégâts réduits de ${teamGuard.percent}%`);teamGuard.duration--;if(teamGuard.duration<=0)delete G.combat.teamGuard}else if(isGuarding){dmg=Math.max(1,Math.floor(dmg*.5));addCombatLog(`🛡️ ${target.name} encaisse ! Dégâts réduits à ${dmg}`)}
     const critRoll=Math.random()*100
     if(critRoll<effMs.crit){dmg=Math.floor(dmg*1.5);play('crit');addCombatLog(`💥 Coup critique du monstre !`)}
-    if(target.effects?.activationBlock?.active){
+    if(G.combat.teamDodge){
+      addCombatLog(`💨 L'\u00e9quipe profite de la fum\u00e9e et esquive l'attaque !`)
+      delete G.combat.teamDodge
+      G.combat.guarding=false
+      renderCombat()
+    }else if(target.effects?.activationBlock?.active){
       delete target.effects.activationBlock
       addCombatLog(`🔮 ${target.name} maintient sa Canalisation et bloque les dégâts !`)
       renderCombat()
     }else if(target.effects?.activationDodge?.active){
       delete target.effects.activationDodge
       addCombatLog(`💨 ${target.name} disparaît dans l'ombre et esquive l'attaque !`)
+      renderCombat()
+    }else if(target.effects?.shadowStep?.active){
+      delete target.effects.shadowStep
+      addCombatLog(`💨 ${target.name} r\u00e9appara\u00eet hors de port\u00e9e et esquive l'attaque !`)
+      G.combat.guarding=false
       renderCombat()
     }else if(target.effects?.shadowClone){
       const clone=target.effects.shadowClone
@@ -247,6 +288,7 @@ function enemyTurn(){
   }
   // réduire duration de taunt
   if(G.combat&&G.combat.taunt){G.combat.taunt.duration--;if(G.combat.taunt.duration<=0)delete G.combat.taunt}
+  if(G.combat&&G.combat.teamDodge){G.combat.teamDodge.duration--;if(G.combat.teamDodge.duration<=0)delete G.combat.teamDodge}
   tickCharacterEffects();tickCooldowns()
   const result=isCombatOver()
   if(result==='victory'){setTimeout(victory,400);return}
@@ -291,6 +333,11 @@ function combatSpell(spellId,targetIndex){
   if((spell.type==='heal'||spell.type==='heal_formula')&&spell.target==='ally_choice'&&targetIndex===undefined){
     showCombatAllyTargetSelector('Choisir une cible :',idx=>combatSpell(spellId,idx));return
   }
+  if(spell.type==='resurrect'&&spell.target==='ally_dead_choice'&&targetIndex===undefined){
+    const deadCount=G.team.filter(c=>c.currentHp<=0).length
+    if(deadCount===0){addCombatLog(`❌ Aucun alli\u00e9 \u00e0 ressusciter.`);renderCombat();return}
+    showCombatAllyDeadSelector('Choisir un alli\u00e9 \u00e0 ressusciter :',idx=>combatSpell(spellId,idx));return
+  }
   queuePlayerAction('spell',spellId,targetIndex)
 }
 function showCombatAllyTargetSelector(title,callback){
@@ -307,6 +354,24 @@ function showCombatAllyTargetSelector(title,callback){
     btn.addEventListener('click',()=>{overlay.remove();callback(i)})
     body.appendChild(btn)
   })
+  document.getElementById('btn-combat-target-close').addEventListener('click',()=>overlay.remove())
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()})
+}
+function showCombatAllyDeadSelector(title,callback){
+  const existing=document.getElementById('popup-combat-target');if(existing)existing.remove()
+  const overlay=document.createElement('div');overlay.id='popup-combat-target';overlay.className='popup-overlay'
+  overlay.innerHTML=`<div class="popup popup-small"><div class="popup-header"><h3>${title}</h3><button class="popup-close" id="btn-combat-target-close">\u2715</button></div><div class="popup-body" style="display:flex;flex-direction:column;gap:6px" id="combat-target-body"></div></div>`
+  document.body.appendChild(overlay)
+  const body=document.getElementById('combat-target-body')
+  G.team.forEach((c,i)=>{
+    if(c.currentHp>0)return
+    const cls=CLASSES[c.classId];const s=getFinalStats(c)
+    const btn=document.createElement('button');btn.className='btn-action';btn.style.textAlign='left'
+    btn.innerHTML=`\u2620\ufe0f ${cls?.emoji||'\uD83D\uDC64'} ${c.name} <span style="color:var(--text2);font-size:0.75rem">KO</span>`
+    btn.addEventListener('click',()=>{overlay.remove();callback(i)})
+    body.appendChild(btn)
+  })
+  if(body.children.length===0)body.innerHTML='<div style="color:var(--text2);padding:12px;text-align:center">Aucun alli\u00e9 KO.</div>'
   document.getElementById('btn-combat-target-close').addEventListener('click',()=>overlay.remove())
   overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()})
 }
@@ -369,9 +434,11 @@ function resolveTurn(){
             addCombatLog(`💧 Drain d'énergie : -${spell.effects.energyDrainPercent}% PE/tour`)}
           if(spell.effects.poisonPercent){
             if(!G.combat.enemyEffects.poison)G.combat.enemyEffects.poison={stacks:0,value:spell.effects.poisonPercent,duration:spell.effects.duration}
-            if(G.combat.enemyEffects.poison.stacks<(spell.effects.maxStacks||1))G.combat.enemyEffects.poison.stacks++
+            if(spell.effects.stackable===false){G.combat.enemyEffects.poison.stacks=1}
+            else if(G.combat.enemyEffects.poison.stacks<(spell.effects.maxStacks||1))G.combat.enemyEffects.poison.stacks++
             G.combat.enemyEffects.poison.duration=spell.effects.duration
-            addCombatLog(`🔥 Brûlure accumulée : ${G.combat.enemyEffects.poison.stacks}x`)}
+            if(spell.effects.stackable===false)addCombatLog(`☠️ Poison : ${spell.effects.poisonPercent}% PV/tour pendant ${spell.effects.duration} tours`)
+            else addCombatLog(`🔥 Brûlure accumulée : ${G.combat.enemyEffects.poison.stacks}x`)}
           if(spell.effects.stunChance){
             if(Math.random()*100<spell.effects.stunChance){
               G.combat.enemyEffects.stun={duration:spell.effects.duration}
@@ -380,6 +447,9 @@ function resolveTurn(){
           if(spell.effects.critReductionPercent){
             G.combat.enemyEffects.critRed={value:spell.effects.critReductionPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
             addCombatLog(`⬇️ CRIT de l'ennemi réduit de ${spell.effects.critReductionPercent}%`)}
+          if(spell.effects.bleedPercent){
+            G.combat.enemyEffects.bleed={value:spell.effects.bleedPercent,duration:spell.effects.duration,stackable:spell.effects.stackable}
+            addCombatLog(`🩸 Saignement : ${spell.effects.bleedPercent}% PV/tour pendant ${spell.effects.duration} tours`)}
         }
         if(spell.effects?.energySteal){const stolenPe=Math.min(getMonster().currentPe||0,dmg);getMonster().currentPe=Math.max(0,(getMonster().currentPe||0)-stolenPe);addCombatLog(`💧 ${char.name} absorbe ${stolenPe} PE à l'ennemi.`)}
         if(spell.effects?.lifeSteal){const beforeHp=char.currentHp;char.currentHp=Math.min(s.pvMax,char.currentHp+dmg);const healed=char.currentHp-beforeHp;if(healed>0)addCombatLog(`🩸 ${char.name} récupère ${healed} PV grâce à Avalâme.`)}
@@ -468,6 +538,104 @@ function resolveTurn(){
         addCombatLog(`🌑 ${char.name} invoque un Clone d'ombre !`)
         if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
         renderCombat()
+      }else if(spell.type==='damage_team_dodge'){
+        char.currentPe-=spell.cost
+        let dmg=Math.floor(s.pp*(spell.multiplier||1))
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`💥 ${char.name} lance une ${spell.name} : ${dmg} d\u00e9g\u00e2ts`)
+        G.combat.teamDodge={source:spell.id,duration:spell.duration}
+        addCombatLog(`\u23ab\ufe0f Toute l'\u00e9quipe se fond dans la fum\u00e9e.`)
+        maybeBenjyTookDamageReaction(dmg)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+      }else if(spell.type==='damage_self_dodge'){
+        char.currentPe-=spell.cost
+        let dmg=Math.floor(s.pp*(spell.multiplier||1))
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`🗡️ ${char.name} utilise ${spell.name} : ${dmg} d\u00e9g\u00e2ts`)
+        char.effects=char.effects||{}
+        char.effects.shadowStep={active:true,duration:1,source:spell.id}
+        addCombatLog(`💨 ${char.name} dispara\u00eet dans l'ombre.`)
+        maybeBenjyTookDamageReaction(dmg)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+      }else if(spell.type==='execute'){
+        char.currentPe-=spell.cost
+        let dmg=Math.floor(s.pp*(spell.multiplier||1))
+        const monsterMaxHp=getMonsterStats().pvMax
+        const monsterCurrentHp=getMonster().currentHp
+        let executeBonus=false
+        if(monsterCurrentHp<=Math.floor(monsterMaxHp*(spell.executeThresholdPercent/100))){dmg=Math.floor(dmg*(1+spell.executeBonusPercent/100));executeBonus=true}
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`🗡️ ${char.name} utilise ${spell.name} : ${dmg} d\u00e9g\u00e2ts`)
+        if(executeBonus)addCombatLog(`💀 Ex\u00e9cution parfaite ! D\u00e9g\u00e2ts augment\u00e9s.`)
+        maybeBenjyTookDamageReaction(dmg)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+      }else if(spell.type==='team_guard'){
+        char.currentPe-=spell.cost
+        G.combat.teamGuard={percent:spell.damageReductionPercent,duration:spell.duration,source:spell.id}
+        if(spell.id==='tank_rempart'){
+          addCombatLog(`🛡️ ${char.name} utilise Rempart !`)
+          addCombatLog(`🛡️ Les d\u00e9g\u00e2ts subis par l'\u00e9quipe sont r\u00e9duits.`)
+        }else{
+          addCombatLog(`🛡️ ${char.name} utilise ${spell.name} !`)}
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+      }else if(spell.type==='blood_attack'){
+        char.currentPe-=spell.cost
+        const tankStats=getFinalStats(char)
+        const bloodBonus=getTankBloodPpBonusPercent(char)
+        let dmg=Math.floor(tankStats.pp*(1+bloodBonus/100)*(spell.multiplier||1))
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){if(char.currentHp>Math.floor(tankStats.pvMax/2)){char.currentHp=Math.max(1,char.currentHp-Math.floor(tankStats.pvMax*(spell.hpSacrificePercent/100)))}renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;if(char.currentHp>Math.floor(tankStats.pvMax/2)){char.currentHp=Math.max(1,char.currentHp-Math.floor(tankStats.pvMax*(spell.hpSacrificePercent/100)))}renderCombat();continue}}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`🩸 ${char.name} utilise ${spell.name} : ${dmg} d\u00e9g\u00e2ts`)
+        if(char.currentHp>Math.floor(tankStats.pvMax/2)){char.currentHp=Math.max(1,char.currentHp-Math.floor(tankStats.pvMax*(spell.hpSacrificePercent/100)));addCombatLog(`🩸 ${char.name} sacrifie une partie de ses PV.`)}
+        maybeBenjyTookDamageReaction(dmg)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
+      }else if(spell.type==='resurrect'){
+        char.currentPe-=spell.cost
+        const target=G.team[a.targetIndex]
+        if(!target||target.currentHp>0){addCombatLog(`❌ La cible n'est pas KO.`);renderCombat();continue}
+        const ts=getFinalStats(target)
+        target.currentHp=Math.floor(ts.pvMax*(spell.reviveHpPercent/100))
+        play('heal_major')
+        addCombatLog(`✨ ${char.name} ressuscite ${target.name} avec ${Math.floor(target.currentHp)} PV !`)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+      }else if(spell.type==='damage_cleanse_random_ally'){
+        char.currentPe-=spell.cost
+        let dmg=1
+        if(spell.powerStat==='physicalPower'){dmg=Math.floor(s.pp*(spell.multiplier||1))}
+        else if(spell.powerStat==='magicPower'){dmg=Math.floor(s.pm*(spell.multiplier||1))}
+        if(G?.combat?.isBenjyFight){const reaction=resolveBenjyDefenseReaction(char,dmg,spell.name);if(reaction.cancelled){renderCombat();continue}dmg=reaction.damageToBenjy}else{const esqRoll=Math.random()*100;if(esqRoll<effMs.esq){play('dodge');addCombatLog(`💨 ${getMonster().name} esquive ${spell.name}!`);char.currentPe+=spell.cost;renderCombat();continue}}
+        dmg=Math.max(1,dmg-Math.floor(effectiveDef/2))
+        getMonster().currentHp=Math.max(0,getMonster().currentHp-dmg)
+        play('hit')
+        addCombatLog(`🔮 ${char.name} utilise ${spell.name} : ${dmg} dégâts`)
+        const cleanseResult=cleanseRandomNegativeEffectFromTeam()
+        if(cleanseResult)addCombatLog(`✨ ${cleanseResult.target.name} est purifié de son effet négatif.`)
+        else addCombatLog(`✨ Aucun effet négatif à purifier sur les alliés.`)
+        maybeBenjyTookDamageReaction(dmg)
+        if(spell.cooldown){char.cooldowns=char.cooldowns||{};char.cooldowns[spell.id]=spell.cooldown}
+        renderCombat()
+        if(getMonster().currentHp<=0){setTimeout(victory,400);return}
       }
     }else if(a.type==='guard'){
       G.combat.guarding=true
@@ -546,6 +714,7 @@ function processEnemyEffects(){
   if(eff.defRed){eff.defRed.duration--;if(eff.defRed.duration<=0)delete eff.defRed}
   if(eff.rapRed){eff.rapRed.duration--;if(eff.rapRed.duration<=0)delete eff.rapRed}
   if(eff.poison){const poisonDmg=Math.floor((eff.poison.value/100)*getMonsterStats().pvMax)*eff.poison.stacks;getMonster().currentHp=Math.max(0,getMonster().currentHp-poisonDmg);addCombatLog(`🔥 Brûlure : ${poisonDmg} dégâts (${eff.poison.stacks}x)`);eff.poison.duration--;if(eff.poison.duration<=0)delete eff.poison}
+  if(eff.bleed){const bleedDmg=Math.floor((eff.bleed.value/100)*getMonsterStats().pvMax);getMonster().currentHp=Math.max(0,getMonster().currentHp-bleedDmg);addCombatLog(`🩸 Saignement : ${bleedDmg} dégâts`);eff.bleed.duration--;if(eff.bleed.duration<=0)delete eff.bleed}
   if(eff.stun){eff.stun.duration--;if(eff.stun.duration<=0)delete eff.stun}
   if(eff.critRed){eff.critRed.duration--;if(eff.critRed.duration<=0)delete eff.critRed}
   if(eff.ppRed){eff.ppRed.duration--;if(eff.ppRed.duration<=0)delete eff.ppRed}
@@ -574,6 +743,7 @@ function tickCharacterEffects(){
     if(char.effects.shadowClone){char.effects.shadowClone.duration--;if(char.effects.shadowClone.duration<=0){delete char.effects.shadowClone;play('clone_dissipate');addCombatLog(`🌑 Le Clone d'ombre disparaît.`)}}
     if(char.effects.activationDodge)delete char.effects.activationDodge
     if(char.effects.activationBlock)delete char.effects.activationBlock
+    if(char.effects.shadowStep){char.effects.shadowStep.duration--;if(char.effects.shadowStep.duration<=0)delete char.effects.shadowStep}
     if(char.effects.regen){const heal=char.effects.regen.value;char.currentHp=Math.min(getFinalStats(char).pvMax,char.currentHp+heal);addCombatLog(`🙏 ${char.name} récupère ${heal} PV (régénération)`);char.effects.regen.duration--;if(char.effects.regen.duration<=0)delete char.effects.regen}
     if(Object.keys(char.effects).length===0)delete char.effects
   })
@@ -907,7 +1077,7 @@ function renderForestInventory(){
   }
   el.innerHTML=html
 }
-function getActiveBuffEmojis(char,charIndex){if(!char)return '';const emojis=[];if(char.effects?.critBuff)emojis.push('🗡️');if(char.effects?.ppBuff)emojis.push('🐂');if(char.effects?.pmBuff)emojis.push('💨');if(char.effects?.shadowClone)emojis.push('🌑');if(char.effects?.regen)emojis.push('🙏');if(G?.combat?.taunt&&G.combat.taunt.charIndex===charIndex)emojis.push('🦁');return emojis.join(' ')}function getSpellDescription(spell,char){
+function getActiveBuffEmojis(char,charIndex){if(!char)return '';const emojis=[];if(char.effects?.critBuff)emojis.push('🗡️');if(char.effects?.ppBuff)emojis.push('🐂');if(char.effects?.pmBuff)emojis.push('💨');if(char.effects?.shadowClone)emojis.push('🌑');if(char.effects?.shadowStep)emojis.push('🌫️');if(char.effects?.regen)emojis.push('🙏');if(G?.combat?.taunt&&G.combat.taunt.charIndex===charIndex)emojis.push('🦁');return emojis.join(' ')}function getSpellDescription(spell,char){
   if(!spell)return ''
   if(spell.type==='heal_formula'&&char){
     const casterStats=getFinalStats(char)
